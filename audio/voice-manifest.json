@@ -26,5 +26,11 @@
   "sentenceRate": "-4%",
   "wordRate": "-14%",
   "sentenceCount": 2000,
-  "wordCount": 691
+  "wordCount": 691,
+  "silenceTrim": {
+    "version": "v5.2",
+    "edgeThresholdDb": -50,
+    "edgeGuardMs": 10,
+    "note": "leading/trailing silence trimmed; internal pauses preserved"
+  }
 }
