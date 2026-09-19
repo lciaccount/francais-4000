@@ -17,14 +17,14 @@
 v5 生成器改为：
 
 - `v1` → `fr-FR-HenriNeural`
-- `v2` → `fr-FR-JacquelineNeural`
+- `v2` → `fr-FR-EloiseNeural`
 - `v3` → `fr-FR-DeniseNeural`
 
 三路都固定为 `fr-FR`。脚本启动时还会读取 Edge TTS 音色列表，检查这三个 ShortName 是否存在、Locale 是否确实为 `fr-FR`。
 
 ### 为什么源码包里先只启用 Denise？
 
-本次运行环境不能联网调用 Edge TTS 批量生成 8000 多个 MP3，所以我没有把旧的 Vivienne/Remy 音频冒充成“修复后音频”。安全源码包只保留旧版已经是 `DeniseNeural` 的 v3，并通过 `audio/voice-manifest.json` 暂时禁用 Henri/Jacqueline。运行下面的 v5 生成脚本后，三路会全部自动启用。
+本次运行环境不能联网调用 Edge TTS 批量生成 8000 多个 MP3，所以我没有把旧的 Vivienne/Remy 音频冒充成“修复后音频”。安全源码包只保留旧版已经是 `DeniseNeural` 的 v3，并通过 `audio/voice-manifest.json` 暂时禁用 Henri/Eloise。运行下面的 v5 生成脚本后，三路会全部自动启用。
 
 ### 生成完整三音色
 
@@ -34,7 +34,7 @@ Linux / WSL 下，在项目目录执行：
 bash build-french-2000-neural-v5.sh "$PWD"
 ```
 
-默认会复用已有的 Denise 音频，只重新生成 Henri、Jacqueline，以及新加入的连字符复合词音频。当前数据量是：
+默认会复用已有的 Denise 音频，只重新生成 Henri、Eloise，以及新加入的连字符复合词音频。当前数据量是：
 
 - 2000 个句子
 - 691 个可点读词形/词条

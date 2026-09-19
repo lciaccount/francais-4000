@@ -54,7 +54,7 @@ OUT_ZIP = Path.home() / "french-2000-fr-only-v5.zip"
 # 不再使用 Vivienne/Remy Multilingual，避免短词或外来词被多语种模型按英语读。
 VOICES = [
     (1, "fr-FR-HenriNeural", "Henri · 法国法语男声"),
-    (2, "fr-FR-JacquelineNeural", "Jacqueline · 法国法语女声"),
+    (2, "fr-FR-EloiseNeural", "Eloise · 法国法语女声"),
     (3, "fr-FR-DeniseNeural", "Denise · 法国法语女声"),
 ]
 SENT_RATE = os.environ.get("FRENCH_SENT_RATE", "-4%")
@@ -107,7 +107,7 @@ if not REBUILD_ALL and FINAL_AUDIO.exists() and "Denise" in html:
             shutil.copy2(src, dst)
             reused += 1
     if reused:
-        print(f"已复用旧版 Denise 音频 {reused} 个；Henri/Jacqueline 会重新生成。")
+        print(f"已复用旧版 Denise 音频 {reused} 个；Henri/Eloise 会重新生成。")
 
 async def validate_voices():
     try:
@@ -239,10 +239,10 @@ print(f"最终音频数量：{final_count}")
 # 兼容从旧 v4 index.html 直接运行脚本的情况：更新音色名称和缓存版本。
 html = INDEX.read_text(encoding="utf-8")
 html = html.replace("Vivienne · 神经女声", "Henri · 法国法语男声")
-html = html.replace("Remy · 神经男声", "Jacqueline · 法国法语女声")
-html = html.replace("Vivienne / Remy / Denise", "Henri / Jacqueline / Denise")
+html = html.replace("Remy · 神经男声", "Eloise · 法国法语女声")
+html = html.replace("Vivienne / Remy / Denise", "Henri / Eloise / Denise")
 html = html.replace(">Vivienne</option>", ">Henri</option>")
-html = html.replace(">Remy</option>", ">Jacqueline</option>")
+html = html.replace(">Remy</option>", ">Eloise</option>")
 html = re.sub(r"\?v=(?:neural\d+|fronly\d+)", "?v=fronly5", html)
 INDEX.write_text(html, encoding="utf-8")
 
