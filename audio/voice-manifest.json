@@ -1,0 +1,11 @@
+{
+  "version": "fr-only-v5-prebuild",
+  "locale": "fr-FR",
+  "availableSlots": [3],
+  "voices": [
+    {"slot": 1, "shortName": "fr-FR-HenriNeural", "label": "Henri · 法国法语男声", "ready": false},
+    {"slot": 2, "shortName": "fr-FR-JacquelineNeural", "label": "Jacqueline · 法国法语女声", "ready": false},
+    {"slot": 3, "shortName": "fr-FR-DeniseNeural", "label": "Denise · 法国法语女声", "ready": true}
+  ],
+  "note": "预构建包仅保留旧版中已确认的 Denise。运行 build-french-2000-neural-v5.sh 后会生成并启用全部三个 fr-FR 单语音色。"
+}
