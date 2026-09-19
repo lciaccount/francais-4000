@@ -73,7 +73,7 @@ html[data-theme="dark"]{--bg:#111;--panel:#191919;--text:#f4f4f4;--muted:#aaa;--
 .dictContext{display:none;margin-top:8px;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
 .dictContext.show{display:block}.dictContextLabel{font-size:10px;color:var(--muted);font-weight:700;margin-bottom:3px}.dictContextFr{font-size:13px;font-weight:700}.dictContextZh{font-size:12px;color:var(--muted);margin-top:2px}
 @media(max-width:800px){
-  body{padding-bottom:58px}.app{padding:7px}.topbar{padding:2px 0 5px}.brandrow{margin-bottom:4px;gap:7px}.brand h1{font-size:18px}.brandBtns{gap:4px}.themeBtn,.installBtn{padding:4px 6px;font-size:11px;border-radius:8px}
+  body{padding-bottom:58px}.app{padding:7px}.topbar{position:sticky!important;top:0;z-index:40;padding:2px 0 5px;background:color-mix(in srgb,var(--bg) 96%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 18px rgba(0,0,0,.10)}.brandrow{margin-bottom:4px;gap:7px}.brand h1{font-size:18px}.brandBtns{gap:4px}.themeBtn,.installBtn{padding:4px 6px;font-size:11px;border-radius:8px}
   .mobileSettingsToggle{display:flex;width:100%;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:5px 8px;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:4px}
   .controls{display:none!important}.mobile-settings-open .controls{display:grid!important;grid-template-columns:1fr 1fr!important;margin-bottom:4px}.mobile-settings-open .singleRepeatCtrl{display:flex!important}
   .studybar{display:grid!important;grid-template-columns:1fr!important;gap:4px!important;margin-top:4px!important}.progressCard,.searchCard{padding:5px 7px!important;border-radius:9px!important;box-shadow:none}.progressTop{font-size:11px!important;align-items:center}.progressTrack,.tinyStats{display:none!important}
@@ -107,7 +107,7 @@ html[data-theme="dark"]{--bg:#111;--panel:#191919;--text:#f4f4f4;--muted:#aaa;--
         <div class="ctrl mini"><label>区间起始</label><input id="rangeStart" type="number" min="1" max="2000" value="1"></div>
         <div class="ctrl mini"><label>区间结束</label><input id="rangeEnd" type="number" min="1" max="2000" value="10"></div>
         <div class="ctrl mini"><label>区间每句</label><select id="rangeRepeat"><option value="1">1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="5">5 次</option><option value="10">10 次</option></select></div>
-        <div class="ctrl mini"><label>每次间隔</label><select id="gap"><option value="100">0.10 秒</option><option value="150">0.15 秒</option><option value="300" selected>0.30 秒</option><option value="600">0.60 秒</option><option value="1000">1.00 秒</option><option value="1500">1.50 秒</option></select></div>
+        <div class="ctrl mini"><label>每次间隔</label><select id="gap"><option value="0">0 秒</option><option value="100">0.10 秒</option><option value="150">0.15 秒</option><option value="300" selected>0.30 秒</option><option value="600">0.60 秒</option><option value="1000">1.00 秒</option><option value="1500">1.50 秒</option></select></div>
         <button id="rangeBtn" class="rangeBtn" type="button">↻ 区间循环</button>
         <button id="prevBtn" class="navBtn" type="button">← 上一句</button><button id="nextBtn" class="navBtn" type="button">下一句 →</button>
         <div id="status" class="status">待播放。点击任意句子开始单句循环。</div>
@@ -131,7 +131,7 @@ html[data-theme="dark"]{--bg:#111;--panel:#191919;--text:#f4f4f4;--muted:#aaa;--
   <div class="dictTop"><div><div id="dictWord" class="dictWord"></div><div id="dictIPA" class="dictIPA"></div><div id="dictLemma" class="dictLemma"></div></div><button id="dictClose" class="dictClose" type="button">×</button></div>
   <div id="dictContext" class="dictContext"></div>
   <div id="dictMeanings"></div>
-  <div class="dictNote">词典现在把“单词本身的词义/词性”和“它在本课例句中的用法”分开显示，避免把整句译法误当成词义。点击单词会循环朗读；可识别的变位会显示动词原形。点“停止”、另一个词或任一句子即可结束。</div>
+  <div class="dictNote">点击单词会循环朗读；可识别的变位会显示动词原形。点“停止”、另一个词或任一句子即可结束。</div>
 </div>
 <div class="mobileNav"><div class="mobileRepeat"><span class="repeatLabel">单句重复</span><select id="mobileSingleRepeat"><option value="inf">∞</option><option value="1">1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="5">5 次</option><option value="10">10 次</option></select><span class="repeatLabel">循环音色</span><select id="mobileVoiceMode"><option value="system">系统</option><option value="builtin-1">Henri</option><option value="builtin-2">Eloise</option><option value="builtin-3">Denise</option><option value="builtin-cycle">法语音色交替</option><option value="system-cycle">系统交替</option></select></div><button id="mPrev">← 上一句</button><button id="mStop" class="mStop">■ 停止</button><button id="mNext">下一句 →</button></div>
 <div id="installModal" class="modal" role="dialog" aria-modal="true"><div class="modalCard"><h3 id="installTitle">安装到手机</h3><div id="installBody"></div><button id="installClose" class="modalClose" type="button">知道了</button></div></div>
@@ -258,5 +258,7 @@ $('#speed').oninput=e=>{$('#speedValue').textContent=Number(e.target.value).toFi
 window.addEventListener('beforeunload',()=>{stopAudioOnly();speechSynthesis.cancel();});speechSynthesis.onvoiceschanged=loadVoices;
 initSavedSettings();initTheme();renderProgress();setupMobileSettings();setupSearch();setupHighlight();setupSwipe();setupKeys();setupMediaSession();setupInstall();loadVoices();loadBuiltinVoiceAvailability();render();
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"1c1c7799c54e46349cc23295b5e08299","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
