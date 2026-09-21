@@ -1,5 +1,5 @@
 {
-  "version": "fr4000-v2",
+  "version": "fr4000-v3",
   "locale": "fr-FR",
   "availableSlots": [
     1,
@@ -28,10 +28,10 @@
   "sentenceCount": 4000,
   "wordCount": 914,
   "silenceTrim": {
-    "version": "fr4000-v2",
+    "version": "fr4000-v3",
     "edgeThresholdDb": "-50dB",
     "edgeGuardMs": 0,
-    "maxSentencePauseMs": 300,
+    "maxSentencePauseMs": 80,
     "note": "leading/trailing silence removed; overlong internal sentence pauses shortened"
   }
 }

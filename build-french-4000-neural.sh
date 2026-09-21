@@ -43,7 +43,7 @@ WORD_RATE=os.environ.get('FRENCH_WORD_RATE','-14%')
 CONCURRENCY=max(1,int(os.environ.get('TTS_CONCURRENCY','5')))
 MAX_RETRIES=max(1,int(os.environ.get('TTS_MAX_RETRIES','8')))
 THRESHOLD=os.environ.get('FRENCH_SILENCE_THRESHOLD','-50dB')
-MAX_SENT_PAUSE=max(0.10,min(1.0,float(os.environ.get('FRENCH_MAX_SENT_PAUSE','0.30'))))
+MAX_SENT_PAUSE=max(0.04,min(1.0,float(os.environ.get('FRENCH_MAX_SENT_PAUSE','0.08'))))
 MIN_BYTES=500
 
 html=INDEX.read_text(encoding='utf-8')
@@ -147,10 +147,10 @@ missing=[str(dst) for *_,dst in jobs if not valid(dst)]
 if missing: raise SystemExit(f'仍有 {len(missing)} 个缺失音频，请重新运行。')
 
 manifest={
- 'version':'fr4000-v2','locale':'fr-FR','availableSlots':[1,2,3],
+ 'version':'fr4000-v3','locale':'fr-FR','availableSlots':[1,2,3],
  'voices':[{'slot':n,'shortName':v,'label':label} for n,v,label in VOICES],
  'sentenceRate':SENT_RATE,'wordRate':WORD_RATE,'sentenceCount':len(sentences),'wordCount':len(words),
- 'silenceTrim':{'version':'fr4000-v2','edgeThresholdDb':THRESHOLD,'edgeGuardMs':0,
+ 'silenceTrim':{'version':'fr4000-v3','edgeThresholdDb':THRESHOLD,'edgeGuardMs':0,
                 'maxSentencePauseMs':round(MAX_SENT_PAUSE*1000),
                 'note':'leading/trailing silence removed; overlong internal sentence pauses shortened'}
 }
