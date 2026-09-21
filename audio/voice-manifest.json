@@ -1,5 +1,5 @@
 {
-  "version": "fr-only-v5",
+  "version": "fr4000-v1",
   "locale": "fr-FR",
   "availableSlots": [
     1,
@@ -25,12 +25,12 @@
   ],
   "sentenceRate": "-4%",
   "wordRate": "-14%",
-  "sentenceCount": 2000,
-  "wordCount": 691,
+  "sentenceCount": 4000,
+  "wordCount": 914,
   "silenceTrim": {
-    "version": "v5.2",
-    "edgeThresholdDb": -50,
-    "edgeGuardMs": 10,
-    "note": "leading/trailing silence trimmed; internal pauses preserved"
+    "version": "fr4000-v1",
+    "edgeThresholdDb": "-50dB",
+    "edgeGuardMs": 40,
+    "note": "leading/trailing silence trimmed; internal pauses preserved; edge guard <= 50 ms"
   }
 }

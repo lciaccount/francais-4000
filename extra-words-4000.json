@@ -1,0 +1,3258 @@
+{
+  "a-t-il": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "有……吗（avoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "atˈil"
+  },
+  "accessible": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "可到达的；可进入的"
+        ]
+      }
+    ],
+    "ipa": "aksɛsˈibl"
+  },
+  "accessibles": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "可到达的；可进入的（复数）"
+        ]
+      }
+    ],
+    "ipa": "aksɛsˈibl"
+  },
+  "accompagner": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "陪同；陪伴"
+        ]
+      }
+    ],
+    "ipa": "akɔ̃panjˈe"
+  },
+  "accord": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "同意；一致；协议"
+        ]
+      }
+    ],
+    "ipa": "akˈɔʁ"
+  },
+  "accueil": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "接待；欢迎"
+        ]
+      }
+    ],
+    "ipa": "akˈœj"
+  },
+  "accès": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "进入；访问；通道"
+        ]
+      }
+    ],
+    "ipa": "aksˈɛ"
+  },
+  "adore": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "非常喜欢（adorer 变位）"
+        ]
+      }
+    ],
+    "ipa": "adˈɔʁ"
+  },
+  "adresse": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "地址"
+        ]
+      }
+    ],
+    "ipa": "adʁˈɛs"
+  },
+  "ai-je": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "我有……吗（avoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "ˈɛʒ"
+  },
+  "aide": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "帮助；援助"
+        ]
+      }
+    ],
+    "ipa": "ˈɛd"
+  },
+  "aidez-moi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请帮我（aider 的祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ɛdˈemwˈa"
+  },
+  "aidez-nous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请帮助我们（aider 的祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ɛdˈenˈu"
+  },
+  "aidé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "帮助过；得到帮助的（aider 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "ɛdˈe"
+  },
+  "aimable": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "友善的；客气的"
+        ]
+      }
+    ],
+    "ipa": "ɛmˈabl"
+  },
+  "allez-vous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "您去……吗 / 您好吗中的倒装形式（aller）"
+        ]
+      }
+    ],
+    "ipa": "alˈevˈu"
+  },
+  "allez-y": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请去吧；请继续；您请"
+        ]
+      }
+    ],
+    "ipa": "alˈeziɡʁˈɛk"
+  },
+  "amusez-vous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "玩得开心（s’amuser 祈使式）"
+        ]
+      }
+    ],
+    "ipa": "amyzˈevˈu"
+  },
+  "anglais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "英语；英国的/英语的"
+        ]
+      }
+    ],
+    "ipa": "ɑ̃ɡlˈɛ"
+  },
+  "année": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "年；年份"
+        ]
+      }
+    ],
+    "ipa": "anˈe"
+  },
+  "appelez-moi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请给我打电话 / 请叫我（appeler 祈使式）"
+        ]
+      }
+    ],
+    "ipa": "aplˈemwˈa"
+  },
+  "appelle": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "打电话；叫作（appeler 变位）"
+        ]
+      }
+    ],
+    "ipa": "apˈɛl"
+  },
+  "appétit": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "食欲；胃口"
+        ]
+      }
+    ],
+    "ipa": "apetˈi"
+  },
+  "arrivée": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "到达；抵达"
+        ]
+      }
+    ],
+    "ipa": "aʁivˈe"
+  },
+  "articuler": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "清楚发音；咬字"
+        ]
+      }
+    ],
+    "ipa": "aʁtikylˈe"
+  },
+  "as": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "有（avoir 第二人称单数）"
+        ]
+      }
+    ],
+    "ipa": "ˈas"
+  },
+  "asseoir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "使坐下；坐下（s’asseoir）"
+        ]
+      }
+    ],
+    "ipa": "aswˈaʁ"
+  },
+  "assez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "相当；足够"
+        ]
+      }
+    ],
+    "ipa": "asˈe"
+  },
+  "assister": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "参加；出席；目睹"
+        ]
+      }
+    ],
+    "ipa": "asistˈe"
+  },
+  "attendre": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "等待"
+        ]
+      }
+    ],
+    "ipa": "atˈɑ̃dʁ"
+  },
+  "attendu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "等候过的；预期的（attendre 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "atɑ̃dˈy"
+  },
+  "attente": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "等待；等候"
+        ]
+      }
+    ],
+    "ipa": "atˈɑ̃t"
+  },
+  "aussi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "也"
+        ]
+      }
+    ],
+    "ipa": "osˈi"
+  },
+  "autrement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "以另一种方式；否则"
+        ]
+      }
+    ],
+    "ipa": "otʁəmˈɑ̃"
+  },
+  "avais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "有（avoir 未完成过去时）"
+        ]
+      }
+    ],
+    "ipa": "avˈɛ"
+  },
+  "avance": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "提前；前进"
+        ]
+      }
+    ],
+    "ipa": "avˈɑ̃s"
+  },
+  "avez-vous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "您有……吗（avoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "avˈevˈu"
+  },
+  "bancaires": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "银行的（复数）"
+        ]
+      }
+    ],
+    "ipa": "bɑ̃kˈɛʁ"
+  },
+  "blessure": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "伤口；受伤"
+        ]
+      }
+    ],
+    "ipa": "blɛsˈyʁ"
+  },
+  "blessée": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "受伤的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "blɛsˈe"
+  },
+  "bloqué": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "被堵住的；被锁住的"
+        ]
+      }
+    ],
+    "ipa": "blɔkˈe"
+  },
+  "bloquée": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "被堵住的；被锁住的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "blɔkˈe"
+  },
+  "bâtiment": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "建筑物；大楼"
+        ]
+      }
+    ],
+    "ipa": "batimˈɑ̃"
+  },
+  "cartes": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "卡片；银行卡（复数）"
+        ]
+      }
+    ],
+    "ipa": "kˈaʁt"
+  },
+  "cause": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "原因；缘故"
+        ]
+      }
+    ],
+    "ipa": "kˈoz"
+  },
+  "chance": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "运气；机会"
+        ]
+      }
+    ],
+    "ipa": "ʃˈɑ̃s"
+  },
+  "chinois": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "中文；中国的"
+        ]
+      }
+    ],
+    "ipa": "ʃinwˈa"
+  },
+  "commander": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "点餐；订购；指挥"
+        ]
+      }
+    ],
+    "ipa": "kɔmɑ̃dˈe"
+  },
+  "commencer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "开始"
+        ]
+      }
+    ],
+    "ipa": "kɔmɑ̃sˈe"
+  },
+  "comprends": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "理解；明白（comprendre 变位）"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃pʁˈɑ̃"
+  },
+  "compris": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "理解了；包括在内（comprendre 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃pʁˈi"
+  },
+  "compréhension": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "理解；谅解"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃pʁeɑ̃sjˈɔ̃"
+  },
+  "compte": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "账户；计算；打算（compter 变位）"
+        ]
+      }
+    ],
+    "ipa": "kˈɔ̃t"
+  },
+  "confirme": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "确认（confirmer 变位）"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃fˈiʁm"
+  },
+  "connais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "认识；知道（connaître 变位）"
+        ]
+      }
+    ],
+    "ipa": "kɔnˈɛ"
+  },
+  "connaissance": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "认识；知识；相识"
+        ]
+      }
+    ],
+    "ipa": "kɔnɛsˈɑ̃s"
+  },
+  "connaissez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "认识；知道（connaître 变位）"
+        ]
+      }
+    ],
+    "ipa": "kɔnɛsˈe"
+  },
+  "conseillez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "建议；推荐（conseiller 变位）"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃sɛjˈe"
+  },
+  "consulte": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "就诊；咨询（consulter 变位）"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃sˈylt"
+  },
+  "conversation": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "交谈；对话"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃vɛʁsasjˈɔ̃"
+  },
+  "conviendrait": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "会合适（convenir 条件式）"
+        ]
+      }
+    ],
+    "ipa": "kɔ̃vjɛ̃dʁˈɛ"
+  },
+  "copie": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "副本；复制品"
+        ]
+      }
+    ],
+    "ipa": "kɔpˈi"
+  },
+  "cours": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "课程；课；过程中"
+        ]
+      }
+    ],
+    "ipa": "kˈuʁ"
+  },
+  "danger": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "危险"
+        ]
+      }
+    ],
+    "ipa": "dɑ̃ʒˈe"
+  },
+  "dehors": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "在外面；外面"
+        ]
+      }
+    ],
+    "ipa": "dəˈɔʁ"
+  },
+  "demande": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请求；询问；申请"
+        ]
+      }
+    ],
+    "ipa": "dəmˈɑ̃d"
+  },
+  "dernière": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "最后的；上一个的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "dɛʁnjˈɛʁ"
+  },
+  "devons-nous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "我们必须……吗（devoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "dəvˈɔ̃nˈu"
+  },
+  "difficile": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "困难的"
+        ]
+      }
+    ],
+    "ipa": "difisˈil"
+  },
+  "difficulté": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "困难"
+        ]
+      }
+    ],
+    "ipa": "difikyltˈe"
+  },
+  "difficultés": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "困难（复数）"
+        ]
+      }
+    ],
+    "ipa": "difikyltˈe"
+  },
+  "dirait": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "会说；看起来像（dire 条件式）"
+        ]
+      }
+    ],
+    "ipa": "diʁˈɛ"
+  },
+  "dis": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "说（dire 变位）"
+        ]
+      }
+    ],
+    "ipa": "dˈi"
+  },
+  "disparu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "消失的；不见了"
+        ]
+      }
+    ],
+    "ipa": "dispaʁˈy"
+  },
+  "dit-on": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "人们怎么说 / 怎么称呼（dire 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "dˈitˈɔ̃"
+  },
+  "documents": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "文件；材料（复数）"
+        ]
+      }
+    ],
+    "ipa": "dɔkymˈɑ̃"
+  },
+  "dois-je": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "我必须……吗（devoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "dwˈaʒ"
+  },
+  "donner": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "给；提供"
+        ]
+      }
+    ],
+    "ipa": "dɔnˈe"
+  },
+  "dormi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "睡过（dormir 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "dɔʁmˈi"
+  },
+  "doucement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "轻轻地；慢慢地"
+        ]
+      }
+    ],
+    "ipa": "dusmˈɑ̃"
+  },
+  "déclarer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "申报；声明"
+        ]
+      }
+    ],
+    "ipa": "deklaʁˈe"
+  },
+  "déclaré": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "宣布；申报过（déclarer 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "deklaʁˈe"
+  },
+  "décliner": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "婉拒；谢绝；下降"
+        ]
+      }
+    ],
+    "ipa": "deklinˈe"
+  },
+  "dépend": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "取决于（dépendre 变位）"
+        ]
+      }
+    ],
+    "ipa": "depˈɑ̃"
+  },
+  "dérangement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "打扰；麻烦"
+        ]
+      }
+    ],
+    "ipa": "deʁɑ̃ʒmˈɑ̃"
+  },
+  "déranger": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "打扰；妨碍"
+        ]
+      }
+    ],
+    "ipa": "deʁɑ̃ʒˈe"
+  },
+  "désolé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "抱歉的；遗憾的"
+        ]
+      }
+    ],
+    "ipa": "dezɔlˈe"
+  },
+  "emporter": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "带走；外带"
+        ]
+      }
+    ],
+    "ipa": "ɑ̃pɔʁtˈe"
+  },
+  "encore": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "还；再次；仍然"
+        ]
+      }
+    ],
+    "ipa": "ɑ̃kˈɔʁ"
+  },
+  "entendu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "听到的；明白了；好的"
+        ]
+      }
+    ],
+    "ipa": "ɑ̃tɑ̃dˈy"
+  },
+  "entrer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "进入"
+        ]
+      }
+    ],
+    "ipa": "ɑ̃tʁˈe"
+  },
+  "es": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是（être 第二人称单数）"
+        ]
+      }
+    ],
+    "ipa": "ˈɛ"
+  },
+  "essoufflé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "气喘吁吁的"
+        ]
+      }
+    ],
+    "ipa": "esuflˈe"
+  },
+  "est-ce": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是否；这是……吗（疑问结构）"
+        ]
+      }
+    ],
+    "ipa": "ˈɛs"
+  },
+  "est-elle": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "她/它是……吗（être 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "ɛtˈɛl"
+  },
+  "est-il": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "他/它是……吗（être 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "ɛtˈil"
+  },
+  "et": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "和；以及"
+        ]
+      }
+    ],
+    "ipa": "ˈe"
+  },
+  "eu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "有过；得到过（avoir 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "ˈy"
+  },
+  "exacte": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "准确的；确切的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "ɛɡzˈakt"
+  },
+  "exactement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "准确地；正是"
+        ]
+      }
+    ],
+    "ipa": "ɛɡzaktəmˈɑ̃"
+  },
+  "excusez-moi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "对不起；打扰一下"
+        ]
+      }
+    ],
+    "ipa": "ɛkskyzˈemwˈa"
+  },
+  "expliquer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "解释；说明"
+        ]
+      }
+    ],
+    "ipa": "ɛksplikˈe"
+  },
+  "facilement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "容易地；顺利地"
+        ]
+      }
+    ],
+    "ipa": "fasilmˈɑ̃"
+  },
+  "faible": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "虚弱的；弱的"
+        ]
+      }
+    ],
+    "ipa": "fˈɛbl"
+  },
+  "faites": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "做；使（faire 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "fˈɛt"
+  },
+  "faut-il": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是否需要；必须……吗（falloir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "fotˈil"
+  },
+  "feu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "火；火灾"
+        ]
+      }
+    ],
+    "ipa": "fˈø"
+  },
+  "fois": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "次；回"
+        ]
+      }
+    ],
+    "ipa": "fwˈa"
+  },
+  "formulaire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "表格"
+        ]
+      }
+    ],
+    "ipa": "fɔʁmylˈɛʁ"
+  },
+  "forte": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "强烈的；严重的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "fˈɔʁt"
+  },
+  "france": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "法国"
+        ]
+      }
+    ],
+    "ipa": "fʁˈɑ̃s"
+  },
+  "fumée": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "烟；烟雾"
+        ]
+      }
+    ],
+    "ipa": "fymˈe"
+  },
+  "fêtes": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "节日；庆典（复数）"
+        ]
+      }
+    ],
+    "ipa": "fˈɛt"
+  },
+  "gentil": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "友好的；好心的"
+        ]
+      }
+    ],
+    "ipa": "ʒɑ̃tˈi"
+  },
+  "grave": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "严重的；重大的"
+        ]
+      }
+    ],
+    "ipa": "ɡʁˈav"
+  },
+  "gêne": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "不适；妨碍；窘迫"
+        ]
+      }
+    ],
+    "ipa": "ʒˈɛn"
+  },
+  "information": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "信息；资料"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃fɔʁmasjˈɔ̃"
+  },
+  "informations": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "信息；资料（复数）"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃fɔʁmasjˈɔ̃"
+  },
+  "inquiétez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "担心（s’inquiéter 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃kjetˈe"
+  },
+  "instant": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "片刻；瞬间"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃stˈɑ̃"
+  },
+  "interprète": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "口译员；翻译人员"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃tɛʁpʁˈɛt"
+  },
+  "interprétation": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "口译；解释"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃tɛʁpʁetasjˈɔ̃"
+  },
+  "interrompre": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "打断；中断"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃tɛʁˈɔ̃pʁ"
+  },
+  "invitation": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "邀请"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃vitasjˈɔ̃"
+  },
+  "invite": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "邀请（inviter 变位）"
+        ]
+      }
+    ],
+    "ipa": "ɛ̃vˈit"
+  },
+  "itinéraire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "路线；行程"
+        ]
+      }
+    ],
+    "ipa": "itineʁˈɛʁ"
+  },
+  "joyeuses": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "快乐的；愉快的（阴性复数）"
+        ]
+      }
+    ],
+    "ipa": "ʒwajˈøz"
+  },
+  "joyeux": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "快乐的；愉快的"
+        ]
+      }
+    ],
+    "ipa": "ʒwajˈø"
+  },
+  "jusqu'à": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "直到；到……为止"
+        ]
+      }
+    ],
+    "ipa": "ʒˈyska"
+  },
+  "laisse": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "留下；让（laisser 变位）"
+        ]
+      }
+    ],
+    "ipa": "lˈɛs"
+  },
+  "laissé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "留下过的（laisser 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "lɛsˈe"
+  },
+  "loin": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "远；遥远地"
+        ]
+      }
+    ],
+    "ipa": "lwˈɛ̃"
+  },
+  "longtemps": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "很久；长时间"
+        ]
+      }
+    ],
+    "ipa": "lɔ̃tˈɑ̃"
+  },
+  "là": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "那里；在那儿"
+        ]
+      }
+    ],
+    "ipa": "lˈa"
+  },
+  "mais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "但是"
+        ]
+      }
+    ],
+    "ipa": "mˈɛ"
+  },
+  "manque": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "缺少；不足；想念"
+        ]
+      }
+    ],
+    "ipa": "mˈɑ̃k"
+  },
+  "marche": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "走路；运转；可行"
+        ]
+      }
+    ],
+    "ipa": "mˈaʁʃ"
+  },
+  "marcher": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "走路；运转"
+        ]
+      }
+    ],
+    "ipa": "maʁʃˈe"
+  },
+  "meilleurs": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "更好的；最好的（复数）"
+        ]
+      }
+    ],
+    "ipa": "mɛjˈœʁ"
+  },
+  "mieux": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "更好地；更好"
+        ]
+      }
+    ],
+    "ipa": "mjˈø"
+  },
+  "minute": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "分钟"
+        ]
+      }
+    ],
+    "ipa": "minˈyt"
+  },
+  "montrer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "展示；指给看"
+        ]
+      }
+    ],
+    "ipa": "mɔ̃tʁˈe"
+  },
+  "montrez-moi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请给我看 / 请指给我看"
+        ]
+      }
+    ],
+    "ipa": "mɔ̃tʁˈemwˈa"
+  },
+  "médicale": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "医疗的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "medikˈal"
+  },
+  "normalement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "正常地；通常"
+        ]
+      }
+    ],
+    "ipa": "nɔʁmalmˈɑ̃"
+  },
+  "notre": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "我们的（单数名词前）"
+        ]
+      }
+    ],
+    "ipa": "nˈɔtʁ"
+  },
+  "nous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "我们；我们自己"
+        ]
+      }
+    ],
+    "ipa": "nˈu"
+  },
+  "numéro": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "号码；编号"
+        ]
+      }
+    ],
+    "ipa": "nymeʁˈo"
+  },
+  "obtenir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "获得；取得"
+        ]
+      }
+    ],
+    "ipa": "ɔbtnˈiʁ"
+  },
+  "opposition": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "反对；（银行卡）挂失/止付"
+        ]
+      }
+    ],
+    "ipa": "ɔpozisjˈɔ̃"
+  },
+  "opérateur": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "运营商；操作员"
+        ]
+      }
+    ],
+    "ipa": "ɔpeʁatˈœʁ"
+  },
+  "oui": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是；对"
+        ]
+      }
+    ],
+    "ipa": "wˈi"
+  },
+  "ouvert": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "开着的；营业的"
+        ]
+      }
+    ],
+    "ipa": "uvˈɛʁ"
+  },
+  "ouverte": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "开着的；营业的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "uvˈɛʁt"
+  },
+  "par": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "由；通过；每"
+        ]
+      }
+    ],
+    "ipa": "pˈaʁ"
+  },
+  "parce": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "因为（常用于 parce que）"
+        ]
+      }
+    ],
+    "ipa": "pˈaʁs"
+  },
+  "parfait": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "完美的；很好"
+        ]
+      }
+    ],
+    "ipa": "paʁfˈɛ"
+  },
+  "parlez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "说话（parler 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "paʁlˈe"
+  },
+  "passez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "经过；度过（passer 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "pasˈe"
+  },
+  "passé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "过去的；发生过的"
+        ]
+      }
+    ],
+    "ipa": "pasˈe"
+  },
+  "passée": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "过去的；发生过的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "pasˈe"
+  },
+  "patience": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "耐心"
+        ]
+      }
+    ],
+    "ipa": "pasjˈɑ̃s"
+  },
+  "payer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "支付"
+        ]
+      }
+    ],
+    "ipa": "pɛjˈe"
+  },
+  "pensais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "想；认为（penser 未完成过去时）"
+        ]
+      }
+    ],
+    "ipa": "pɑ̃sˈɛ"
+  },
+  "pense": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "想；认为（penser 变位）"
+        ]
+      }
+    ],
+    "ipa": "pˈɑ̃s"
+  },
+  "penser": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "想；认为；记得要"
+        ]
+      }
+    ],
+    "ipa": "pɑ̃sˈe"
+  },
+  "permettez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "允许（permettre 变位）"
+        ]
+      }
+    ],
+    "ipa": "pɛʁmɛtˈe"
+  },
+  "personne": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "人；某人；没有人（否定中）"
+        ]
+      }
+    ],
+    "ipa": "pɛʁsˈɔn"
+  },
+  "perte": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "丢失；损失"
+        ]
+      }
+    ],
+    "ipa": "pˈɛʁt"
+  },
+  "peut-il": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "他/它可以……吗（pouvoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "pˈøtˈil"
+  },
+  "peut-être": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "也许；可能"
+        ]
+      }
+    ],
+    "ipa": "pˈøtˈɛtʁ"
+  },
+  "pied": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "脚；步行（à pied）"
+        ]
+      }
+    ],
+    "ipa": "pjˈe"
+  },
+  "plaisir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "愉快；乐趣"
+        ]
+      }
+    ],
+    "ipa": "plɛzˈiʁ"
+  },
+  "plein": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "满的；全职的（à temps plein）"
+        ]
+      }
+    ],
+    "ipa": "plˈɛ̃"
+  },
+  "plutôt": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "更；相当；倒不如"
+        ]
+      }
+    ],
+    "ipa": "plytˈo"
+  },
+  "position": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "位置；地点"
+        ]
+      }
+    ],
+    "ipa": "pozisjˈɔ̃"
+  },
+  "possible": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "可能的；可行的"
+        ]
+      }
+    ],
+    "ipa": "pɔsˈibl"
+  },
+  "pourquoi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "为什么"
+        ]
+      }
+    ],
+    "ipa": "puʁkwˈa"
+  },
+  "pourrait": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "可以；可能会（pouvoir 条件式）"
+        ]
+      }
+    ],
+    "ipa": "puʁˈɛ"
+  },
+  "pouvez-vous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "您能……吗（pouvoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "puvˈevˈu"
+  },
+  "première": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "第一的；第一次（阴性）"
+        ]
+      }
+    ],
+    "ipa": "pʁəmjˈɛʁ"
+  },
+  "prendrai": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "将要拿/点/乘（prendre 简单将来时）"
+        ]
+      }
+    ],
+    "ipa": "pʁɑ̃dʁˈe"
+  },
+  "prenez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "拿；乘；请用（prendre 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "pʁənˈe"
+  },
+  "pris": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "拿了；乘了；取了（prendre 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "pʁˈi"
+  },
+  "problème": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "问题；麻烦"
+        ]
+      }
+    ],
+    "ipa": "pʁɔblˈɛm"
+  },
+  "produire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "生产；发生（se produire）"
+        ]
+      }
+    ],
+    "ipa": "pʁɔdyˈiʁ"
+  },
+  "profitez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "享受；好好利用（profiter 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "pʁɔfitˈe"
+  },
+  "projets": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "计划；项目（复数）"
+        ]
+      }
+    ],
+    "ipa": "pʁɔʒˈɛ"
+  },
+  "promotion": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "促销；折扣；晋升"
+        ]
+      }
+    ],
+    "ipa": "pʁɔmɔsjˈɔ̃"
+  },
+  "proposer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "提出；提供；建议"
+        ]
+      }
+    ],
+    "ipa": "pʁɔpozˈe"
+  },
+  "provisoire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "临时的"
+        ]
+      }
+    ],
+    "ipa": "pʁɔvizwˈaʁ"
+  },
+  "présente": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "介绍；呈现（présenter 变位）"
+        ]
+      }
+    ],
+    "ipa": "pʁezˈɑ̃t"
+  },
+  "présenter": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "介绍；呈现"
+        ]
+      }
+    ],
+    "ipa": "pʁezɑ̃tˈe"
+  },
+  "prévenir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "通知；提醒；预防"
+        ]
+      }
+    ],
+    "ipa": "pʁevnˈiʁ"
+  },
+  "prévenu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "通知过的；提醒过的"
+        ]
+      }
+    ],
+    "ipa": "pʁevnˈy"
+  },
+  "prévoit": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "预计；计划（prévoir 变位）"
+        ]
+      }
+    ],
+    "ipa": "pʁevwˈa"
+  },
+  "prévu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "预计的；安排好的"
+        ]
+      }
+    ],
+    "ipa": "pʁevˈy"
+  },
+  "prêter": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "借给"
+        ]
+      }
+    ],
+    "ipa": "pʁɛtˈe"
+  },
+  "puis-je": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "我可以……吗（pouvoir 倒装形式）"
+        ]
+      }
+    ],
+    "ipa": "pyˈiʒ"
+  },
+  "quand": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "什么时候；当……时"
+        ]
+      }
+    ],
+    "ipa": "kˈɑ̃"
+  },
+  "quartier": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "街区；地区"
+        ]
+      }
+    ],
+    "ipa": "kaʁtjˈe"
+  },
+  "quel": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "哪个；什么样的（阳性单数）"
+        ]
+      }
+    ],
+    "ipa": "kˈɛl"
+  },
+  "quelle": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "哪个；什么样的（阴性单数）"
+        ]
+      }
+    ],
+    "ipa": "kˈɛl"
+  },
+  "quelqu'un": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "某人；有人"
+        ]
+      }
+    ],
+    "ipa": "kɛlkˈœ̃"
+  },
+  "quelques": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "几个；一些"
+        ]
+      }
+    ],
+    "ipa": "kˈɛlkə"
+  },
+  "quels": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "哪些；什么样的（阳性复数）"
+        ]
+      }
+    ],
+    "ipa": "kˈɛl"
+  },
+  "qui": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "谁；……的人/物"
+        ]
+      }
+    ],
+    "ipa": "kˈi"
+  },
+  "quoi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "什么"
+        ]
+      }
+    ],
+    "ipa": "kwˈa"
+  },
+  "rapidement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "快速地；尽快"
+        ]
+      }
+    ],
+    "ipa": "ʁapidmˈɑ̃"
+  },
+  "relever": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "扶起；站起来（se relever）；记录"
+        ]
+      }
+    ],
+    "ipa": "ʁəlvˈe"
+  },
+  "remercie": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "感谢（remercier 变位）"
+        ]
+      }
+    ],
+    "ipa": "ʁəmɛʁsˈi"
+  },
+  "remplir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "填写；装满"
+        ]
+      }
+    ],
+    "ipa": "ʁɑ̃plˈiʁ"
+  },
+  "rentrez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "回去；回家（rentrer 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ʁɑ̃tʁˈe"
+  },
+  "reposez-vous": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请休息"
+        ]
+      }
+    ],
+    "ipa": "ʁəpozˈevˈu"
+  },
+  "respire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "呼吸（respirer 变位）"
+        ]
+      }
+    ],
+    "ipa": "ʁɛspˈiʁ"
+  },
+  "rester": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "停留；留下"
+        ]
+      }
+    ],
+    "ipa": "ʁɛstˈe"
+  },
+  "restez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "停留；请留下（rester 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ʁɛstˈe"
+  },
+  "retard": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "迟到；延误"
+        ]
+      }
+    ],
+    "ipa": "ʁətˈaʁ"
+  },
+  "retour": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "返回；返程"
+        ]
+      }
+    ],
+    "ipa": "ʁətˈuʁ"
+  },
+  "retourner": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "返回；翻转"
+        ]
+      }
+    ],
+    "ipa": "ʁətuʁnˈe"
+  },
+  "retrouve": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "找到；再次见到（retrouver 变位）"
+        ]
+      }
+    ],
+    "ipa": "ʁətʁˈuv"
+  },
+  "retrouver": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "找回；再次见到"
+        ]
+      }
+    ],
+    "ipa": "ʁətʁuvˈe"
+  },
+  "revoir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "再次见到；复习"
+        ]
+      }
+    ],
+    "ipa": "ʁəvwˈaʁ"
+  },
+  "revoit": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "再次见到（revoir 变位）"
+        ]
+      }
+    ],
+    "ipa": "ʁəvwˈa"
+  },
+  "reçu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "收到的；接到的（recevoir 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "ʁəsˈy"
+  },
+  "route": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "道路；路线"
+        ]
+      }
+    ],
+    "ipa": "ʁˈut"
+  },
+  "répétez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "请重复（répéter 祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ʁepetˈe"
+  },
+  "réseau": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "网络；信号"
+        ]
+      }
+    ],
+    "ipa": "ʁezˈo"
+  },
+  "rétablissement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "康复；恢复"
+        ]
+      }
+    ],
+    "ipa": "ʁetablismˈɑ̃"
+  },
+  "réussite": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "成功；成就"
+        ]
+      }
+    ],
+    "ipa": "ʁeysˈit"
+  },
+  "saigne": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "流血（saigner 变位）"
+        ]
+      }
+    ],
+    "ipa": "sˈɛɲ"
+  },
+  "sais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "知道；会（savoir 变位）"
+        ]
+      }
+    ],
+    "ipa": "sˈɛ"
+  },
+  "sans": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "没有；不带"
+        ]
+      }
+    ],
+    "ipa": "sˈɑ̃"
+  },
+  "santé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "健康；干杯（祝酒）"
+        ]
+      }
+    ],
+    "ipa": "sɑ̃tˈe"
+  },
+  "sera": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "将是（être 简单将来时）"
+        ]
+      }
+    ],
+    "ipa": "səʁˈa"
+  },
+  "serrurier": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "锁匠"
+        ]
+      }
+    ],
+    "ipa": "sɛʁyʁjˈe"
+  },
+  "seulement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "只；仅仅"
+        ]
+      }
+    ],
+    "ipa": "sølmˈɑ̃"
+  },
+  "signaler": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "报告；申报"
+        ]
+      }
+    ],
+    "ipa": "sinjalˈe"
+  },
+  "sim": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "SIM 卡"
+        ]
+      }
+    ],
+    "ipa": "sˈim"
+  },
+  "sincèrement": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "真诚地"
+        ]
+      }
+    ],
+    "ipa": "sɛ̃sɛʁmˈɑ̃"
+  },
+  "situation": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "情况；处境"
+        ]
+      }
+    ],
+    "ipa": "sityasjˈɔ̃"
+  },
+  "soin": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "护理；照料；小心"
+        ]
+      }
+    ],
+    "ipa": "swˈɛ̃"
+  },
+  "soins": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "护理；医疗处理（复数）"
+        ]
+      }
+    ],
+    "ipa": "swˈɛ̃"
+  },
+  "sont": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是（être 第三人称复数）"
+        ]
+      }
+    ],
+    "ipa": "sˈɔ̃"
+  },
+  "souhaite": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "祝愿；希望（souhaiter 变位）"
+        ]
+      }
+    ],
+    "ipa": "suˈɛt"
+  },
+  "suite": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "接下来；立刻（tout de suite）"
+        ]
+      }
+    ],
+    "ipa": "syˈit"
+  },
+  "sur": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "在……上；关于；确定的（sûr）"
+        ]
+      }
+    ],
+    "ipa": "sˈyʁ"
+  },
+  "sécuriser": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "确保安全；保护"
+        ]
+      }
+    ],
+    "ipa": "sekyʁizˈe"
+  },
+  "séjour": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "停留；住宿；旅程"
+        ]
+      }
+    ],
+    "ipa": "seʒˈuʁ"
+  },
+  "sûr": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "确定的；安全的"
+        ]
+      }
+    ],
+    "ipa": "sˈyːʁ"
+  },
+  "tard": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "晚；迟"
+        ]
+      }
+    ],
+    "ipa": "tˈaʁ"
+  },
+  "tenez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "拿着；给您（tenir 祈使式）"
+        ]
+      }
+    ],
+    "ipa": "tənˈe"
+  },
+  "toi": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "你（重读人称代词）"
+        ]
+      }
+    ],
+    "ipa": "twˈa"
+  },
+  "traduire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "翻译"
+        ]
+      }
+    ],
+    "ipa": "tʁadyˈiʁ"
+  },
+  "trajet": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "行程；路线；路程"
+        ]
+      }
+    ],
+    "ipa": "tʁaʒˈɛ"
+  },
+  "trop": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "太；过于"
+        ]
+      }
+    ],
+    "ipa": "tʁˈo"
+  },
+  "trousseau": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "一串（钥匙）；钥匙串"
+        ]
+      }
+    ],
+    "ipa": "tʁusˈo"
+  },
+  "trouve": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "找到；认为（trouver 变位）"
+        ]
+      }
+    ],
+    "ipa": "tʁˈuv"
+  },
+  "trouvent": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "找到；位于（trouver / se trouver 第三人称复数）"
+        ]
+      }
+    ],
+    "ipa": "tʁˈuv"
+  },
+  "trouver": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "找到；认为"
+        ]
+      }
+    ],
+    "ipa": "tʁuvˈe"
+  },
+  "trouvé": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "找到的（trouver 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "tʁuvˈe"
+  },
+  "université": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "大学"
+        ]
+      }
+    ],
+    "ipa": "ynivɛʁsitˈe"
+  },
+  "urgence": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "紧急情况；急诊"
+        ]
+      }
+    ],
+    "ipa": "yʁʒˈɑ̃s"
+  },
+  "urgences": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "急诊科；紧急情况（复数）"
+        ]
+      }
+    ],
+    "ipa": "yʁʒˈɑ̃s"
+  },
+  "vas": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "去；状态如何（aller 第二人称单数）"
+        ]
+      }
+    ],
+    "ipa": "vˈa"
+  },
+  "venez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "来（venir 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "vənˈe"
+  },
+  "venu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "来了；来过（venir 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "vənˈy"
+  },
+  "vie": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "生活；生命；欲望"
+        ]
+      }
+    ],
+    "ipa": "vˈi"
+  },
+  "viens": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "来（venir 变位）"
+        ]
+      }
+    ],
+    "ipa": "vjˈɛ̃"
+  },
+  "vient": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "来；刚刚（venir 变位）"
+        ]
+      }
+    ],
+    "ipa": "vjˈɛ̃"
+  },
+  "vois": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "看见（voir 变位）"
+        ]
+      }
+    ],
+    "ipa": "vwˈa"
+  },
+  "vol": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "盗窃；飞行"
+        ]
+      }
+    ],
+    "ipa": "vˈɔl"
+  },
+  "volontaire": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "自愿的；故意的"
+        ]
+      }
+    ],
+    "ipa": "vɔlɔ̃tˈɛʁ"
+  },
+  "volontiers": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "乐意地；很愿意"
+        ]
+      }
+    ],
+    "ipa": "vɔlɔ̃tjˈe"
+  },
+  "volée": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "被偷的（阴性）"
+        ]
+      }
+    ],
+    "ipa": "vɔlˈe"
+  },
+  "votre": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "您的；你们的"
+        ]
+      }
+    ],
+    "ipa": "vˈɔtʁ"
+  },
+  "voulais": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "想要（vouloir 未完成过去时）"
+        ]
+      }
+    ],
+    "ipa": "vulˈɛ"
+  },
+  "voyage": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "旅行"
+        ]
+      }
+    ],
+    "ipa": "vwajˈaʒ"
+  },
+  "vraiment": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "真的；非常"
+        ]
+      }
+    ],
+    "ipa": "vʁɛmˈɑ̃"
+  },
+  "vu": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "看见过的（voir 过去分词）"
+        ]
+      }
+    ],
+    "ipa": "vˈy"
+  },
+  "vus": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "看见过的（阳性复数）"
+        ]
+      }
+    ],
+    "ipa": "vˈy"
+  },
+  "vœux": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "祝愿；祝福（复数）"
+        ]
+      }
+    ],
+    "ipa": "vˈø"
+  },
+  "zone": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "区域；地带"
+        ]
+      }
+    ],
+    "ipa": "zˈɔn"
+  },
+  "échanger": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "交换；换货"
+        ]
+      }
+    ],
+    "ipa": "eʃɑ̃ʒˈe"
+  },
+  "était": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是（être 未完成过去时）"
+        ]
+      }
+    ],
+    "ipa": "etˈɛ"
+  },
+  "études": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "学习；学业（复数）"
+        ]
+      }
+    ],
+    "ipa": "etˈyd"
+  },
+  "étudie": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "学习（étudier 变位）"
+        ]
+      }
+    ],
+    "ipa": "etydˈi"
+  },
+  "été": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "是过；曾经（être 过去分词）；夏天"
+        ]
+      }
+    ],
+    "ipa": "etˈe"
+  },
+  "évacuer": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "疏散；撤离"
+        ]
+      }
+    ],
+    "ipa": "evakyˈe"
+  },
+  "évanouir": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "昏厥（s’évanouir）"
+        ]
+      }
+    ],
+    "ipa": "evanuˈiʁ"
+  },
+  "amusez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "玩；使开心（amuser 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "amyzˈe"
+  },
+  "devons": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "必须；应该（devoir 第一人称复数）"
+        ]
+      }
+    ],
+    "ipa": "dəvˈɔ̃"
+  },
+  "elle": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "她；它（阴性）"
+        ]
+      }
+    ],
+    "ipa": "ˈɛl"
+  },
+  "montrez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "展示；请指出（montrer 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "mɔ̃tʁˈe"
+  },
+  "reposez": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "休息（reposer / se reposer 变位/祈使式）"
+        ]
+      }
+    ],
+    "ipa": "ʁəpozˈe"
+  },
+  "t": {
+    "groups": [
+      {
+        "pos": "词汇 / 词形",
+        "meanings": [
+          "倒装疑问中的连音字母 t，本身无独立词义"
+        ]
+      }
+    ],
+    "ipa": "tˈe"
+  }
+}

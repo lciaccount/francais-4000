@@ -1,13 +1,13 @@
 {
-  "name": "日常法语 2000 句 · 点读练习",
-  "short_name": "法语2000句",
+  "name": "日常法语 4000 句 · 点读练习",
+  "short_name": "法语4000句",
   "lang": "zh-CN",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f7f7f7",
   "theme_color": "#f7f7f7",
-  "description": "日常法语2000句：手机紧凑界面、词义与例句用法分离、单词/句子循环、法国法语单语神经音色、收藏与进度。",
+  "description": "日常法语4000句：手机紧凑界面、词义与例句用法分离、单词/句子循环、法国法语单语神经音色、收藏与进度。",
   "icons": [
     {
       "src": "icon-192.png",
