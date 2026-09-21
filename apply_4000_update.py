@@ -54,19 +54,19 @@ s=s.replace("id=arr.length?arr[0].id:(state.cat*100+1);", "id=arr.length?arr[0].
 # Any remaining literal human-facing total.
 s=s.replace('在 2000 句中','在 4000 句中')
 # New asset cache tag.
-s=re.sub(r'\?v=(?:frtrim\d+|fronly\d+|neural\d+)', '?v=fr4000v1', s)
+s=re.sub(r'\?v=(?:frtrim\d+|fronly\d+|neural\d+|fr4000v\d+)', '?v=fr4000v2', s)
 idx.write_text(s,encoding='utf8')
 # web manifest
 mf=ROOT/'manifest.webmanifest'; t=mf.read_text(encoding='utf8').replace('2000','4000'); mf.write_text(t,encoding='utf8')
 # service worker cache
-sw=ROOT/'sw.js'; t=sw.read_text(encoding='utf8'); t=re.sub(r"const CACHE='[^']+';","const CACHE='fr4000-v1-20260921';",t,count=1); sw.write_text(t,encoding='utf8')
+sw=ROOT/'sw.js'; t=sw.read_text(encoding='utf8'); t=re.sub(r"const CACHE='[^']+';","const CACHE='fr4000-v2-20260922';",t,count=1); sw.write_text(t,encoding='utf8')
 # voice manifest: audio intentionally not bundled; local generator enables slots after successful build.
 vm=ROOT/'audio'/'voice-manifest.json'
 manifest={
-  'version':'fr4000-v1-source','locale':'fr-FR','availableSlots':[],
+  'version':'fr4000-v2-source','locale':'fr-FR','availableSlots':[],
   'voices':[{'slot':1,'shortName':'fr-FR-HenriNeural','label':'Henri · 法国法语男声'},{'slot':2,'shortName':'fr-FR-EloiseNeural','label':'Eloise · 法国法语女声'},{'slot':3,'shortName':'fr-FR-DeniseNeural','label':'Denise · 法国法语女声'}],
   'sentenceRate':'-4%','wordRate':'-14%','sentenceCount':len(sents),'wordCount':len(word_index),
-  'silenceTrim':{'version':'fr4000-v1','edgeThresholdDb':-50,'edgeGuardMs':50,'note':'source package has no bundled MP3; local builder trims leading/trailing silence and pads at most 50 ms at each edge'}
+  'silenceTrim':{'version':'fr4000-v2','edgeThresholdDb':-50,'edgeGuardMs':0,'maxSentencePauseMs':300,'note':'local builder removes leading/trailing silence and shortens overlong internal sentence pauses'}
 }
 vm.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
 print('updated index; sentences',len(sents),'words',len(word_index))

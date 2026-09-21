@@ -42,8 +42,8 @@ SENT_RATE=os.environ.get('FRENCH_SENT_RATE','-4%')
 WORD_RATE=os.environ.get('FRENCH_WORD_RATE','-14%')
 CONCURRENCY=max(1,int(os.environ.get('TTS_CONCURRENCY','5')))
 MAX_RETRIES=max(1,int(os.environ.get('TTS_MAX_RETRIES','8')))
-PAD_MS=max(0,min(50,int(os.environ.get('FRENCH_EDGE_PAD_MS','20'))))
 THRESHOLD=os.environ.get('FRENCH_SILENCE_THRESHOLD','-50dB')
+MAX_SENT_PAUSE=max(0.10,min(1.0,float(os.environ.get('FRENCH_MAX_SENT_PAUSE','0.30'))))
 MIN_BYTES=500
 
 html=INDEX.read_text(encoding='utf-8')
@@ -73,15 +73,21 @@ for slot,voice,_ in VOICES:
         jobs.append((word,voice,WORD_RATE,AUDIO/f'v{slot}'/'word'/f'{int(idx):04d}.mp3'))
 for *_,dst in jobs: dst.parent.mkdir(parents=True,exist_ok=True)
 
-# 只裁首尾，不碰句中自然停顿；随后在首尾各补 PAD_MS（默认 20ms，强制不超过 50ms）。
-af=(f'silenceremove=start_periods=1:start_duration=0.01:start_threshold={THRESHOLD},'
-    'areverse,'
-    f'silenceremove=start_periods=1:start_duration=0.01:start_threshold={THRESHOLD},'
-    'areverse,'
-    f'adelay={PAD_MS}:all=1,apad=pad_dur={PAD_MS/1000:.3f}')
+# 所有音频都完全裁掉首尾静音；句子还会把过长的句中静音压缩到自然短停顿。
+edge_trim=(f'silenceremove=start_periods=1:start_duration=0:start_threshold={THRESHOLD},'
+           'areverse,'
+           f'silenceremove=start_periods=1:start_duration=0:start_threshold={THRESHOLD},'
+           'areverse')
+sentence_trim=(f'silenceremove=start_periods=1:start_duration=0:start_threshold={THRESHOLD},'
+               f'silenceremove=stop_periods=-1:stop_duration={MAX_SENT_PAUSE:.3f}:'
+               f'stop_threshold={THRESHOLD}:stop_silence=0,'
+               'areverse,'
+               f'silenceremove=start_periods=1:start_duration=0:start_threshold={THRESHOLD},'
+               'areverse')
 
 def trim(raw:Path,dst:Path):
     part=dst.with_name(dst.stem+'.trim.tmp.mp3')
+    af=sentence_trim if dst.parent.name=='sent' else edge_trim
     cmd=['ffmpeg','-nostdin','-hide_banner','-loglevel','error','-y','-i',str(raw),'-af',af,
          '-map_metadata','-1','-ar','24000','-ac','1','-b:a','48k',str(part)]
     p=subprocess.run(cmd,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True)
@@ -96,7 +102,7 @@ for j in jobs:
 TOTAL=len(jobs); already=TOTAL-queue.qsize(); done=already; failed=[]; lock=asyncio.Lock(); start=time.time()
 print(f'4000 句 + {len(words)} 个点读词条 × 3 音色 = {TOTAL} 个 MP3')
 print(f'音色严格固定为 fr-FR：{", ".join(v for _,v,_ in VOICES)}')
-print(f'首尾静音会裁掉，并各保留 {PAD_MS}ms（上限 50ms）；句中停顿不处理。')
+print(f'首尾静音会完全裁掉；句中静音最长保留约 {MAX_SENT_PAUSE*1000:.0f}ms。')
 print(f'已有 {already} 个有效文件；需生成 {TOTAL-already} 个。支持断点续跑。')
 
 async def synth(text,voice,rate,dst):
@@ -141,11 +147,12 @@ missing=[str(dst) for *_,dst in jobs if not valid(dst)]
 if missing: raise SystemExit(f'仍有 {len(missing)} 个缺失音频，请重新运行。')
 
 manifest={
- 'version':'fr4000-v1','locale':'fr-FR','availableSlots':[1,2,3],
+ 'version':'fr4000-v2','locale':'fr-FR','availableSlots':[1,2,3],
  'voices':[{'slot':n,'shortName':v,'label':label} for n,v,label in VOICES],
  'sentenceRate':SENT_RATE,'wordRate':WORD_RATE,'sentenceCount':len(sentences),'wordCount':len(words),
- 'silenceTrim':{'version':'fr4000-v1','edgeThresholdDb':THRESHOLD,'edgeGuardMs':PAD_MS,
-                'note':'leading/trailing silence trimmed; internal pauses preserved; edge guard <= 50 ms'}
+ 'silenceTrim':{'version':'fr4000-v2','edgeThresholdDb':THRESHOLD,'edgeGuardMs':0,
+                'maxSentencePauseMs':round(MAX_SENT_PAUSE*1000),
+                'note':'leading/trailing silence removed; overlong internal sentence pauses shortened'}
 }
 (AUDIO/'voice-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 (PROJECT/'audio-build-failures.txt').unlink(missing_ok=True)

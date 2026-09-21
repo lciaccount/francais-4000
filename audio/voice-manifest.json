@@ -1,5 +1,5 @@
 {
-  "version": "fr4000-v1",
+  "version": "fr4000-v2",
   "locale": "fr-FR",
   "availableSlots": [
     1,
@@ -28,9 +28,10 @@
   "sentenceCount": 4000,
   "wordCount": 914,
   "silenceTrim": {
-    "version": "fr4000-v1",
+    "version": "fr4000-v2",
     "edgeThresholdDb": "-50dB",
-    "edgeGuardMs": 40,
-    "note": "leading/trailing silence trimmed; internal pauses preserved; edge guard <= 50 ms"
+    "edgeGuardMs": 0,
+    "maxSentencePauseMs": 300,
+    "note": "leading/trailing silence removed; overlong internal sentence pauses shortened"
   }
 }

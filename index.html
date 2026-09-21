@@ -326,7 +326,7 @@ function applyBuiltinVoiceAvailability(slots){
 async function loadBuiltinVoiceAvailability(){
   let slots=[]; // 源码包默认不假定任何 MP3 已存在；以 voice-manifest.json 为准。
   try{
-    const r=await fetch('./audio/voice-manifest.json?v=fr4000v1',{cache:'no-store'});
+    const r=await fetch('./audio/voice-manifest.json?v=fr4000v2',{cache:'no-store'});
     if(r.ok){
       const m=await r.json();
       if(Array.isArray(m.availableSlots))slots=m.availableSlots;
@@ -336,7 +336,7 @@ async function loadBuiltinVoiceAvailability(){
   applyBuiltinVoiceAvailability(slots);
 }
 function builtinVoiceNumber(mode,turn=0){if(mode==='builtin-cycle')return (turn%3)+1;const m=String(mode).match(/^builtin-(\d)$/);return m?Number(m[1]):0;}
-function builtinAsset(kind,id,voiceNo){if(kind==='sentence')return `audio/v${voiceNo}/sent/${String(id).padStart(4,'0')}.mp3?v=fr4000v1`;if(kind==='word'){const k=String(id).toLowerCase().replaceAll('’',"'");const n=BUILTIN_WORD_INDEX[k];if(n)return `audio/v${voiceNo}/word/${String(n).padStart(4,'0')}.mp3?v=fr4000v1`;}return '';}
+function builtinAsset(kind,id,voiceNo){if(kind==='sentence')return `audio/v${voiceNo}/sent/${String(id).padStart(4,'0')}.mp3?v=fr4000v2`;if(kind==='word'){const k=String(id).toLowerCase().replaceAll('’',"'");const n=BUILTIN_WORD_INDEX[k];if(n)return `audio/v${voiceNo}/word/${String(n).padStart(4,'0')}.mp3?v=fr4000v2`;}return '';}
 function stopAudioOnly(){if(state.audio){try{state.audio.pause();state.audio.currentTime=0;}catch{}state.audio=null;}}
 function speakSystem(text,lang,onend,voiceTurn=0){const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=Number($('#speed').value);if(lang.startsWith('fr')){const ps=voiceSettings();u.pitch=ps.pitch;u.volume=ps.volume;const mode=currentVoiceMode();const idx=mode==='system-cycle'&&state.voices.length?voiceTurn%state.voices.length:null;const v=selectedVoice(idx);if(v)u.voice=v;}else{const v=chineseVoice();if(v)u.voice=v;u.pitch=1;u.volume=1;}let done=false;const finish=()=>{if(done)return;done=true;onend&&onend();};u.onend=finish;u.onerror=finish;speechSynthesis.speak(u);}
 function speakFrench(text,onend,asset,voiceTurn=0){const mode=currentVoiceMode(),vnum=builtinVoiceNumber(mode,voiceTurn);if(vnum&&asset){const src=builtinAsset(asset.kind,asset.id,vnum);if(src){const a=new Audio(src);state.audio=a;a.preload='auto';a.playbackRate=Number($('#speed').value);const finish=()=>{if(state.audio===a)state.audio=null;onend&&onend();};a.onended=finish;a.onerror=()=>{if(state.audio===a)state.audio=null;speakSystem(text,'fr-FR',onend,voiceTurn);};const p=a.play();if(p?.catch)p.catch(()=>{if(state.audio===a)state.audio=null;speakSystem(text,'fr-FR',onend,voiceTurn);});return;}}speakSystem(text,'fr-FR',onend,voiceTurn);}
