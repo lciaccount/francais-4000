@@ -59,7 +59,7 @@ idx.write_text(s,encoding='utf8')
 # web manifest
 mf=ROOT/'manifest.webmanifest'; t=mf.read_text(encoding='utf8').replace('2000','4000'); mf.write_text(t,encoding='utf8')
 # service worker cache
-sw=ROOT/'sw.js'; t=sw.read_text(encoding='utf8'); t=re.sub(r"const CACHE='[^']+';","const CACHE='fr4000-v4-ui-20260922';",t,count=1); sw.write_text(t,encoding='utf8')
+sw=ROOT/'sw.js'; t=sw.read_text(encoding='utf8'); t=re.sub(r"const CACHE='[^']+';","const CACHE='fr4000-v5-learning-20260922';",t,count=1); sw.write_text(t,encoding='utf8')
 # voice manifest: audio intentionally not bundled; local generator enables slots after successful build.
 vm=ROOT/'audio'/'voice-manifest.json'
 manifest={

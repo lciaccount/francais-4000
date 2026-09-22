@@ -273,7 +273,7 @@ soins\t护理；医疗处理（复数）
 sont\t是（être 第三人称复数）
 souhaite\t祝愿；希望（souhaiter 变位）
 suite\t接下来；立刻（tout de suite）
-sur\t在……上；关于；确定的（sûr）
+sur\t在……上；关于
 sécuriser\t确保安全；保护
 séjour\t停留；住宿；旅程
 sûr\t确定的；安全的
@@ -342,7 +342,7 @@ split_tokens={
  'elle':'她；它（阴性）',
  'montrez':'展示；请指出（montrer 变位/祈使式）',
  'reposez':'休息（reposer / se reposer 变位/祈使式）',
- 't':'倒装疑问中的连音字母 t，本身无独立词义',
+ 't':'倒装疑问中的连音 /t/，不是独立词，不单独朗读',
 }
 for w,m in split_tokens.items():
     entries.setdefault(w,{'groups':[{'pos':'词汇 / 词形','meanings':[m]}],'ipa':ipa(w)})
