@@ -11,6 +11,7 @@
 - 点词词典同步扩充；当前内置点读索引为 **914 个**词形/词条，并显示本句义、原形、词性、性数/人称/时态等词形信息以及 1–3 条本语料例句。
 - 常见多词表达按整体识别，例如 `s’il vous plaît`、`est-ce que`、`avoir besoin de`；短语可整体点读，不再只按单词机械拆解。
 - 句子讲解采用可扫读的“句型结构 + 时态/语气”摘要卡；详细证据按需展开。手机词典采用底部抽屉，并提供当前词高亮、循环朗读/停止按钮和可播放的语料例句。
+- 查词时会显示单词或整块短语的 IPA、节奏、连读/省音、拼写对应和关键音提示，并可用 0.75× 慢速听辨；这些发音资料同样可离线使用。
 - 项目内置了 3 路法国法语发音；句子音频会裁掉首尾静音，并将异常过长的句中静音缩短为约 80ms 的短停顿。
 - 手机底栏会显示当前播放内容，句子卡片提供明确的播放/停止按钮；搜索、分页、深浅色主题与键盘操作也已针对手机和无障碍使用优化。
 
@@ -64,6 +65,8 @@ FRENCH_MAX_SENT_PAUSE=0.06 bash build-french-4000-neural.sh "$PWD"
 - `build_extra_dictionary.py`：检查/生成新增词典数据。
 - `learning-data-4000.js`：浏览器直接加载的静态句法、词形、短语与语料例句索引；支持 `file://` 和 PWA 离线使用。
 - `build_learning_data.py`：重新生成上述学习数据；仅构建时需要 spaCy 与 `fr_core_news_sm`，网页运行时不需要 Python 或网络。
+- `pronunciation-data-4000.js`：141 个已识别短语的离线 IPA 数据。
+- `build_pronunciation_data.py`：重新生成短语 IPA；仅构建时需要 `phonemizer` 与 `espeakng-loader`。
 - `apply_4000_update.py`：把语料和词典同步写回 `index.html`。
 - `build-french-4000-neural.sh`：本地生成三路纯 `fr-FR` 内置音频，并裁首尾静音。
 
