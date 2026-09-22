@@ -1,4 +1,4 @@
-const CACHE='fr4000-v5-learning-20260922';
+const CACHE='fr4000-v6-learning-ui-20260922';
 const ASSETS=['./','./index.html','./learning-data-4000.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
