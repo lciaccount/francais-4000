@@ -189,7 +189,7 @@ def exercise_offline(browser, base):
     # Seed an old app cache and an unrelated cache before the new worker installs.
     page.goto(base + 'README.md')
     page.evaluate('''async () => {
-      const old = await caches.open('fr4000-v9-swipe-20260923');
+      const old = await caches.open('fr4000-v10-swipe-auto-lock-20260923');
       const path = './audio/v1/sent/0001.mp3?v=fr4000v3';
       await old.put(path, await fetch(path));
       const other = await caches.open('unrelated-app-cache');
@@ -198,7 +198,7 @@ def exercise_offline(browser, base):
     page.goto(base, wait_until='networkidle')
     page.wait_for_function('navigator.serviceWorker.controller !== null', timeout=30000)
     assert page.evaluate('''async () => (await caches.keys()).includes('unrelated-app-cache')''')
-    assert page.evaluate('''async () => !!(await (await caches.open('fr4000-v10-swipe-auto-lock-20260923')).match('./audio/v1/sent/0001.mp3?v=fr4000v3'))''')
+    assert page.evaluate('''async () => !!(await (await caches.open('fr4000-v11-swipe-speed-audio-20260923')).match('./audio/v1/sent/0001.mp3?v=fr4000v3'))''')
     open_lab(page)
     page.locator('#phoneticsDownload').click()
     page.wait_for_function('document.querySelector("#phoneticsOffline").textContent.includes("232 个音频已缓存")', timeout=90000)

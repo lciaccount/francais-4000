@@ -36,12 +36,13 @@
       </div>
       <div class="swipeProgress"><span id="swipeCounter" aria-live="polite"></span><div role="progressbar" id="swipeProgressBar" aria-label="当前列表位置"><i id="swipeProgressFill"></i></div><span>↑ 下一条 · ↓ 上一条</span></div>
       <div id="swipeStage" class="swipeStage"><article id="swipeCard" class="swipeCard" tabindex="-1"></article></div>
-      <footer class="swipeFooter"><div class="swipeAudioRow"><span id="swipePlayState" role="status" aria-live="polite"></span><label><span class="swipeSrOnly">播放音色（音标参考音固定）</span><select id="swipeVoice"></select></label></div>
+      <footer class="swipeFooter"><div class="swipeAudioRow"><span id="swipePlayState" role="status" aria-live="polite"></span><div class="swipeAudioControls"><label class="swipeSpeedLabel"><span class="swipeSrOnly">播放倍速（0.50 至 2.00，步长 0.05）</span><select id="swipeSpeed">${Array.from({length:31}, (_,i) => {const rate=((50+i*5)/100).toFixed(2); return `<option value="${rate}">${rate}×</option>`;}).join('')}</select></label><label class="swipeVoiceLabel"><span class="swipeSrOnly">播放音色（音标参考音固定）</span><select id="swipeVoice"></select></label></div></div>
         <div class="swipeActions"><button id="swipePrev" type="button" aria-label="上一条">↑ <span>上一条</span></button><button id="swipePause" type="button" class="swipePrimary">暂停</button><button id="swipeSlow" type="button" aria-pressed="false">0.75× <span>慢读</span></button><button id="swipeDetails" type="button" aria-expanded="false" aria-controls="swipeExplanation">详解</button><button id="swipeNext" type="button" aria-label="下一条">↓ <span>下一条</span></button></div>
         <div id="swipeHint" class="swipeHint">上下滑切换 · 当前条目无限循环 · 空格暂停 · Esc 退出</div></footer>
     </section>`);
   const root = $('#swipeStudy'), stage = $('#swipeStage'), card = $('#swipeCard');
   const autoEnabled = () => feed.kind === 'sentence' && prefs.auto;
+  const playbackRate = () => feed.slow ? .75 : Number($('#speed').value);
 
   function fillAutoSettings() {
     $('#swipeAuto').checked = prefs.auto;
@@ -152,6 +153,7 @@
     $('#swipePause').disabled = !item;
     $('#swipeSlow').disabled = !item;
     $('#swipeSlow').setAttribute('aria-pressed', String(feed.slow));
+    $('#swipeSpeed').value = (feed.slow ? .75 : Number($('#speed').value)).toFixed(2);
     $('#swipeDetails').disabled = !item;
     $('#swipeDetails').setAttribute('aria-expanded', String(feed.details && !!item));
     $('#swipeDetails').textContent = feed.details ? '收起详解' : '显示详解';
@@ -160,7 +162,7 @@
     const audioLabel = feed.kind === 'sound' && !feed.preview ? '固定参考音' : '所选音色';
     $('#swipePlayState').textContent = message || (!item ? '请选择其他列表' : !busy ? '已暂停' : feed.preview ? '例词点读中' : `↻ 循环中 · ${feed.count + 1} 遍 · ${feed.slow ? '0.75×' : Number($('#speed').value) + '×'} · ${audioLabel}`);
     root.classList.toggle('is-playing', busy);
-    if (busy && !feed.preview && autoEnabled()) $('#swipePlayState').textContent = `自动切换 · 第 ${Math.min(feed.count + 1, prefs.repeats)}/${prefs.repeats} 遍 · ${feed.slow ? '0.75' : $('#speed').value}×`;
+    if (!message && busy && !feed.preview && autoEnabled()) $('#swipePlayState').textContent = `自动切换 · 第 ${Math.min(feed.count + 1, prefs.repeats)}/${prefs.repeats} 遍 · ${feed.slow ? '0.75' : $('#speed').value}×`;
     if ($('#swipeFavorite') && item) {
       $('#swipeFavorite').textContent = progress.favorites.has(item.id) ? '★ 已收藏' : '☆ 收藏';
       $('#swipeFavorite').setAttribute('aria-pressed', String(progress.favorites.has(item.id)));
@@ -180,7 +182,8 @@
     feed.preview = example;
     if (feed.completed) {feed.count = 0; feed.completed = false;}
     const valid = () => feed.open && feed.playing && state.mode === 'swipe' && state.token === token;
-    const fail = () => {if (valid()) pause('音频未能播放。请联网重试，或改选内置音色后点继续。');};
+    const fail = error => {if (valid()) pause(error?.name === 'NotAllowedError' ? '浏览器阻止了自动播放，请点继续授权播放（锁定时先解锁）。' : '音频未能播放。请检查网络后点继续，将重试当前音色；离线时需先缓存音频。');};
+    const onloading = message => {if (valid()) syncControls(message);};
     const cycle = () => {
       if (!valid()) return;
       if (!example && autoEnabled() && feed.count >= prefs.repeats) {advanceAutomatically(); return;}
@@ -193,12 +196,14 @@
           return;
         }
         feed.count++;
+        feed.turn++;
         feed.timer = setTimeout(cycle, Math.max(0, Number($('#gap').value) || 0));
       };
-      const rate = feed.slow ? .75 : Number($('#speed').value), turn = feed.turn++;
-      if (example) speakOnce(item.example, 'fr-FR', done, {asset: {kind: 'phonetics', id: PHONETICS_DATA.examples[item.example].id}, voiceTurn: turn, rate, onerror: fail});
-      else if (feed.kind === 'sentence') sequenceFor(item, done, token, turn, {rate, onerror: fail});
-      else if (feed.kind === 'letter') speakOnce(item.name, 'fr-FR', done, {asset: {kind: 'alphabet', id: item.id}, voiceTurn: turn, rate, onerror: fail});
+      // Failed or interrupted attempts must retry the same voice, not skip it.
+      const rate = feed.slow ? .75 : Number($('#speed').value), turn = feed.turn;
+      if (example) speakOnce(item.example, 'fr-FR', done, {asset: {kind: 'phonetics', id: PHONETICS_DATA.examples[item.example].id}, voiceTurn: turn, getRate: playbackRate, onerror: fail, onloading});
+      else if (feed.kind === 'sentence') sequenceFor(item, done, token, turn, {getRate: playbackRate, onerror: fail, onloading});
+      else if (feed.kind === 'letter') speakOnce(item.name, 'fr-FR', done, {asset: {kind: 'alphabet', id: item.id}, voiceTurn: turn, getRate: playbackRate, onerror: fail, onloading});
       else Phonetics.referenceAudio(item, token, rate, done, fail);
     };
     if (feed.kind === 'sentence' && !example) {try {markStudied(item.id);} catch { /* Storage can be full; playback still works. */ }}
@@ -386,6 +391,16 @@
   $('#swipeNext').onclick = () => step(1);
   $('#swipePause').onclick = () => feed.playing ? pause() : startPlayback();
   $('#swipeSlow').onclick = () => {feed.slow = !feed.slow; if (feed.playing) startPlayback(); else syncControls();};
+  $('#swipeSpeed').onchange = e => {
+    const rate = Number(e.target.value);
+    if (!Number.isFinite(rate) || rate < .5 || rate > 2) return;
+    feed.slow = false;
+    $('#speed').value = rate;
+    $('#speed').dispatchEvent(new Event('input'));
+    // Update MP3 playback in place: no restart, no extra counted repeat.
+    if (state.audio) {state.audio.defaultPlaybackRate = rate; state.audio.playbackRate = rate;}
+    syncControls();
+  };
   $('#swipeDetails').onclick = toggleDetails;
   $('#swipeKind').onchange = e => selectKind(e.target.value);
   $('#swipeAll').onchange = () => selectKind('sentence', current()?.id);
@@ -397,6 +412,7 @@
   $('#swipeVoice').onchange = e => {
     $('#voiceMode').value = e.target.value;
     $('#voiceMode').dispatchEvent(new Event('change'));
+    feed.turn = 0;
     if (feed.playing) startPlayback();
   };
   card.onclick = e => {

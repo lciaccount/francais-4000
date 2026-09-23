@@ -1,4 +1,4 @@
-const CACHE='fr4000-v10-swipe-auto-lock-20260923';
+const CACHE='fr4000-v11-swipe-speed-audio-20260923';
 const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./swipe-study.js','./swipe-study.css','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 // Retain already-downloaded sentence audio when updating the application shell.
@@ -49,7 +49,10 @@ self.addEventListener('fetch',e=>{
         request=new Request(request,{headers});
       }
       const response=await fetch(request);
-      if(response.status===200){const copy=response.clone();e.waitUntil(cache.put(e.request,copy).catch(()=>{}));}
+      // Cache writes must never turn a successful first download into a playback error.
+      if(response.status===200){
+        try{const saving=cache.put(e.request,response.clone()).catch(()=>{});e.waitUntil(saving);}catch{}
+      }
       return rangedAudio(e.request,response);
     }catch{
       return e.request.mode==='navigate'?(await cache.match('./index.html'))||Response.error():Response.error();
