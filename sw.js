@@ -1,5 +1,5 @@
-const CACHE='fr4000-v8-phonetics-20260922';
-const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
+const CACHE='fr4000-v9-swipe-20260923';
+const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./swipe-study.js','./swipe-study.css','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 // Retain already-downloaded sentence audio when updating the application shell.
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{

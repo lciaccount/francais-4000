@@ -116,21 +116,22 @@
   }
 
   // Never send IPA symbols to speech synthesis: those are often spoken as letters.
-  function referenceAudio(item, token, rate, done) {
+  function referenceAudio(item, token, rate, done, onerror = null) {
     const audio = new Audio(`audio/phonetics/ipa/${item.id}.mp3`);
     state.audio = audio;
     audio.playbackRate = rate;
     let settled = false;
     const current = () => !settled && state.token === token && state.audio === audio;
-    audio.onended = () => {
+    onAudioFinished(audio, () => {
       if (!current()) return;
       settled = true;
       state.audio = null;
       done();
-    };
+    });
     const fail = () => {
       if (!current()) return;
       settled = true;
+      if (onerror) {onerror(); return;}
       stopAll(true);
       const message = '参考音频未能播放，请联网重试或先下载本栏离线音频。';
       updateControls(message);
@@ -273,6 +274,8 @@
     const c = credits[s.id];
     return c ? `<p><strong>/${s.symbol}/</strong> · ${escapeHtml(c.author)} · <a href="${escapeHtml(c.page)}" target="_blank" rel="noopener noreferrer">原文件</a> · <a href="${escapeHtml(c.licenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(c.license)}</a></p>` : '';
   }).join('') + '<p>处理：转为单声道 24 kHz MP3，裁除首尾静音，不额外添加留白；参考音内部用于展示发音的停顿保留。</p>';
-  window.Phonetics = {isOpen, step};
+  window.Phonetics = {isOpen, step, closeDetail, referenceAudio,
+    getContext: () => ({kind: lab.tab === 'letters' ? 'letter' : 'sound', items: [...items()], selected: lab.selected,
+      label: lab.tab === 'letters' ? '26 个字母' : (data.groups[lab.group] || '全部音标')})};
   render();
 })();

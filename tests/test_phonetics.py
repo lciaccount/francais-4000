@@ -16,6 +16,15 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/francais-4000/'  # Exercise the same non-root URLs as GitHub Pages.
+TRACK_AUDIO = '''
+window.audioEvents = [];
+const NativeAudio = window.Audio;
+window.Audio = function(...args) {
+  const audio = new NativeAudio(...args);
+  audio.addEventListener('playing', () => window.audioEvents.push({src: audio.src, rate: audio.playbackRate}));
+  return audio;
+};
+'''
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -56,15 +65,7 @@ def events(page, since=0):
 
 def exercise_playback(browser, base, shots):
     context = browser.new_context(viewport={'width': 1280, 'height': 1000}, service_workers='block')
-    context.add_init_script('''
-      window.audioEvents = [];
-      const NativeAudio = window.Audio;
-      window.Audio = function(...args) {
-        const audio = new NativeAudio(...args);
-        audio.addEventListener('playing', () => window.audioEvents.push({src: audio.src, rate: audio.playbackRate}));
-        return audio;
-      };
-    ''')
+    context.add_init_script(TRACK_AUDIO)
     page = context.new_page()
     errors = []
     page.on('pageerror', lambda e: errors.append(str(e)))
@@ -181,6 +182,7 @@ def exercise_playback(browser, base, shots):
 
 def exercise_offline(browser, base):
     context = browser.new_context(viewport={'width': 1280, 'height': 1000})
+    context.add_init_script(TRACK_AUDIO)
     page = context.new_page()
     errors = []
     page.on('pageerror', lambda e: errors.append(str(e)))
@@ -196,7 +198,7 @@ def exercise_offline(browser, base):
     page.goto(base, wait_until='networkidle')
     page.wait_for_function('navigator.serviceWorker.controller !== null', timeout=30000)
     assert page.evaluate('''async () => (await caches.keys()).includes('unrelated-app-cache')''')
-    assert page.evaluate('''async () => !!(await (await caches.open('fr4000-v8-phonetics-20260922')).match('./audio/v1/sent/0001.mp3?v=fr4000v3'))''')
+    assert page.evaluate('''async () => !!(await (await caches.open('fr4000-v9-swipe-20260923')).match('./audio/v1/sent/0001.mp3?v=fr4000v3'))''')
     open_lab(page)
     page.locator('#phoneticsDownload').click()
     page.wait_for_function('document.querySelector("#phoneticsOffline").textContent.includes("232 个音频已缓存")', timeout=90000)
@@ -205,14 +207,15 @@ def exercise_offline(browser, base):
     page.reload(wait_until='networkidle')
     open_lab(page)
     page.locator('[data-phon-key="letter-z"]').click()
-    page.wait_for_function('state.audio && state.audio.currentTime > 0')
+    # Short clips can finish before a currentTime poll; retain real playing events.
+    page.wait_for_function('audioEvents.some(e=>e.src.includes("/alphabet/z.mp3"))')
     wait_done(page)
     page.locator('[data-phon-tab="sounds"]').click()
     page.locator('[data-phon-key="sound-hw"]').click()
-    page.wait_for_function('state.audio && state.audio.currentTime > 0')
+    page.wait_for_function('audioEvents.some(e=>e.src.includes("/ipa/hw.mp3"))')
     wait_done(page)
     page.locator('#phoneticsExample').click()
-    page.wait_for_function('state.audio && state.audio.currentTime > 0')
+    page.wait_for_function('audioEvents.some(e=>e.src.includes("/phonetics/huit.mp3"))')
     wait_done(page)
     ranges = page.evaluate('''async () => {
       const src = './audio/phonetics/ipa/y.mp3';
@@ -231,14 +234,15 @@ def exercise_offline(browser, base):
 
 def exercise_file(browser):
     page = browser.new_page(viewport={'width': 1280, 'height': 1000})
+    page.add_init_script(TRACK_AUDIO)
     page.goto((ROOT / 'index.html').as_uri(), wait_until='networkidle')
     open_lab(page)
     page.locator('[data-phon-key="letter-z"]').click()
-    page.wait_for_function('state.audio && state.audio.currentTime > 0')
+    page.wait_for_function('audioEvents.some(e=>e.src.includes("/alphabet/z.mp3"))')
     wait_done(page)
     page.locator('[data-phon-tab="sounds"]').click()
     page.locator('[data-phon-key="sound-hw"]').click()
-    page.wait_for_function('state.audio && state.audio.currentTime > 0')
+    page.wait_for_function('audioEvents.some(e=>e.src.includes("/ipa/hw.mp3"))')
     wait_done(page)
     print('PASS: file:// package can select builtin voices and play local letters/IPA', flush=True)
     page.close()
