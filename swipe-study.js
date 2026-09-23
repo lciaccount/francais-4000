@@ -3,11 +3,15 @@
   'use strict';
   const KEY = 'fr4000-swipe-v1';
   const stored = (() => {try {return JSON.parse(localStorage.getItem(KEY) || '{}') || {};} catch {return {};}})();
+  const integer = (value, fallback, max) => Number.isInteger(value) && value >= 1 && value <= max ? value : fallback;
   const prefs = {details: stored.details === true, hideTranslation: stored.hideTranslation === true,
+    auto: stored.auto === true, repeats: integer(stored.repeats, 3, 100), range: stored.range === true,
+    start: integer(stored.start, 1, SENTENCES.length), end: integer(stored.end, SENTENCES.length, SENTENCES.length), loop: stored.loop === true,
     positions: typeof stored.positions === 'object' && stored.positions ? stored.positions : {}};
+  if (prefs.start > prefs.end) [prefs.start, prefs.end] = [prefs.end, prefs.start];
   const feed = {open: false, kind: 'sentence', list: [], index: 0, contexts: {}, playing: false,
     slow: false, details: false, revealed: false, turn: 0, count: 0, timer: null, preview: false,
-    returnFocus: null, inert: [], scroll: [0, 0], fullscreen: false, gesture: null};
+    returnFocus: null, inert: [], scroll: [0, 0], fullscreen: false, gesture: null, locked: false, completed: false};
   const save = () => {try {localStorage.setItem(KEY, JSON.stringify(prefs));} catch { /* Private mode / quota: keep the in-memory settings. */ }};
   const current = () => feed.list[feed.index];
   const title = item => !item ? '暂无内容' : feed.kind === 'sentence' ? `句子 #${item.id}` : feed.kind === 'letter' ? `字母 ${item.symbol}` : `音标 /${item.symbol}/`;
@@ -15,8 +19,21 @@
     <section id="swipeStudy" class="swipeStudy" role="dialog" aria-modal="true" aria-labelledby="swipeTitle" hidden>
       <header class="swipeHeader"><div><h2 id="swipeTitle">滑屏学习</h2><span id="swipeScopeLabel"></span></div>
         <label class="swipeKindLabel"><span class="swipeSrOnly">学习内容</span><select id="swipeKind"><option value="sentence">句子</option><option value="letter">字母</option><option value="sound">音标</option></select></label>
+        <button id="swipeLock" type="button" aria-pressed="false">锁定</button>
         <button id="swipeExit" type="button" aria-label="退出滑屏学习">× <span>退出</span></button></header>
-      <div class="swipePreferences"><label><input id="swipeDefaultDetails" type="checkbox" role="switch">默认显示详解</label><label><input id="swipeHideTranslation" type="checkbox" role="switch">先隐藏译文</label><label id="swipeAllLabel"><input id="swipeAll" type="checkbox">全部 4000 句</label></div>
+      <div class="swipeSettings"><div class="swipePreferences"><label><input id="swipeDefaultDetails" type="checkbox" role="switch">默认显示详解</label><label><input id="swipeHideTranslation" type="checkbox" role="switch">先隐藏译文</label><label id="swipeAllLabel"><input id="swipeAll" type="checkbox">全部 4000 句</label></div>
+        <details id="swipeAutoSettings"><summary id="swipeAutoSummary">自动切换与区间 · 未开启</summary>
+          <form id="swipeAutoForm" class="swipeAutoForm" novalidate>
+            <label><input id="swipeAuto" type="checkbox" role="switch">自动切换</label>
+            <label>每句 <input id="swipeRepeats" type="number" min="1" max="100" step="1" inputmode="numeric" required> 遍</label>
+            <label><input id="swipeRange" type="checkbox">指定句子区间</label>
+            <div class="swipeRangeFields"><label>起始编号 <input id="swipeRangeStart" type="number" min="1" max="${SENTENCES.length}" step="1" inputmode="numeric" required></label><span>—</span><label>结束编号 <input id="swipeRangeEnd" type="number" min="1" max="${SENTENCES.length}" step="1" inputmode="numeric" required></label></div>
+            <label><input id="swipeRangeLoop" type="checkbox">到末尾循环回第一条</label><button type="submit">应用并开始</button>
+            <p class="swipeAutoNote">仅用于句子；指定区间后按全库编号学习，不受原分类或搜索限制。一遍包含当前设置的完整播放组合。</p>
+            <p id="swipeAutoError" role="alert" hidden></p>
+          </form>
+        </details>
+      </div>
       <div class="swipeProgress"><span id="swipeCounter" aria-live="polite"></span><div role="progressbar" id="swipeProgressBar" aria-label="当前列表位置"><i id="swipeProgressFill"></i></div><span>↑ 下一条 · ↓ 上一条</span></div>
       <div id="swipeStage" class="swipeStage"><article id="swipeCard" class="swipeCard" tabindex="-1"></article></div>
       <footer class="swipeFooter"><div class="swipeAudioRow"><span id="swipePlayState" role="status" aria-live="polite"></span><label><span class="swipeSrOnly">播放音色（音标参考音固定）</span><select id="swipeVoice"></select></label></div>
@@ -24,6 +41,43 @@
         <div id="swipeHint" class="swipeHint">上下滑切换 · 当前条目无限循环 · 空格暂停 · Esc 退出</div></footer>
     </section>`);
   const root = $('#swipeStudy'), stage = $('#swipeStage'), card = $('#swipeCard');
+  const autoEnabled = () => feed.kind === 'sentence' && prefs.auto;
+
+  function fillAutoSettings() {
+    $('#swipeAuto').checked = prefs.auto;
+    $('#swipeRepeats').value = prefs.repeats;
+    $('#swipeRange').checked = prefs.range;
+    $('#swipeRangeStart').value = prefs.start;
+    $('#swipeRangeEnd').value = prefs.end;
+    $('#swipeRangeLoop').checked = prefs.loop;
+    $('#swipeAutoError').hidden = true;
+    syncRangeFields();
+  }
+  function syncRangeFields() {
+    for (const id of ['swipeRangeStart', 'swipeRangeEnd']) $('#'+id).disabled = !$('#swipeRange').checked;
+  }
+  function syncLock() {
+    root.classList.toggle('is-locked', feed.locked);
+    $('#swipeLock').textContent = feed.locked ? '解锁' : '锁定';
+    $('#swipeLock').setAttribute('aria-pressed', String(feed.locked));
+    for (const el of root.querySelectorAll('.swipeKindLabel,#swipeExit,.swipeSettings,.swipeActions,.swipeAudioRow label')) el.inert = feed.locked;
+    for (const el of card.querySelectorAll('button,a')) {
+      if (el.tagName === 'BUTTON') el.disabled = feed.locked;
+      if (feed.locked) el.setAttribute('tabindex', '-1'); else el.removeAttribute('tabindex');
+    }
+    if ($('#swipeExplanation')) $('#swipeExplanation').tabIndex = feed.locked ? -1 : 0;
+    $('#swipeHint').textContent = feed.locked ? '已锁定 · 仅可上下滑切换 · 点右上角解锁' : '上下滑切换 · 详解内可滚动 · 空格暂停 · Esc 退出';
+  }
+  function advanceAutomatically() {
+    if (feed.index < feed.list.length - 1) {step(1, 'auto'); return;}
+    if (prefs.loop) {
+      stopAll(true); feed.index = 0; feed.turn = 0;
+      renderCard(1); startPlayback();
+    } else {
+      feed.completed = true;
+      pause('本轮已完成，已到列表末尾。点继续可重听当前句。');
+    }
+  }
 
   function sentenceExplanation(item) {
     const a = sentenceLearning(item);
@@ -51,9 +105,12 @@
     feed.details = prefs.details;
     feed.revealed = !prefs.hideTranslation;
     feed.count = 0;
+    feed.completed = false;
     $('#swipeKind').value = feed.kind;
-    $('#swipeAllLabel').hidden = feed.kind !== 'sentence';
-    $('#swipeScopeLabel').textContent = feed.kind === 'sentence' && $('#swipeAll').checked ? '全部句子' : feed.contexts[feed.kind].label;
+    $('#swipeAllLabel').hidden = feed.kind !== 'sentence' || prefs.range;
+    $('#swipeAutoSettings').hidden = feed.kind !== 'sentence';
+    $('#swipeAutoSummary').textContent = `自动切换与区间 · ${prefs.auto ? `每句 ${prefs.repeats} 遍` : '手动切换'}${prefs.range ? ` · #${prefs.start}–${prefs.end}` : ''}${prefs.auto && prefs.loop ? ' · 循环' : ''}`;
+    $('#swipeScopeLabel').textContent = feed.kind === 'sentence' && prefs.range ? `句子区间 #${prefs.start}–${prefs.end}` : feed.kind === 'sentence' && $('#swipeAll').checked ? '全部句子' : feed.contexts[feed.kind].label;
     $('#swipeCounter').textContent = item ? `${feed.index + 1} / ${feed.list.length}` : '0 / 0';
     $('#swipeProgressFill').style.width = item ? `${(feed.index + 1) / feed.list.length * 100}%` : '0%';
     $('#swipeProgressBar').setAttribute('aria-valuenow', item ? feed.index + 1 : 0);
@@ -103,12 +160,14 @@
     const audioLabel = feed.kind === 'sound' && !feed.preview ? '固定参考音' : '所选音色';
     $('#swipePlayState').textContent = message || (!item ? '请选择其他列表' : !busy ? '已暂停' : feed.preview ? '例词点读中' : `↻ 循环中 · ${feed.count + 1} 遍 · ${feed.slow ? '0.75×' : Number($('#speed').value) + '×'} · ${audioLabel}`);
     root.classList.toggle('is-playing', busy);
+    if (busy && !feed.preview && autoEnabled()) $('#swipePlayState').textContent = `自动切换 · 第 ${Math.min(feed.count + 1, prefs.repeats)}/${prefs.repeats} 遍 · ${feed.slow ? '0.75' : $('#speed').value}×`;
     if ($('#swipeFavorite') && item) {
       $('#swipeFavorite').textContent = progress.favorites.has(item.id) ? '★ 已收藏' : '☆ 收藏';
       $('#swipeFavorite').setAttribute('aria-pressed', String(progress.favorites.has(item.id)));
       $('#swipeMastered').textContent = progress.mastered.has(item.id) ? '✓ 已掌握' : '○ 标为掌握';
       $('#swipeMastered').setAttribute('aria-pressed', String(progress.mastered.has(item.id)));
     }
+    syncLock();
   }
 
   function startPlayback(example = false) {
@@ -119,11 +178,12 @@
     state.mode = 'swipe';
     feed.playing = true;
     feed.preview = example;
-    feed.count = 0;
+    if (feed.completed) {feed.count = 0; feed.completed = false;}
     const valid = () => feed.open && feed.playing && state.mode === 'swipe' && state.token === token;
     const fail = () => {if (valid()) pause('音频未能播放。请联网重试，或改选内置音色后点继续。');};
     const cycle = () => {
       if (!valid()) return;
+      if (!example && autoEnabled() && feed.count >= prefs.repeats) {advanceAutomatically(); return;}
       syncControls();
       const done = () => {
         if (!valid()) return;
@@ -154,7 +214,7 @@
   function selectKind(kind, preferredId = null) {
     stopAll(true);
     feed.kind = kind;
-    feed.list = kind === 'sentence' && $('#swipeAll').checked ? [...SENTENCES] : [...feed.contexts[kind].items];
+    feed.list = kind === 'sentence' && prefs.range ? SENTENCES.filter(s => s.id >= prefs.start && s.id <= prefs.end) : kind === 'sentence' && $('#swipeAll').checked ? [...SENTENCES] : [...feed.contexts[kind].items];
     const id = preferredId ?? prefs.positions[kind];
     feed.index = Math.max(0, feed.list.findIndex(item => String(item.id) === String(id)));
     feed.turn = 0;
@@ -184,10 +244,13 @@
     feed.open = true;
     feed.slow = false;
     feed.fullscreen = false;
+    feed.locked = false;
     root.hidden = false;
     $('#swipeDefaultDetails').checked = prefs.details;
     $('#swipeHideTranslation').checked = prefs.hideTranslation;
     $('#swipeAll').checked = false;
+    fillAutoSettings();
+    $('#swipeAutoSettings').open = false;
     $('#swipeVoice').innerHTML = $('#voiceMode').innerHTML;
     $('#swipeVoice').value = currentVoiceMode();
     document.body.classList.add('swipe-study-open');
@@ -205,7 +268,7 @@
   }
 
   function close() {
-    if (!feed.open) return;
+    if (!feed.open || feed.locked) return;
     feed.open = false;
     stopAll(true);
     feed.gesture = null;
@@ -222,8 +285,8 @@
     focus.focus({preventScroll: true});
   }
 
-  function step(delta) {
-    if (!feed.open || !current()) return;
+  function step(delta, source = 'control') {
+    if (!feed.open || !current() || (feed.locked && !['gesture', 'auto'].includes(source))) return;
     const next = Math.max(0, Math.min(feed.list.length - 1, feed.index + delta));
     if (next === feed.index) {$('#swipeHint').textContent = delta > 0 ? '已经是最后一条，可向下滑返回。' : '已经是第一条，可向上滑继续。'; return;}
     stopAll(true);
@@ -258,7 +321,7 @@
     const g = feed.gesture;
     if (!g || e.touches.length !== 1) {feed.gesture = null; stage.style.transform = ''; return;}
     const dx = e.touches[0].clientX - g.x, dy = e.touches[0].clientY - g.y;
-    if (!g.mode && Math.max(Math.abs(dx), Math.abs(dy)) > 10) g.mode = Math.abs(dx) > Math.abs(dy) * .85 ? 'ignore' : canScroll(g.scroll, -dy) ? 'scroll' : 'swipe';
+    if (!g.mode && Math.max(Math.abs(dx), Math.abs(dy)) > 10) g.mode = Math.abs(dx) > Math.abs(dy) * .85 ? 'ignore' : !feed.locked && canScroll(g.scroll, -dy) ? 'scroll' : 'swipe';
     if (g.mode === 'scroll') {
       if (e.cancelable) e.preventDefault();
       g.scroll.scrollTop = g.scrollTop - dy;
@@ -274,7 +337,7 @@
     feed.gesture = null;
     stage.style.transform = '';
     if (['scroll', 'swipe', 'ignore'].includes(g?.mode) && e.cancelable) e.preventDefault();
-    if (g?.mode === 'swipe' && Math.abs(g.dy) >= Math.max(55, Math.min(85, stage.clientHeight * .12))) step(g.dy < 0 ? 1 : -1);
+    if (g?.mode === 'swipe' && Math.abs(g.dy) >= Math.max(55, Math.min(85, stage.clientHeight * .12))) step(g.dy < 0 ? 1 : -1, 'gesture');
   });
   stage.addEventListener('touchcancel', () => {feed.gesture = null; stage.style.transform = '';});
   let wheelLast = 0, wheelSum = 0, wheelLocked = false, wheelScrolling = false;
@@ -284,16 +347,40 @@
     wheelLast = now;
     if (fresh) {wheelLocked = false; wheelSum = 0; wheelScrolling = false;}
     const scroll = e.target.closest('.swipeScrollable');
-    if (canScroll(scroll, e.deltaY)) {wheelScrolling = true; return;}
+    if (!feed.locked && canScroll(scroll, e.deltaY)) {wheelScrolling = true; return;}
     e.preventDefault();
     if (wheelLocked || wheelScrolling) return;
     const delta = e.deltaY * (e.deltaMode === 1 ? 20 : e.deltaMode === 2 ? stage.clientHeight : 1);
     if (Math.sign(delta) !== Math.sign(wheelSum)) wheelSum = 0;
     wheelSum += delta;
-    if (Math.abs(wheelSum) >= 70) {wheelLocked = true; step(wheelSum > 0 ? 1 : -1);}
+    if (Math.abs(wheelSum) >= 70) {wheelLocked = true; step(wheelSum > 0 ? 1 : -1, 'gesture');}
   }, {passive: false});
 
   $('#swipeEnter').onclick = () => open();
+  $('#swipeLock').onclick = () => {
+    feed.locked = !feed.locked;
+    feed.gesture = null; stage.style.transform = '';
+    wheelLocked = false; wheelScrolling = false; wheelSum = 0;
+    syncLock(); (feed.locked ? card : $('#swipeLock')).focus({preventScroll: true});
+  };
+  // Block delegated clicks too; disabling only the visible buttons is not enough.
+  for (const type of ['click', 'change', 'input', 'submit', 'contextmenu']) root.addEventListener(type, e => {
+    if (feed.locked && !e.target.closest('#swipeLock')) {e.preventDefault(); e.stopImmediatePropagation();}
+  }, true);
+  $('#swipeRange').onchange = syncRangeFields;
+  $('#swipeAutoForm').onsubmit = e => {
+    e.preventDefault();
+    const repeats = Number($('#swipeRepeats').value), start = Number($('#swipeRangeStart').value), end = Number($('#swipeRangeEnd').value), range = $('#swipeRange').checked;
+    const error = !integer(repeats, 0, 100) ? '每句播放次数须为 1–100 的整数。' : range && (!integer(start, 0, SENTENCES.length) || !integer(end, 0, SENTENCES.length)) ? `句子编号须为 1–${SENTENCES.length} 的整数。` : range && start > end ? '起始编号不能大于结束编号。' : '';
+    $('#swipeAutoError').textContent = error; $('#swipeAutoError').hidden = !error;
+    if (error) return;
+    Object.assign(prefs, {auto: $('#swipeAuto').checked, repeats, range, loop: $('#swipeRangeLoop').checked});
+    if (range) {prefs.start = start; prefs.end = end;}
+    save(); fillAutoSettings();
+    $('#swipeAutoSettings').open = false;
+    selectKind('sentence', range ? start : current()?.id);
+    card.focus({preventScroll: true});
+  };
   $('#swipeExit').onclick = close;
   $('#swipePrev').onclick = () => step(-1);
   $('#swipeNext').onclick = () => step(1);
@@ -329,15 +416,21 @@
   document.addEventListener('visibilitychange', () => {if (feed.open && document.hidden) pause('切到后台已暂停，回到页面后点继续。');});
   document.addEventListener('fullscreenchange', () => {
     if (document.fullscreenElement === root) feed.fullscreen = true;
-    else if (feed.open && feed.fullscreen) close();
+    else if (feed.open && feed.fullscreen) {feed.fullscreen = false; if (!feed.locked) close();}
   });
   document.addEventListener('keydown', e => {
     if (!feed.open) return;
+    if (feed.locked) {
+      e.stopImmediatePropagation();
+      if (e.key === 'Tab') {e.preventDefault(); $('#swipeLock').focus();}
+      else if (!(e.target === $('#swipeLock') && ['Enter', ' '].includes(e.key))) e.preventDefault();
+      return;
+    }
     if (e.key === 'Escape') {e.preventDefault(); e.stopImmediatePropagation(); close(); return;}
     // Prevent the normal sentence keyboard shortcuts from running under the overlay.
     e.stopImmediatePropagation();
     if (e.key === 'Tab') {
-      const focusable = [...root.querySelectorAll('button:not(:disabled),input,select,a[href],[tabindex="0"]')].filter(el => el.getClientRects().length);
+      const focusable = [...root.querySelectorAll('button:not(:disabled),input:not(:disabled),select,summary,a[href],[tabindex="0"]')].filter(el => el.getClientRects().length);
       const first = focusable[0], last = focusable[focusable.length - 1];
       if (!focusable.includes(document.activeElement)) {e.preventDefault(); (e.shiftKey ? last : first)?.focus();}
       else if (e.shiftKey && document.activeElement === first) {e.preventDefault(); last?.focus();}
