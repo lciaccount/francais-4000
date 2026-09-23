@@ -4,9 +4,12 @@
   const KEY = 'fr4000-swipe-v1';
   const stored = (() => {try {return JSON.parse(localStorage.getItem(KEY) || '{}') || {};} catch {return {};}})();
   const integer = (value, fallback, max) => Number.isInteger(value) && value >= 1 && value <= max ? value : fallback;
+  const fontScale = value => Number.isInteger(value) && value >= 80 && value <= 160 && value % 5 === 0 ? value : 100;
   const prefs = {details: stored.details === true, hideTranslation: stored.hideTranslation === true, introSeen: stored.introSeen === true,
     auto: stored.auto === true, repeats: integer(stored.repeats, 3, 100), range: stored.range === true,
     start: integer(stored.start, 1, SENTENCES.length), end: integer(stored.end, SENTENCES.length, SENTENCES.length), loop: stored.loop === true,
+    fonts: {fr: fontScale(stored.fonts?.fr), zh: fontScale(stored.fonts?.zh), ipa: fontScale(stored.fonts?.ipa)},
+    downloadStart: integer(stored.downloadStart, 1, SENTENCES.length), downloadEnd: integer(stored.downloadEnd, 10, SENTENCES.length),
     positions: typeof stored.positions === 'object' && stored.positions ? stored.positions : {}};
   if (prefs.start > prefs.end) [prefs.start, prefs.end] = [prefs.end, prefs.start];
   const feed = {open: false, kind: 'sentence', list: [], index: 0, contexts: {}, playing: false,
@@ -33,6 +36,22 @@
             <p id="swipeAutoError" role="alert" hidden></p>
           </form>
         </details>
+        <details id="swipeTools"><summary id="swipeToolsSummary"><span id="swipeToolsOverview">字号与离线</span><span class="swipeAutoAction" aria-hidden="true">设置 <i>⌄</i></span></summary>
+          <div class="swipeToolsBody">
+            <div class="swipeFontSettings" role="group" aria-label="大屏正文字号">
+              ${[['fr','法语 / 字母'],['zh','中文译文'],['ipa','音标']].map(([key,label]) => `<label for="swipeFont-${key}">${label}<input id="swipeFont-${key}" type="range" min="80" max="160" step="5" value="${prefs.fonts[key]}"><output id="swipeFontValue-${key}" for="swipeFont-${key}">${prefs.fonts[key]}%</output></label>`).join('')}
+              <button id="swipeFontReset" type="button">恢复默认字号</button>
+            </div>
+            <form id="swipeDownloadForm" class="swipeAutoForm" novalidate>
+              <strong>句子区间 · 三音色离线包</strong>
+              <div class="swipeRangeFields"><label>起始编号 <input id="swipeDownloadStart" type="number" min="1" max="${SENTENCES.length}" step="1" inputmode="numeric" value="${prefs.downloadStart}"></label><label>结束编号 <input id="swipeDownloadEnd" type="number" min="1" max="${SENTENCES.length}" step="1" inputmode="numeric" value="${prefs.downloadEnd}"></label></div>
+              <button id="swipeDownloadRange" type="button">使用学习区间</button><button id="swipeDownload" type="submit">下载三种音色</button><button id="swipeDownloadCancel" type="button" hidden>取消下载</button>
+              <p class="swipeAutoNote">仅下载所选区间的内置法语音频，不含系统中文朗读。建议使用 Wi-Fi，保持网页打开；浏览器可能清理离线缓存。</p>
+              <progress id="swipeDownloadProgress" max="1" value="0" aria-label="句子音频下载进度" hidden></progress>
+              <p id="swipeDownloadStatus" role="status" aria-live="polite">已有音频会跳过；取消后保留已下载部分，可再次下载补齐。</p>
+            </form>
+          </div>
+        </details>
       </div>
       <div class="swipeProgress"><span id="swipeCounter" aria-live="polite"></span><div role="progressbar" id="swipeProgressBar" aria-label="当前列表位置"><i id="swipeProgressFill"></i></div><span>↑ 下一条 · ↓ 上一条</span></div>
       <div id="swipeStage" class="swipeStage"><article id="swipeCard" class="swipeCard" tabindex="-1"></article></div>
@@ -44,6 +63,82 @@
   const root = $('#swipeStudy'), stage = $('#swipeStage'), card = $('#swipeCard');
   const autoEnabled = () => feed.kind === 'sentence' && prefs.auto;
   const playbackRate = () => Number($('#speed').value);
+  let downloadPort = null, downloadWatchdog = null;
+  function applyFonts() {
+    for (const key of ['fr','zh','ipa']) {
+      root.style.setProperty(`--swipe-font-${key}`, prefs.fonts[key] / 100);
+      $(`#swipeFont-${key}`).value = prefs.fonts[key];
+      $(`#swipeFontValue-${key}`).textContent = `${prefs.fonts[key]}%`;
+    }
+  }
+  applyFonts();
+  for (const key of ['fr','zh','ipa']) $(`#swipeFont-${key}`).oninput = e => {
+    prefs.fonts[key] = fontScale(Number(e.target.value)); applyFonts(); save();
+  };
+  $('#swipeFontReset').onclick = () => {prefs.fonts = {fr:100,zh:100,ipa:100}; applyFonts(); save();};
+  function downloadBusy(busy) {
+    for (const id of ['swipeDownloadStart','swipeDownloadEnd','swipeDownload']) $('#'+id).disabled = busy;
+    $('#swipeDownloadRange').disabled = busy || !prefs.range;
+    $('#swipeDownloadCancel').hidden = !busy;
+    $('#swipeDownloadCancel').disabled = false;
+    $('#swipeToolsOverview').textContent = busy ? '字号与离线 · 下载中' : '字号与离线';
+  }
+  function finishDownload(message) {
+    clearTimeout(downloadWatchdog);
+    downloadPort?.close(); downloadPort = null;
+    downloadBusy(false);
+    $('#swipeDownloadStatus').textContent = message;
+  }
+  $('#swipeDownloadRange').onclick = () => {
+    if (!prefs.range || downloadPort) return;
+    $('#swipeDownloadStart').value = prefs.start; $('#swipeDownloadEnd').value = prefs.end;
+  };
+  $('#swipeDownloadCancel').onclick = () => {
+    downloadPort?.postMessage({type:'CANCEL'});
+    $('#swipeDownloadCancel').disabled = true;
+    $('#swipeDownloadStatus').textContent = '正在取消，已下载音频会保留…';
+  };
+  $('#swipeDownloadForm').onsubmit = e => {
+    e.preventDefault();
+    if (downloadPort) return;
+    const start = Number($('#swipeDownloadStart').value), end = Number($('#swipeDownloadEnd').value);
+    const info = $('#swipeDownloadStatus');
+    if (!integer(start,0,SENTENCES.length) || !integer(end,0,SENTENCES.length) || start > end) {
+      info.textContent = `请输入 1–${SENTENCES.length} 的整数编号，且起始编号不大于结束编号。`; return;
+    }
+    if (!navigator.serviceWorker?.controller) {
+      info.textContent = '离线下载需要通过 HTTPS 网站打开。若已在线打开，请等待页面缓存就绪后刷新重试。'; return;
+    }
+    prefs.downloadStart = start; prefs.downloadEnd = end; save();
+    const channel = new MessageChannel(); downloadPort = channel.port1;
+    const port = downloadPort;
+    downloadBusy(true);
+    const bar = $('#swipeDownloadProgress'); bar.hidden = false; bar.max = (end-start+1)*3; bar.value = 0;
+    info.textContent = `准备下载 #${start}–${end} 的三种音色，共 ${bar.max} 个音频…`;
+    const watch = () => {
+      clearTimeout(downloadWatchdog);
+      downloadWatchdog = setTimeout(() => {
+        port.postMessage({type:'CANCEL'});
+        finishDownload('下载通信中断。已缓存部分会保留，请保持网页打开并重试。');
+      }, 60000);
+    };
+    port.onmessage = ({data}) => {
+      if (port !== downloadPort) return;
+      watch();
+      if (Number.isInteger(data.loaded)) bar.value = data.loaded;
+      const counts = `${bar.value}/${bar.max}`;
+      if (data.error) finishDownload(`${data.error}（${counts}）。已缓存部分会保留，可再次下载补齐。`);
+      else if (data.cancelled) finishDownload(`已取消 · ${counts} 个音频已就绪，已下载部分保留。`);
+      else if (data.done) finishDownload(`下载完成 · #${start}–${end} · 三种音色共 ${counts} 个音频已就绪，可离线播放。`);
+      else info.textContent = `#${start}–${end} · 三音色 ${counts} 已就绪（含已有缓存）；请保持网页打开。`;
+    };
+    watch();
+    try {navigator.serviceWorker.controller.postMessage({type:'CACHE_SENTENCE_RANGE',start,end},[channel.port2]);}
+    catch {finishDownload('无法开始下载，请刷新页面后重试。');}
+  };
+  window.addEventListener('pagehide', () => {
+    if (downloadPort) {downloadPort.postMessage({type:'CANCEL'}); finishDownload('下载已中断，已缓存部分会保留，可再次下载补齐。');}
+  });
 
   function showFirstEntryHint() {
     if (prefs.introSeen) return;
@@ -119,6 +214,8 @@
     $('#swipeKind').value = feed.kind;
     $('#swipeAllLabel').hidden = feed.kind !== 'sentence' || prefs.range;
     $('#swipeAutoSettings').hidden = feed.kind !== 'sentence';
+    $('#swipeDownloadForm').hidden = feed.kind !== 'sentence';
+    $('#swipeDownloadRange').disabled = !!downloadPort || !prefs.range;
     const scope = prefs.range ? `#${prefs.start}–${prefs.end}` : $('#swipeAll').checked ? '全部 4000 句' : '当前列表';
     $('#swipeAutoOverview').textContent = `${prefs.auto ? `自动切换 · 每句 ${prefs.repeats} 遍` : '手动切换'} · ${scope}${prefs.auto ? prefs.loop ? ' · 区间循环' : ' · 末尾停止' : ''}`;
     $('#swipeAutoSummary').setAttribute('aria-label', `播放与区间设置：${$('#swipeAutoOverview').textContent}`);
@@ -262,6 +359,7 @@
     $('#swipeAll').checked = false;
     fillAutoSettings();
     $('#swipeAutoSettings').open = false;
+    $('#swipeTools').open = false;
     $('#swipeVoice').innerHTML = $('#voiceMode').innerHTML;
     $('#swipeVoice').value = currentVoiceMode();
     document.body.classList.add('swipe-study-open');

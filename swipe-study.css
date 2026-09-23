@@ -9,14 +9,23 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 .swipeStudy button[aria-pressed="true"] { background:var(--accent); color:var(--accentText); }
 .swipeHeader,.swipePreferences,.swipeProgress,.swipeStage,.swipeFooter { width:100%; max-width:1040px; margin:0 auto; min-width:0; }
 .swipeSettings { width:100%; max-width:1040px; margin:0 auto; min-width:0; max-height:34vh; max-height:34dvh; overflow:auto; }
-#swipeAutoSettings { font-size:12px; margin:0 0 5px; }
-#swipeAutoSummary { cursor:pointer; padding:10px 12px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:44px; background:var(--panel); border:1px solid var(--line); border-radius:12px; list-style:none; }
-#swipeAutoSummary::-webkit-details-marker { display:none; }
-#swipeAutoSummary:focus-visible { outline:2px solid var(--text); outline-offset:2px; }
+#swipeAutoSettings,#swipeTools { font-size:12px; margin:0 0 5px; }
+#swipeAutoSummary,#swipeToolsSummary { cursor:pointer; padding:10px 12px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:44px; background:var(--panel); border:1px solid var(--line); border-radius:12px; list-style:none; }
+#swipeAutoSummary::-webkit-details-marker,#swipeToolsSummary::-webkit-details-marker { display:none; }
+#swipeAutoSummary:focus-visible,#swipeToolsSummary:focus-visible { outline:2px solid var(--text); outline-offset:2px; }
 #swipeAutoOverview { min-width:0; line-height:1.6; font-weight:600; }
 .swipeAutoAction { flex-shrink:0; color:var(--muted); font-size:11px; }
 .swipeAutoAction i { display:inline-block; font-style:normal; }
-#swipeAutoSettings[open] .swipeAutoAction i { transform:rotate(180deg); }
+#swipeAutoSettings[open] .swipeAutoAction i,#swipeTools[open] .swipeAutoAction i { transform:rotate(180deg); }
+#swipeToolsOverview { min-width:0; }
+.swipeToolsBody { padding-top:7px; }
+.swipeFontSettings { display:grid; gap:8px; margin-bottom:10px; padding:10px; border:1px solid var(--line); border-radius:12px; }
+.swipeFontSettings label { display:grid; grid-template-columns:80px minmax(40px,1fr) 42px; align-items:center; gap:8px; }
+.swipeFontSettings input { width:100%; min-width:0; margin:0; min-height:32px; accent-color:var(--text); }
+.swipeFontSettings output { text-align:right; font-variant-numeric:tabular-nums; }
+#swipeDownloadProgress { width:100%; height:10px; accent-color:var(--text); }
+#swipeDownloadStatus { width:100%; margin:0; line-height:1.6; overflow-wrap:anywhere; }
+#swipeDownloadForm > strong { width:100%; }
 #swipeAutoSettings[open] .swipeAutoForm { margin-top:7px; }
 .swipeIntro { position:absolute; z-index:5; top:43%; left:50%; transform:translate(-50%,-50%); max-width:calc(100% - 32px); padding:13px 22px; border-radius:999px; background:var(--accent); color:var(--accentText); box-shadow:var(--shadow); font-size:16px; font-weight:600; white-space:nowrap; pointer-events:none; animation:swipeIntroFade 1.5s ease both; }
 .swipeIntro span { margin-right:5px; font-size:20px; }
@@ -54,20 +63,21 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 .swipeHero { flex:1; min-height:0; overflow:auto; display:flex; flex-direction:column; justify-content:safe center; align-items:center; text-align:center; padding:24px 30px; }
 .swipeEyebrow { font-size:12px; color:var(--muted); letter-spacing:.08em; margin-bottom:18px; flex-shrink:0; }
 .swipeMainText { margin:0; font-weight:750; text-wrap:balance; flex-shrink:0; overflow-wrap:anywhere; }
-.swipeSentenceText { font-size:clamp(26px,4vw,52px); line-height:1.45; letter-spacing:-.015em; max-width:920px; }
-.swipeSymbol { font-family:"Noto Sans",system-ui,sans-serif; font-size:clamp(76px,13vh,138px); line-height:1.2; }
+.swipeSentenceText { font-size:calc(clamp(26px,4vw,52px) * var(--swipe-font-fr,1)); line-height:1.45; letter-spacing:-.015em; max-width:920px; }
+.swipeSymbol { --swipe-symbol-scale:var(--swipe-font-fr,1); font-family:"Noto Sans",system-ui,sans-serif; font-size:calc(clamp(76px,13vh,138px) * var(--swipe-symbol-scale)); line-height:1.2; }
+.swipeCard[data-kind="sound"] .swipeSymbol { --swipe-symbol-scale:var(--swipe-font-ipa,1); }
 .swipeSymbol small { font-size:.58em; margin-left:12px; opacity:.38; }
-.swipeIPA { font-size:clamp(14px,2vw,19px); color:var(--muted); margin:14px 0 0; flex-shrink:0; overflow-wrap:anywhere; }
-.swipeTranslation { font-size:clamp(16px,2vw,21px); margin:18px 0 0; flex-shrink:0; }
+.swipeIPA { font-size:calc(clamp(14px,2vw,19px) * var(--swipe-font-ipa,1)); color:var(--muted); margin:14px 0 0; flex-shrink:0; overflow-wrap:anywhere; }
+.swipeTranslation { font-size:calc(clamp(16px,2vw,21px) * var(--swipe-font-zh,1)); margin:18px 0 0; flex-shrink:0; overflow-wrap:anywhere; }
 .swipeReveal { margin-top:18px; font-size:13px; border-style:dashed !important; flex-shrink:0; }
 .swipeMarks { display:flex; gap:8px; margin-top:23px; flex-shrink:0; }
 .swipeMarks button { font-size:12px; min-height:36px; }
 .swipeExample { display:flex; gap:10px; align-items:center; justify-content:center; margin-top:18px; flex-wrap:wrap; flex-shrink:0; }
-.swipeExample strong { font-size:22px; }
-.swipeExample span { font-size:13px; color:var(--muted); }
+.swipeExample strong { font-size:calc(22px * var(--swipe-font-fr,1)); overflow-wrap:anywhere; }
+.swipeExample span { font-size:calc(13px * var(--swipe-font-ipa,1)); color:var(--muted); overflow-wrap:anywhere; }
 .swipeCard.with-details .swipeHero { flex:0 1 auto; max-height:48%; padding:12px 20px; }
-.swipeCard.with-details .swipeSentenceText { font-size:clamp(23px,3vw,35px); }
-.swipeCard.with-details .swipeSymbol { font-size:64px; }
+.swipeCard.with-details .swipeSentenceText { font-size:calc(clamp(23px,3vw,35px) * var(--swipe-font-fr,1)); }
+.swipeCard.with-details .swipeSymbol { font-size:calc(64px * var(--swipe-symbol-scale)); }
 .swipeCard.with-details .swipeEyebrow { margin-bottom:7px; }
 .swipeCard.with-details .swipeIPA,.swipeCard.with-details .swipeTranslation,.swipeCard.with-details .swipeMarks,.swipeCard.with-details .swipeExample,.swipeCard.with-details .swipeReveal { margin-top:9px; }
 .swipeExplanation { flex:1; min-height:80px; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:17px; padding:18px 22px; font-size:14px; line-height:1.85; text-align:left; }
@@ -104,7 +114,7 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
   .swipeProgress { font-size:10px; gap:8px; padding:5px 0 9px; }
   .swipeHero { padding:16px 9px; }
   .swipeCard.with-details .swipeHero { padding:8px 5px; max-height:46%; }
-  .swipeCard.with-details .swipeSymbol { font-size:52px; }
+  .swipeCard.with-details .swipeSymbol { font-size:calc(52px * var(--swipe-symbol-scale)); }
   .swipeCard { gap:8px; }
   .swipeExplanation { padding:14px; font-size:13px; border-radius:13px; }
   .swipeActions { gap:5px; }
@@ -120,8 +130,8 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
   .swipePreferences { padding:0; }
   .swipeHero { padding:8px; }
   .swipeEyebrow { margin-bottom:5px; }
-  .swipeSymbol { font-size:65px; }
-  .swipeSentenceText { font-size:26px; }
+  .swipeSymbol { font-size:calc(65px * var(--swipe-symbol-scale)); }
+  .swipeSentenceText { font-size:calc(26px * var(--swipe-font-fr,1)); }
   .swipeIPA,.swipeTranslation,.swipeMarks,.swipeExample,.swipeReveal { margin-top:7px; }
   .swipeFooter { padding-top:5px; }
   .swipeHint { display:none; }

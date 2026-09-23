@@ -1,4 +1,4 @@
-const CACHE='fr4000-v12-large-screen-20260923';
+const CACHE='fr4000-v13-fonts-offline-20260924';
 const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./swipe-study.js','./swipe-study.css','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 // Retain already-downloaded sentence audio when updating the application shell.
@@ -93,4 +93,64 @@ self.addEventListener('message',e=>{
   downloadPorts.add(e.ports[0]);
   if(!phoneticsDownload)phoneticsDownload=cachePhonetics().catch(error=>notifyDownload({error:error.message})).finally(()=>{downloadPorts.clear();phoneticsDownload=null;});
   e.waitUntil(phoneticsDownload);
+});
+
+// One bounded sentence download at a time; never disturb playback or lab downloads.
+let sentenceDownload = null;
+async function cacheSentenceRange(job) {
+  const {start,end,port,controller} = job;
+  const total = (end-start+1)*3;
+  let loaded = 0, next = 0, failure = '';
+  const send = extra => {try {port.postMessage({loaded,total,...extra});} catch { /* Page closed. */ }};
+  port.onmessage = e => {if(e.data?.type==='CANCEL') controller.abort();};
+  send({});
+  try {
+    const cache = await caches.open(CACHE);
+    await Promise.all(Array.from({length:2}, async () => {
+      while(next < total && !controller.signal.aborted) {
+        const index = next++, slot = index%3+1, id = start+Math.floor(index/3);
+        // Must match builtinAsset() exactly, including its audio revision.
+        const path = `./audio/v${slot}/sent/${String(id).padStart(4,'0')}.mp3?v=fr4000v3`;
+        const requestController = new AbortController();
+        const abort = () => requestController.abort();
+        controller.signal.addEventListener('abort',abort,{once:true});
+        const timer = setTimeout(abort,25000);
+        try {
+          const hit = await cache.match(path);
+          if(controller.signal.aborted) break;
+          if(hit?.status !== 200) {
+            const response = await fetch(path,{signal:requestController.signal});
+            if(response.status !== 200 || !/^(audio\/|application\/octet-stream)/i.test(response.headers.get('content-type') || '')) throw new Error('音频响应无效');
+            // Consume the entire body before persisting: no partial downloads in cache.
+            const bytes = await response.arrayBuffer();
+            if(controller.signal.aborted) break;
+            if(!bytes.byteLength) throw new Error('音频为空');
+            await cache.put(path,new Response(bytes,{status:200,headers:response.headers}));
+          }
+          loaded++;
+          send({});
+        } catch(error) {
+          if(!controller.signal.aborted) {
+            failure = error.name === 'QuotaExceededError' ? '存储空间不足，下载已停止' : '下载失败或超时，请检查网络与存储空间';
+            controller.abort();
+          }
+        } finally {
+          clearTimeout(timer); controller.signal.removeEventListener('abort',abort);
+        }
+      }
+    }));
+  } catch {failure = '无法使用离线缓存，请检查浏览器存储设置';}
+  send(failure ? {error:failure} : controller.signal.aborted ? {cancelled:true} : {done:true});
+  port.close();
+}
+self.addEventListener('message',e=>{
+  if(e.data?.type!=='CACHE_SENTENCE_RANGE' || !e.ports[0]) return;
+  const {start,end} = e.data, port = e.ports[0];
+  if(!Number.isInteger(start) || !Number.isInteger(end) || start<1 || end>4000 || start>end) {
+    port.postMessage({error:'句子区间无效'}); port.close(); return;
+  }
+  if(sentenceDownload) {port.postMessage({error:'另一个窗口正在下载句子音频，请稍后重试'}); port.close(); return;}
+  const job = {start,end,port,controller:new AbortController()};
+  sentenceDownload = job;
+  e.waitUntil(cacheSentenceRange(job).finally(()=>{if(sentenceDownload===job) sentenceDownload=null;}));
 });
