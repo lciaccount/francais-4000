@@ -48,13 +48,13 @@ def speed_tests(browser, base, shots):
     assert page.evaluate('state.mode===null')
     page.locator('#swipePause').click()
     page.wait_for_function('state.audio && state.audio.playbackRate===.85')
-    page.locator('#swipeSlow').click()
+    page.locator('#swipeSpeed').select_option('0.75')
     assert page.locator('#swipeSpeed').input_value() == '0.75'
-    page.locator('#swipeSlow').click()
+    page.locator('#swipeSpeed').select_option('0.85')
     assert page.locator('#swipeSpeed').input_value() == '0.85'
-    page.locator('#swipeSlow').click()
+    page.locator('#swipeSpeed').select_option('0.75')
     page.locator('#swipeSpeed').select_option('1.15')
-    assert page.locator('#swipeSlow').get_attribute('aria-pressed') == 'false'
+    assert page.locator('#swipeSlow').count() == 0
     page.locator('#swipeLock').click()
     assert page.locator('#swipeSpeed').is_hidden()
     assert page.locator('.swipeSpeedLabel').evaluate('el=>el.inert')
@@ -146,7 +146,7 @@ def recovery_tests(browser, base):
     page.route('**/sent/0042.mp3?*',lambda r:(attempts.append(r.request.url),r.abort()))
     settings(page,start=42,end=43)
     page.wait_for_function('document.querySelector("#swipePlayState").textContent.includes("重试")')
-    page.locator('#swipeNext').click()
+    page.evaluate('SwipeStudy.step(1)')
     n=len(attempts)
     page.wait_for_timeout(1200)
     assert len(attempts)==n and card_id(page)=='43'

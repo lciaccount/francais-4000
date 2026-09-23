@@ -91,7 +91,7 @@ def controlled_tests(browser, base, shots):
     finish(page)
     assert card_id(page) == '202'
     page.evaluate('window.staleSpeech=speechCalls.at(-1)')
-    page.locator('#swipePrev').click()
+    page.evaluate('SwipeStudy.step(-1)')
     n = page.evaluate('speechCalls.length')
     page.evaluate('staleSpeech.onend()')
     page.wait_for_timeout(150)
@@ -155,7 +155,7 @@ def controlled_tests(browser, base, shots):
     assert page.locator('.swipeSettings').evaluate('el=>el.inert')
     n = page.evaluate('speechCalls.length')
     page.evaluate('''() => {
-      for(const id of ['swipePause','swipeNext','swipeExit','swipeFavorite','swipeReveal','swipeDetails']) document.getElementById(id).click();
+      for(const id of ['swipePause','swipeExit','swipeFavorite','swipeReveal','swipeDetails']) document.getElementById(id).click();
       SwipeStudy.step(1); SwipeStudy.close();
     }''')
     page.locator('#swipeCard').focus()

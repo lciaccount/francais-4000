@@ -4,25 +4,25 @@
   const KEY = 'fr4000-swipe-v1';
   const stored = (() => {try {return JSON.parse(localStorage.getItem(KEY) || '{}') || {};} catch {return {};}})();
   const integer = (value, fallback, max) => Number.isInteger(value) && value >= 1 && value <= max ? value : fallback;
-  const prefs = {details: stored.details === true, hideTranslation: stored.hideTranslation === true,
+  const prefs = {details: stored.details === true, hideTranslation: stored.hideTranslation === true, introSeen: stored.introSeen === true,
     auto: stored.auto === true, repeats: integer(stored.repeats, 3, 100), range: stored.range === true,
     start: integer(stored.start, 1, SENTENCES.length), end: integer(stored.end, SENTENCES.length, SENTENCES.length), loop: stored.loop === true,
     positions: typeof stored.positions === 'object' && stored.positions ? stored.positions : {}};
   if (prefs.start > prefs.end) [prefs.start, prefs.end] = [prefs.end, prefs.start];
   const feed = {open: false, kind: 'sentence', list: [], index: 0, contexts: {}, playing: false,
-    slow: false, details: false, revealed: false, turn: 0, count: 0, timer: null, preview: false,
+    details: false, revealed: false, turn: 0, count: 0, timer: null, introTimer: null, preview: false,
     returnFocus: null, inert: [], scroll: [0, 0], fullscreen: false, gesture: null, locked: false, completed: false};
   const save = () => {try {localStorage.setItem(KEY, JSON.stringify(prefs));} catch { /* Private mode / quota: keep the in-memory settings. */ }};
   const current = () => feed.list[feed.index];
   const title = item => !item ? '暂无内容' : feed.kind === 'sentence' ? `句子 #${item.id}` : feed.kind === 'letter' ? `字母 ${item.symbol}` : `音标 /${item.symbol}/`;
   document.body.insertAdjacentHTML('beforeend', `
     <section id="swipeStudy" class="swipeStudy" role="dialog" aria-modal="true" aria-labelledby="swipeTitle" hidden>
-      <header class="swipeHeader"><div><h2 id="swipeTitle">滑屏学习</h2><span id="swipeScopeLabel"></span></div>
+      <header class="swipeHeader"><div><h2 id="swipeTitle">大屏滑动模式</h2><span id="swipeScopeLabel"></span></div>
         <label class="swipeKindLabel"><span class="swipeSrOnly">学习内容</span><select id="swipeKind"><option value="sentence">句子</option><option value="letter">字母</option><option value="sound">音标</option></select></label>
         <button id="swipeLock" type="button" aria-pressed="false">锁定</button>
-        <button id="swipeExit" type="button" aria-label="退出滑屏学习">× <span>退出</span></button></header>
+        <button id="swipeExit" type="button" aria-label="退出大屏滑动模式">× <span>退出</span></button></header>
       <div class="swipeSettings"><div class="swipePreferences"><label><input id="swipeDefaultDetails" type="checkbox" role="switch">默认显示详解</label><label><input id="swipeHideTranslation" type="checkbox" role="switch">先隐藏译文</label><label id="swipeAllLabel"><input id="swipeAll" type="checkbox">全部 4000 句</label></div>
-        <details id="swipeAutoSettings"><summary id="swipeAutoSummary">自动切换与区间 · 未开启</summary>
+        <details id="swipeAutoSettings"><summary id="swipeAutoSummary" aria-controls="swipeAutoForm" title="展开或收起播放与区间设置"><span id="swipeAutoOverview">手动切换 · 当前列表</span><span class="swipeAutoAction" aria-hidden="true">设置 <i>⌄</i></span></summary>
           <form id="swipeAutoForm" class="swipeAutoForm" novalidate>
             <label><input id="swipeAuto" type="checkbox" role="switch">自动切换</label>
             <label>每句 <input id="swipeRepeats" type="number" min="1" max="100" step="1" inputmode="numeric" required> 遍</label>
@@ -37,12 +37,21 @@
       <div class="swipeProgress"><span id="swipeCounter" aria-live="polite"></span><div role="progressbar" id="swipeProgressBar" aria-label="当前列表位置"><i id="swipeProgressFill"></i></div><span>↑ 下一条 · ↓ 上一条</span></div>
       <div id="swipeStage" class="swipeStage"><article id="swipeCard" class="swipeCard" tabindex="-1"></article></div>
       <footer class="swipeFooter"><div class="swipeAudioRow"><span id="swipePlayState" role="status" aria-live="polite"></span><div class="swipeAudioControls"><label class="swipeSpeedLabel"><span class="swipeSrOnly">播放倍速（0.50 至 2.00，步长 0.05）</span><select id="swipeSpeed">${Array.from({length:31}, (_,i) => {const rate=((50+i*5)/100).toFixed(2); return `<option value="${rate}">${rate}×</option>`;}).join('')}</select></label><label class="swipeVoiceLabel"><span class="swipeSrOnly">播放音色（音标参考音固定）</span><select id="swipeVoice"></select></label></div></div>
-        <div class="swipeActions"><button id="swipePrev" type="button" aria-label="上一条">↑ <span>上一条</span></button><button id="swipePause" type="button" class="swipePrimary">暂停</button><button id="swipeSlow" type="button" aria-pressed="false">0.75× <span>慢读</span></button><button id="swipeDetails" type="button" aria-expanded="false" aria-controls="swipeExplanation">详解</button><button id="swipeNext" type="button" aria-label="下一条">↓ <span>下一条</span></button></div>
+        <div class="swipeActions"><button id="swipePause" type="button" class="swipePrimary">暂停</button><button id="swipeDetails" type="button" aria-expanded="false" aria-controls="swipeExplanation">详解</button></div>
         <div id="swipeHint" class="swipeHint">上下滑切换 · 当前条目无限循环 · 空格暂停 · Esc 退出</div></footer>
+      <div id="swipeIntro" class="swipeIntro" role="status" hidden><span aria-hidden="true">↕</span> 上下滑动切换条目</div>
     </section>`);
   const root = $('#swipeStudy'), stage = $('#swipeStage'), card = $('#swipeCard');
   const autoEnabled = () => feed.kind === 'sentence' && prefs.auto;
-  const playbackRate = () => feed.slow ? .75 : Number($('#speed').value);
+  const playbackRate = () => Number($('#speed').value);
+
+  function showFirstEntryHint() {
+    if (prefs.introSeen) return;
+    prefs.introSeen = true;
+    save();
+    $('#swipeIntro').hidden = false;
+    feed.introTimer = setTimeout(() => {$('#swipeIntro').hidden = true; feed.introTimer = null;}, 1500);
+  }
 
   function fillAutoSettings() {
     $('#swipeAuto').checked = prefs.auto;
@@ -110,7 +119,9 @@
     $('#swipeKind').value = feed.kind;
     $('#swipeAllLabel').hidden = feed.kind !== 'sentence' || prefs.range;
     $('#swipeAutoSettings').hidden = feed.kind !== 'sentence';
-    $('#swipeAutoSummary').textContent = `自动切换与区间 · ${prefs.auto ? `每句 ${prefs.repeats} 遍` : '手动切换'}${prefs.range ? ` · #${prefs.start}–${prefs.end}` : ''}${prefs.auto && prefs.loop ? ' · 循环' : ''}`;
+    const scope = prefs.range ? `#${prefs.start}–${prefs.end}` : $('#swipeAll').checked ? '全部 4000 句' : '当前列表';
+    $('#swipeAutoOverview').textContent = `${prefs.auto ? `自动切换 · 每句 ${prefs.repeats} 遍` : '手动切换'} · ${scope}${prefs.auto ? prefs.loop ? ' · 区间循环' : ' · 末尾停止' : ''}`;
+    $('#swipeAutoSummary').setAttribute('aria-label', `播放与区间设置：${$('#swipeAutoOverview').textContent}`);
     $('#swipeScopeLabel').textContent = feed.kind === 'sentence' && prefs.range ? `句子区间 #${prefs.start}–${prefs.end}` : feed.kind === 'sentence' && $('#swipeAll').checked ? '全部句子' : feed.contexts[feed.kind].label;
     $('#swipeCounter').textContent = item ? `${feed.index + 1} / ${feed.list.length}` : '0 / 0';
     $('#swipeProgressFill').style.width = item ? `${(feed.index + 1) / feed.list.length * 100}%` : '0%';
@@ -151,18 +162,14 @@
     $('#swipePause').textContent = busy ? 'Ⅱ 暂停' : '▶ 继续';
     $('#swipePause').setAttribute('aria-label', busy ? '暂停当前条目' : '继续循环当前条目');
     $('#swipePause').disabled = !item;
-    $('#swipeSlow').disabled = !item;
-    $('#swipeSlow').setAttribute('aria-pressed', String(feed.slow));
-    $('#swipeSpeed').value = (feed.slow ? .75 : Number($('#speed').value)).toFixed(2);
+    $('#swipeSpeed').value = playbackRate().toFixed(2);
     $('#swipeDetails').disabled = !item;
     $('#swipeDetails').setAttribute('aria-expanded', String(feed.details && !!item));
     $('#swipeDetails').textContent = feed.details ? '收起详解' : '显示详解';
-    $('#swipePrev').disabled = !item || feed.index === 0;
-    $('#swipeNext').disabled = !item || feed.index >= feed.list.length - 1;
     const audioLabel = feed.kind === 'sound' && !feed.preview ? '固定参考音' : '所选音色';
-    $('#swipePlayState').textContent = message || (!item ? '请选择其他列表' : !busy ? '已暂停' : feed.preview ? '例词点读中' : `↻ 循环中 · ${feed.count + 1} 遍 · ${feed.slow ? '0.75×' : Number($('#speed').value) + '×'} · ${audioLabel}`);
+    $('#swipePlayState').textContent = message || (!item ? '请选择其他列表' : !busy ? '已暂停' : feed.preview ? '例词点读中' : `↻ 循环中 · ${feed.count + 1} 遍 · ${playbackRate()}× · ${audioLabel}`);
     root.classList.toggle('is-playing', busy);
-    if (!message && busy && !feed.preview && autoEnabled()) $('#swipePlayState').textContent = `自动切换 · 第 ${Math.min(feed.count + 1, prefs.repeats)}/${prefs.repeats} 遍 · ${feed.slow ? '0.75' : $('#speed').value}×`;
+    if (!message && busy && !feed.preview && autoEnabled()) $('#swipePlayState').textContent = `自动切换 · 第 ${Math.min(feed.count + 1, prefs.repeats)}/${prefs.repeats} 遍 · ${playbackRate()}×`;
     if ($('#swipeFavorite') && item) {
       $('#swipeFavorite').textContent = progress.favorites.has(item.id) ? '★ 已收藏' : '☆ 收藏';
       $('#swipeFavorite').setAttribute('aria-pressed', String(progress.favorites.has(item.id)));
@@ -200,7 +207,7 @@
         feed.timer = setTimeout(cycle, Math.max(0, Number($('#gap').value) || 0));
       };
       // Failed or interrupted attempts must retry the same voice, not skip it.
-      const rate = feed.slow ? .75 : Number($('#speed').value), turn = feed.turn;
+      const rate = playbackRate(), turn = feed.turn;
       if (example) speakOnce(item.example, 'fr-FR', done, {asset: {kind: 'phonetics', id: PHONETICS_DATA.examples[item.example].id}, voiceTurn: turn, getRate: playbackRate, onerror: fail, onloading});
       else if (feed.kind === 'sentence') sequenceFor(item, done, token, turn, {getRate: playbackRate, onerror: fail, onloading});
       else if (feed.kind === 'letter') speakOnce(item.name, 'fr-FR', done, {asset: {kind: 'alphabet', id: item.id}, voiceTurn: turn, getRate: playbackRate, onerror: fail, onloading});
@@ -247,7 +254,6 @@
     hideDictionaryVisual();
     Phonetics.closeDetail(false);
     feed.open = true;
-    feed.slow = false;
     feed.fullscreen = false;
     feed.locked = false;
     root.hidden = false;
@@ -264,6 +270,7 @@
     feed.inert.forEach(([el]) => {el.inert = true;});
     selectKind(initialKind, initialId);
     card.focus({preventScroll: true});
+    showFirstEntryHint();
     // Fullscreen is optional: iPhone/embedded browsers still get a viewport-filling mode.
     if (root.requestFullscreen && !document.fullscreenElement) {
       root.requestFullscreen({navigationUI: 'hide'}).then(() => {
@@ -275,6 +282,8 @@
   function close() {
     if (!feed.open || feed.locked) return;
     feed.open = false;
+    clearTimeout(feed.introTimer); feed.introTimer = null;
+    $('#swipeIntro').hidden = true;
     stopAll(true);
     feed.gesture = null;
     stage.style.transform = '';
@@ -387,14 +396,10 @@
     card.focus({preventScroll: true});
   };
   $('#swipeExit').onclick = close;
-  $('#swipePrev').onclick = () => step(-1);
-  $('#swipeNext').onclick = () => step(1);
   $('#swipePause').onclick = () => feed.playing ? pause() : startPlayback();
-  $('#swipeSlow').onclick = () => {feed.slow = !feed.slow; if (feed.playing) startPlayback(); else syncControls();};
   $('#swipeSpeed').onchange = e => {
     const rate = Number(e.target.value);
     if (!Number.isFinite(rate) || rate < .5 || rate > 2) return;
-    feed.slow = false;
     $('#speed').value = rate;
     $('#speed').dispatchEvent(new Event('input'));
     // Update MP3 playback in place: no restart, no extra counted repeat.
@@ -466,15 +471,15 @@
     document.querySelectorAll('#sentenceList .sentenceActions').forEach(actions => {
       if (actions.querySelector('[data-swipe-sentence]')) return;
       const b = document.createElement('button');
-      b.type = 'button'; b.className = 'iconBtn'; b.textContent = '↕ 滑屏';
+      b.type = 'button'; b.className = 'iconBtn'; b.textContent = '↕ 大屏滑动模式';
       b.dataset.swipeSentence = actions.closest('.sentence').dataset.id;
-      b.setAttribute('aria-label', `从第 ${b.dataset.swipeSentence} 句开始滑屏学习`);
+      b.setAttribute('aria-label', `从第 ${b.dataset.swipeSentence} 句进入大屏滑动模式`);
       actions.append(b);
     });
     const actions = $('#phoneticsDetail .phonDetailActions');
     if (actions && !actions.querySelector('[data-swipe-phonetics]')) {
       const b = document.createElement('button');
-      b.type = 'button'; b.className = 'phonButton'; b.textContent = '↕ 滑屏学习'; b.dataset.swipePhonetics = '';
+      b.type = 'button'; b.className = 'phonButton'; b.textContent = '↕ 大屏滑动模式'; b.dataset.swipePhonetics = '';
       actions.append(b);
     }
   }

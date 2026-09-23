@@ -95,7 +95,7 @@ def mobile_tests(browser, base, shots):
     assert page.locator('#swipeExplanation').is_visible()
     page.locator('#swipeDetails').click()
     assert page.locator('#swipeExplanation').is_hidden()
-    page.locator('#swipeNext').click()
+    page.evaluate('SwipeStudy.step(1)')
     assert page.locator('#swipeExplanation').is_visible()
     print('PASS: detail scrolling does not skip cards; a new boundary gesture changes card; default detail applied on each card', flush=True)
 
@@ -103,7 +103,7 @@ def mobile_tests(browser, base, shots):
     assert page.locator('#swipeTranslation').is_hidden()
     page.locator('#swipeReveal').click()
     assert page.locator('#swipeTranslation').is_visible()
-    page.locator('#swipeNext').click()
+    page.evaluate('SwipeStudy.step(1)')
     assert page.locator('#swipeTranslation').is_hidden()
     current = int(card_id(page))
     page.locator('#swipeFavorite').click()
@@ -114,7 +114,7 @@ def mobile_tests(browser, base, shots):
     n = page.evaluate('audioEvents.length')
     page.wait_for_timeout(1000)
     assert page.evaluate('audioEvents.length') == n
-    page.locator('#swipeSlow').click()
+    page.locator('#swipeSpeed').select_option('0.75')
     page.locator('#swipePause').click()
     page.wait_for_function('state.audio && state.audio.playbackRate === .75')
     print('PASS: recall/reveal, favorite/mastered persistence, pause cancellation and slow looping', flush=True)
@@ -122,16 +122,16 @@ def mobile_tests(browser, base, shots):
     page.locator('#swipeKind').select_option('letter')
     assert page.locator('#swipeCounter').inner_text().endswith('/ 26')
     page.locator('#swipeDefaultDetails').uncheck()
-    page.locator('#swipeSlow').click()
+    page.locator('#swipeSpeed').select_option('1.00')
     page.wait_for_function('audioEvents.filter(e=>e.src.includes("/alphabet/a.mp3")).length >= 3', timeout=10000)
     assert page.evaluate('state.mode === "swipe"')
     # Delay an old letter request, switch to the next one, then release the old response.
     held = []
     page.route('**/v1/alphabet/b.mp3', lambda route: held.append(route))
-    page.locator('#swipeNext').click()
+    page.evaluate('SwipeStudy.step(1)')
     page.wait_for_timeout(150)
     assert held, 'Previous audio request was not intercepted'
-    page.locator('#swipeNext').click()
+    page.evaluate('SwipeStudy.step(1)')
     assert card_id(page) == 'c'
     for route in held:
         route.continue_()
@@ -152,7 +152,7 @@ def mobile_tests(browser, base, shots):
     print('PASS: three-voice cycle, fixed IPA reference loop, example preview then resume current sound', flush=True)
 
     page.route('**/ipa/y.mp3', lambda route: route.abort())
-    page.locator('#swipeNext').click()
+    page.evaluate('SwipeStudy.step(1)')
     page.wait_for_function('document.querySelector("#swipePlayState").textContent.includes("未能播放")')
     assert page.evaluate('state.mode === null')
     page.unroute('**/ipa/y.mp3')
@@ -214,7 +214,8 @@ def desktop_tests(browser, base, shots):
     enter(page)
     assert card_id(page) == '4000'
     assert page.locator('#swipeCounter').inner_text() == '1 / 1'
-    assert page.locator('#swipeNext').is_disabled() and page.locator('#swipePrev').is_disabled()
+    page.evaluate('SwipeStudy.step(1); SwipeStudy.step(-1)')
+    assert card_id(page) == '4000'  # Both directions stay inside a one-item list.
     page.locator('#swipeAll').check()
     assert page.locator('#swipeCounter').inner_text() == '4000 / 4000'
     page.locator('#swipeExit').click()
@@ -235,7 +236,7 @@ def desktop_tests(browser, base, shots):
     page.locator('[data-swipe-phonetics]').click()
     assert card_id(page) == 'on'
     assert page.locator('#swipeCounter').inner_text() == '4 / 4'
-    page.locator('#swipePrev').click()
+    page.evaluate('SwipeStudy.step(-1)')
     assert card_id(page) == 'an'
     for width, height in [(320, 568), (390, 844), (844, 390), (1280, 900)]:
         page.set_viewport_size({'width': width, 'height': height})

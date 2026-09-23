@@ -10,7 +10,17 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 .swipeHeader,.swipePreferences,.swipeProgress,.swipeStage,.swipeFooter { width:100%; max-width:1040px; margin:0 auto; min-width:0; }
 .swipeSettings { width:100%; max-width:1040px; margin:0 auto; min-width:0; max-height:34vh; max-height:34dvh; overflow:auto; }
 #swipeAutoSettings { font-size:12px; margin:0 0 5px; }
-#swipeAutoSettings summary { cursor:pointer; padding:6px 0; color:var(--muted); }
+#swipeAutoSummary { cursor:pointer; padding:10px 12px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:44px; background:var(--panel); border:1px solid var(--line); border-radius:12px; list-style:none; }
+#swipeAutoSummary::-webkit-details-marker { display:none; }
+#swipeAutoSummary:focus-visible { outline:2px solid var(--text); outline-offset:2px; }
+#swipeAutoOverview { min-width:0; line-height:1.6; font-weight:600; }
+.swipeAutoAction { flex-shrink:0; color:var(--muted); font-size:11px; }
+.swipeAutoAction i { display:inline-block; font-style:normal; }
+#swipeAutoSettings[open] .swipeAutoAction i { transform:rotate(180deg); }
+#swipeAutoSettings[open] .swipeAutoForm { margin-top:7px; }
+.swipeIntro { position:absolute; z-index:5; top:43%; left:50%; transform:translate(-50%,-50%); max-width:calc(100% - 32px); padding:13px 22px; border-radius:999px; background:var(--accent); color:var(--accentText); box-shadow:var(--shadow); font-size:16px; font-weight:600; white-space:nowrap; pointer-events:none; animation:swipeIntroFade 1.5s ease both; }
+.swipeIntro span { margin-right:5px; font-size:20px; }
+@keyframes swipeIntroFade { 0% {opacity:0;transform:translate(-50%,-25%);} 12%,78% {opacity:1;transform:translate(-50%,-50%);} 100% {opacity:0;transform:translate(-50%,-75%);} }
 .swipeAutoForm { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; padding:10px; background:var(--panel); border:1px solid var(--line); border-radius:12px; }
 .swipeAutoForm label,.swipeRangeFields { display:flex; align-items:center; gap:6px; }
 .swipeRangeFields { flex-wrap:wrap; }
@@ -76,14 +86,14 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 .swipeAudioControls { display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .swipeAudioControls .swipeSpeedLabel { width:80px; }
 .swipeAudioControls .swipeVoiceLabel { width:min(220px,39vw); }
-.swipeActions { display:grid; grid-template-columns:1fr 1.25fr 1fr 1fr 1fr; gap:8px; }
+.swipeActions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .swipeActions button { font-size:13px; font-weight:600; }
 .swipeStudy .swipePrimary { background:var(--accent); color:var(--accentText); border-color:var(--accent); }
 .swipeHint { font-size:11px; color:var(--muted); text-align:center; padding-top:10px; }
 .swipeSrOnly { position:absolute; width:1px; height:1px; margin:-1px; padding:0; border:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 @media (max-width:640px) {
   .learningNav span { display:none; }
-  .learningNav button { padding:7px 5px; white-space:nowrap; }
+  .learningNav button { padding:7px 5px; white-space:nowrap; font-size:12px; }
   .swipeStudy { padding-left:max(12px,env(safe-area-inset-left)); padding-right:max(12px,env(safe-area-inset-right)); }
   .swipeHeader { gap:8px; padding-top:9px; }
   .swipeKindLabel select { padding:6px; max-width:78px; }
@@ -116,4 +126,4 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
   .swipeFooter { padding-top:5px; }
   .swipeHint { display:none; }
 }
-@media (prefers-reduced-motion:reduce) { #swipeProgressFill { transition:none; } }
+@media (prefers-reduced-motion:reduce) { #swipeProgressFill { transition:none; } .swipeIntro { animation:none; } }
