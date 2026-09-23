@@ -12,6 +12,7 @@
 - 常见多词表达按整体识别，例如 `s’il vous plaît`、`est-ce que`、`avoir besoin de`；短语可整体点读，不再只按单词机械拆解。
 - 句子讲解采用可扫读的“句型结构 + 时态/语气”摘要卡；详细证据按需展开。手机词典采用底部抽屉，并提供当前词高亮、循环朗读/停止按钮和可播放的语料例句。
 - 查词时会显示单词或整块短语的 IPA、节奏、连读/省音、拼写对应和关键音提示，并可用 0.75× 慢速听辨；这些发音资料同样可离线使用。
+- 新增独立的 **字母与音标** 栏：26 个法语字母名称、37 个 IPA 参考音（12 口元音、4 鼻元音、18 辅音、3 半元音），附中文发音要领、常见拼写和可点读例词。
 - 项目内置了 3 路法国法语发音；句子音频会裁掉首尾静音，并将异常过长的句中静音缩短为约 80ms 的短停顿。
 - 手机底栏会显示当前播放内容，句子卡片提供明确的播放/停止按钮；搜索、分页、深浅色主题与键盘操作也已针对手机和无障碍使用优化。
 
@@ -57,6 +58,41 @@ FRENCH_MAX_SENT_PAUSE=0.06 bash build-french-4000-neural.sh "$PWD"
 
 脚本支持断点续跑：已经存在且大小正常的目标 MP3 会跳过。全部成功后会把 `audio/voice-manifest.json` 的 `availableSlots` 写为 `[1,2,3]`。
 
+## 字母与音标
+
+点击页面顶部的“字母与音标”，再切换“26 个字母”或“法语音标”。
+
+- 点卡片开始点读，再点当前卡片或“停止”即可结束；重复次数、速度和间隔沿用现有设置。
+- 支持 **0.75× 慢读**、例词单次播放、当前分组顺序听一遍。左右键／底栏上一项、下一项也可切换发音条目。
+- 字母名称和例词使用所选的系统音色，或 Henri / Eloise / Denise 三路内置音色，支持三音色交替。
+- **IPA 使用固定音色的真人语音参考录音**，不把符号交给 TTS 朗读。部分辅音录音含辅助元音，页面会提示；法语实际发音可再听例词。
+- `/ɑ/` 与 `/a/`、`/œ̃/` 与 `/ɛ̃/` 的合并和借词 `/ŋ/` 有特别说明。`/œ̃/` 参考录音用比利时法语的 `un`，它本身只有一个鼻元音；不能把现代法国各地口音说成只有唯一实现。
+- 手机端点卡片打开讲解抽屉，可点遮罩、关闭按钮或 Escape 退出并停音。不会把字母学习计入 4000 句的学习进度。
+- 点击 **下载本栏离线音频**，完整缓存本栏 **232 个 MP3**（26 字母 × 3 音色 + 39 例词 × 3 音色 + 37 参考音）。断网时选择内置音色；系统语音是否离线取决于设备。
+- PWA 更新保留已缓存的句子音频；MP3 支持离线 Range 请求。`file://` 模式直接读取项目内音频，不使用 Service Worker 下载。
+
+重新生成（不会改动原句子音频）：
+
+```bash
+python -m pip install edge-tts
+python build_phonetics_audio.py
+python build_phonetics_audio.py --check
+```
+
+需要 `ffmpeg`、`curl` 和网络。脚本可断点续跑；Wikimedia 限流时遵守服务器的重试间隔。参考源与 SHA-1 固定在 `phonetics-sources.js`；仅在核对源文件和署名后使用 `--refresh-sources` 更新。
+
+`audio/phonetics/ipa/` 中的录音来自 Wikimedia Commons，分别采用 CC BY-SA 3.0、CC BY-SA 4.0 或 CC0；原作者、原文件、许可链接及转换说明逐项列于 `phonetics-sources.js` 和页面“使用说明与录音来源”。转换后的音频保留其各自许可，不改变其他项目文件的许可。录音仅转换为单声道 MP3 并裁首尾静音，没有额外添加留白，保留参考录音内部用于展示发音的停顿。
+
+浏览器回归测试：
+
+```bash
+python -m pip install playwright
+python -m playwright install chromium
+python tests/test_phonetics.py
+```
+
+测试使用临时本地服务器和独立浏览器数据，检查实际 MP3 播放、次数/音色/慢读、失败提示、停止互斥、手机抽屉、键盘焦点、子路径部署、缓存升级、232 音频下载、断网重载与音频范围请求。Linux 需要 Chromium 对应系统依赖。
+
 ## 语料与词典源文件
 
 - `sentences-4000.json`：4000 句法语、中文、IPA、分类与 ID。
@@ -67,6 +103,8 @@ FRENCH_MAX_SENT_PAUSE=0.06 bash build-french-4000-neural.sh "$PWD"
 - `build_learning_data.py`：重新生成上述学习数据；仅构建时需要 spaCy 与 `fr_core_news_sm`，网页运行时不需要 Python 或网络。
 - `pronunciation-data-4000.js`：141 个已识别短语的离线 IPA 数据。
 - `build_pronunciation_data.py`：重新生成短语 IPA；仅构建时需要 `phonemizer` 与 `espeakng-loader`。
+- `phonetics-data.js` / `phonetics.js` / `phonetics.css`：字母与音标的离线教学内容、播放器交互和适配样式。
+- `phonetics-sources.js` / `build_phonetics_audio.py`：参考录音署名清单与本栏三音色／参考音构建脚本。
 - `apply_4000_update.py`：把语料和词典同步写回 `index.html`。
 - `build-french-4000-neural.sh`：本地生成三路纯 `fr-FR` 内置音频，并裁首尾静音。
 

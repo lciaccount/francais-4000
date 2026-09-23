@@ -1,0 +1,104 @@
+/* Uses the same light/dark palette and playback controls as the sentence view. */
+[hidden] { display: none !important; }
+.learningNav { display:flex; gap:6px; margin:0 0 12px; padding:4px; border:1px solid var(--line); border-radius:13px; background:var(--soft); width:fit-content; }
+.learningNav button { border:0; background:transparent; color:var(--muted); padding:8px 16px; border-radius:9px; cursor:pointer; font-weight:700; }
+.learningNav button[aria-pressed="true"] { background:var(--panel); color:var(--text); box-shadow:0 1px 4px #0001; }
+.learningNav span { font-size:11px; margin-left:6px; font-weight:500; opacity:.7; }
+.phoneticsPanel { margin:22px 0 130px; }
+.phoneticsHead { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:4px; }
+.phoneticsHead h2 { font-size:clamp(23px,3vw,32px); letter-spacing:-.03em; margin:3px 0 6px; }
+.phoneticsHead p,.phoneticsIntro { color:var(--muted); font-size:13px; margin:4px 0; }
+.phoneticsEyebrow { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.06em; }
+.phoneticsOffline { color:var(--muted); font-size:12px; margin:10px 0 20px; min-height:1.55em; }
+.phoneticsTabs { display:flex; gap:8px; margin-bottom:12px; }
+.phoneticsTabs button { display:flex; align-items:center; gap:10px; padding:9px 20px; border:1px solid var(--line); background:var(--panel); color:var(--text); font-size:21px; border-radius:12px; cursor:pointer; }
+.phoneticsTabs button span { font-size:14px; font-weight:700; }
+.phoneticsTabs button[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--accentText); }
+.phoneticsIntro { max-width:780px; line-height:1.7; margin-bottom:18px; }
+.phoneticsLayout { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(320px,1fr); align-items:start; gap:22px; }
+.phoneticsLibrary,.phoneticsDetail { min-width:0; border:1px solid var(--line); background:var(--panel); padding:20px; border-radius:18px; }
+.phoneticsLibraryHead { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:15px; }
+.phoneticsLibraryHead h3 { margin:0; font-size:15px; }
+.phonButton { border:1px solid var(--line); border-radius:10px; background:var(--soft); color:var(--text); padding:9px 12px; min-height:40px; cursor:pointer; font-size:13px; font-weight:600; }
+.phonButton.primary { background:var(--accent); color:var(--accentText); border-color:var(--accent); }
+.phonButton:disabled { opacity:.45; cursor:default; }
+.phonButton.listening { outline:2px solid var(--text); outline-offset:2px; }
+.phoneticsFilters { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.phonFilter { padding:6px 10px; border:1px solid var(--line); border-radius:20px; background:var(--panel); color:var(--muted); font-size:12px; cursor:pointer; }
+.phonFilter[aria-pressed="true"] { color:var(--text); border-color:var(--text); background:var(--soft); }
+.phoneticsGroup + .phoneticsGroup { margin-top:20px; }
+.phoneticsGroup h4 { margin:0 0 10px; font-size:13px; color:var(--muted); font-weight:600; }
+.phoneticsGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(76px,1fr)); gap:8px; }
+.phonTile { position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px; min-height:92px; border:1px solid var(--line); border-radius:12px; color:var(--text); background:var(--bg); cursor:pointer; padding:10px 5px; transition:background .15s,border-color .15s; }
+.phonTile:hover { background:var(--soft); border-color:var(--muted); }
+.phonTile[aria-pressed="true"] { border-color:var(--text); box-shadow:inset 0 0 0 1px var(--text); }
+.phonTile.playing { background:var(--accent); color:var(--accentText); }
+.phonTileSymbol { font-family:"Noto Sans",system-ui,sans-serif; font-size:29px; font-weight:600; line-height:1.25; }
+.phonTileSymbol small { font-size:18px; opacity:.65; margin-left:3px; }
+.phonTileSub { font-size:12px; opacity:.7; }
+.phonTilePlay { position:absolute; top:5px; right:7px; font-size:9px; opacity:.5; }
+.phonVariant { font-size:9px; opacity:.65; }
+.phonDetailTop { display:flex; align-items:center; gap:20px; justify-content:space-between; }
+.phonDetailSymbol { font-family:"Noto Sans",system-ui,sans-serif; font-size:clamp(44px,5vw,64px); line-height:1.35; font-weight:600; margin:6px 0 10px; white-space:nowrap; }
+.phonDetailSymbol small { opacity:.4; font-size:.65em; }
+.phonDetailName { text-align:right; font-size:16px; }
+.phonDetailVariant { display:block; font-size:11px; color:var(--muted); margin-top:6px; }
+.phoneticsPlayState { color:var(--muted); font-size:12px; min-height:1.6em; margin:0 0 10px; }
+.phonDetailActions { display:flex; flex-wrap:wrap; gap:7px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+.phonExplanation h4 { font-size:12px; color:var(--muted); margin:18px 0 6px; }
+.phonExplanation p { margin:0; font-size:14px; line-height:1.85; }
+.phonExample { background:var(--soft); padding:12px; border-radius:12px; margin-top:20px; }
+.phonExampleButton { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; border:0; background:transparent; color:var(--text); text-align:left; padding:7px 0 0; cursor:pointer; }
+.phonExampleButton strong { font-size:21px; margin-right:10px; }
+.phonExampleIPA { display:inline-block; font-size:13px; color:var(--muted); }
+.phonExampleZh { display:block; font-size:12px; color:var(--muted); margin-top:3px; }
+.phonSourceNote { color:var(--muted); font-size:11px; line-height:1.8; margin:14px 0 0; }
+.phonSource { font-size:11px; color:var(--muted); margin-top:8px; overflow-wrap:anywhere; }
+.phoneticsClose,.phoneticsBackdrop { display:none; }
+.phoneticsAbout { font-size:12px; color:var(--muted); line-height:1.8; margin-top:22px; padding:16px 20px; border:1px solid var(--line); border-radius:14px; }
+.phoneticsAbout summary,.phonSource summary { cursor:pointer; }
+.phoneticsPanel a { color:inherit; text-underline-offset:3px; }
+.phonetics-open .studybar,.phonetics-open .pageRail,.phonetics-open #locatePlayingBtn { display:none !important; }
+.phonetics-open .rangeBox > :not(.mini:has(#gap)):not(.status) { display:none; }
+.phonetics-open .ctrl:has(#playPattern) { display:none; }
+.phonetics-open .topbar { position:static; }
+.phonetics-open .controls { grid-template-columns:1.25fr 1fr 1fr 1fr 1fr auto; }
+.phoneticsPanel button:focus-visible,.learningNav button:focus-visible { outline:3px solid var(--text); outline-offset:3px; }
+@media (max-width:900px) {
+  .phoneticsLayout { grid-template-columns:minmax(0,1fr) minmax(290px,1fr); gap:12px; }
+  .phoneticsLibrary,.phoneticsDetail { padding:15px; }
+  .phoneticsGrid { grid-template-columns:repeat(auto-fill,minmax(66px,1fr)); gap:6px; }
+}
+@media (max-width:640px) {
+  .learningNav { width:100%; margin-bottom:8px; }
+  .learningNav button { flex:1; padding:7px 8px; font-size:13px; }
+  .learningNav span { font-size:10px; margin-left:4px; }
+  .phoneticsPanel { margin-top:16px; }
+  .phoneticsHead { align-items:flex-start; flex-direction:column; gap:8px; }
+  .phoneticsHead p { font-size:12px; }
+  .phoneticsHead .phonButton { font-size:12px; padding:7px 10px; }
+  .phoneticsOffline { margin:8px 0 14px; font-size:11px; }
+  .phoneticsTabs button { flex:1; justify-content:center; padding:8px 10px; }
+  .phoneticsTabs button span { font-size:13px; }
+  .phoneticsLayout { display:flex; flex-direction:column; gap:12px; }
+  .phoneticsLibrary,.phoneticsDetail { width:100%; border-radius:14px; }
+  .phoneticsDetail { display:none; }
+  .phoneticsDetail.expanded { display:block; position:fixed; left:10px; right:10px; bottom:max(10px,env(safe-area-inset-bottom)); width:auto; max-height:78vh; max-height:78dvh; overflow-y:auto; overscroll-behavior:contain; z-index:45; box-shadow:0 16px 55px #0005; padding-top:18px; }
+  .phoneticsBackdrop:not([hidden]) { display:block; position:fixed; inset:0; background:#0006; z-index:44; }
+  .phoneticsClose { display:block; position:absolute; top:8px; right:10px; border:0; background:var(--soft); color:var(--text); border-radius:50%; width:34px; height:34px; font-size:24px; cursor:pointer; }
+  .phonDetailTop { padding-right:30px; }
+  .phonDetailSymbol { font-size:42px; margin:4px 0 8px; }
+  .phonDetailName { font-size:14px; }
+  .phonDetailActions { padding-bottom:12px; }
+  .phonExplanation h4 { margin-top:12px; }
+  .phonExplanation p { font-size:13px; line-height:1.7; }
+  .phonExample { margin-top:12px; }
+  .phoneticsGrid { grid-template-columns:repeat(5,minmax(0,1fr)); }
+  .phonTile { min-height:81px; }
+  .phonTileSymbol { font-size:26px; }
+  .phonTileSymbol small { font-size:15px; }
+  .phonTileSub { font-size:11px; }
+  .phonVariant { font-size:8px; }
+  .phonetics-open .controls { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (prefers-reduced-motion:reduce) { .phonTile { transition:none; } }
