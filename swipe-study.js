@@ -14,7 +14,7 @@
   if (prefs.start > prefs.end) [prefs.start, prefs.end] = [prefs.end, prefs.start];
   const feed = {open: false, kind: 'sentence', list: [], index: 0, contexts: {}, playing: false,
     details: false, revealed: false, turn: 0, count: 0, timer: null, introTimer: null, preview: false,
-    returnFocus: null, inert: [], scroll: [0, 0], fullscreen: false, gesture: null, locked: false, completed: false};
+    returnFocus: null, lookupFocus: null, inert: [], scroll: [0, 0], fullscreen: false, gesture: null, locked: false, completed: false};
   const save = () => {try {localStorage.setItem(KEY, JSON.stringify(prefs));} catch { /* Private mode / quota: keep the in-memory settings. */ }};
   const current = () => feed.list[feed.index];
   const title = item => !item ? '暂无内容' : feed.kind === 'sentence' ? `句子 #${item.id}` : feed.kind === 'letter' ? `字母 ${item.symbol}` : `音标 /${item.symbol}/`;
@@ -57,10 +57,13 @@
       <div id="swipeStage" class="swipeStage"><article id="swipeCard" class="swipeCard" tabindex="-1"></article></div>
       <footer class="swipeFooter"><div class="swipeAudioRow"><span id="swipePlayState" role="status" aria-live="polite"></span><div class="swipeAudioControls"><label class="swipeSpeedLabel"><span class="swipeSrOnly">播放倍速（0.50 至 2.00，步长 0.05）</span><select id="swipeSpeed">${Array.from({length:31}, (_,i) => {const rate=((50+i*5)/100).toFixed(2); return `<option value="${rate}">${rate}×</option>`;}).join('')}</select></label><label class="swipeVoiceLabel"><span class="swipeSrOnly">播放音色（音标参考音固定）</span><select id="swipeVoice"></select></label></div></div>
         <div class="swipeActions"><button id="swipePause" type="button" class="swipePrimary">暂停</button><button id="swipeDetails" type="button" aria-expanded="false" aria-controls="swipeExplanation">详解</button></div>
-        <div id="swipeHint" class="swipeHint">上下滑切换 · 当前条目无限循环 · 空格暂停 · Esc 退出</div></footer>
+        <div id="swipeHint" class="swipeHint">上下滑切换 · 点词查义 · 空格暂停 · Esc 退出</div></footer>
       <div id="swipeIntro" class="swipeIntro" role="status" hidden><span aria-hidden="true">↕</span> 上下滑动切换条目</div>
     </section>`);
   const root = $('#swipeStudy'), stage = $('#swipeStage'), card = $('#swipeCard');
+  const dictionary = $('#dictionary'), backdrop = $('#dictBackdrop');
+  const dictionaryHome = dictionary.parentNode, dictionaryNext = dictionary.nextSibling;
+  const restoreLookupFocus = () => {if (feed.lookupFocus?.isConnected) feed.lookupFocus.focus({preventScroll: true}); feed.lookupFocus = null;};
   const autoEnabled = () => feed.kind === 'sentence' && prefs.auto;
   const playbackRate = () => Number($('#speed').value);
   let downloadPort = null, downloadWatchdog = null;
@@ -166,12 +169,15 @@
     $('#swipeLock').textContent = feed.locked ? '解锁' : '锁定';
     $('#swipeLock').setAttribute('aria-pressed', String(feed.locked));
     for (const el of root.querySelectorAll('.swipeKindLabel,#swipeExit,.swipeSettings,.swipeActions,.swipeAudioRow label')) el.inert = feed.locked;
-    for (const el of card.querySelectorAll('button,a')) {
+    for (const el of card.querySelectorAll('button,a,.word')) {
       if (el.tagName === 'BUTTON') el.disabled = feed.locked;
-      if (feed.locked) el.setAttribute('tabindex', '-1'); else el.removeAttribute('tabindex');
+      if (el.classList.contains('word')) {
+        el.tabIndex = feed.locked ? -1 : 0;
+        if (feed.locked) el.setAttribute('aria-disabled', 'true'); else el.removeAttribute('aria-disabled');
+      } else if (feed.locked) el.setAttribute('tabindex', '-1'); else el.removeAttribute('tabindex');
     }
     if ($('#swipeExplanation')) $('#swipeExplanation').tabIndex = feed.locked ? -1 : 0;
-    $('#swipeHint').textContent = feed.locked ? '已锁定 · 仅可上下滑切换 · 点右上角解锁' : '上下滑切换 · 详解内可滚动 · 空格暂停 · Esc 退出';
+    $('#swipeHint').textContent = feed.locked ? '已锁定 · 仅可上下滑切换 · 点右上角解锁' : '上下滑切换 · 点词查义 · 详解内可滚动 · 空格暂停 · Esc 退出';
   }
   function advanceAutomatically() {
     if (feed.index < feed.list.length - 1) {step(1, 'auto'); return;}
@@ -238,9 +244,9 @@
     card.dataset.kind = feed.kind;
     card.dataset.id = item.id;
     card.innerHTML = `<div class="swipeHero swipeScrollable"><div class="swipeEyebrow">${escapeHtml(title(item))}${feed.kind === 'sound' ? ' · ' + PHONETICS_DATA.groups[item.group] : ''}</div>
-      <h3 class="swipeMainText ${sentence ? 'swipeSentenceText' : 'swipeSymbol'}" lang="fr">${sentence ? escapeHtml(item.fr) : feed.kind === 'letter' ? `${item.symbol}<small>${item.symbol.toLowerCase()}</small>` : `/${item.symbol}/`}</h3>
+      <h3 class="swipeMainText ${sentence ? 'swipeSentenceText' : 'swipeSymbol'}" lang="fr">${sentence ? renderFrench(item.fr, '查词') : feed.kind === 'letter' ? `${item.symbol}<small>${item.symbol.toLowerCase()}</small>` : `/${item.symbol}/`}</h3>
       <div class="swipeIPA">${sentence || feed.kind === 'letter' ? `/${escapeHtml(item.ipa)}/` : escapeHtml(item.name)}</div>
-      ${!sentence ? `<button class="swipeExample" id="swipeExample" type="button" aria-label="点读例词 ${escapeHtml(item.example)}"><strong lang="fr">${escapeHtml(item.example)}</strong><span>/${escapeHtml(example.ipa)}/</span><span aria-hidden="true">▶</span></button>` : ''}
+      ${!sentence ? `<div class="swipeExampleRow"><button class="swipeExample" id="swipeExample" type="button" aria-label="点读例词 ${escapeHtml(item.example)}"><strong lang="fr">${escapeHtml(item.example)}</strong><span>/${escapeHtml(example.ipa)}/</span><span aria-hidden="true">▶</span></button><button class="swipeExampleLookup" type="button" data-word="${escapeHtml(item.example)}" aria-label="查询例词 ${escapeHtml(item.example)} 的词义">查例词</button></div>` : ''}
       <p id="swipeTranslation" class="swipeTranslation" ${feed.revealed ? '' : 'hidden'}>${escapeHtml(translation)}</p><button id="swipeReveal" class="swipeReveal" type="button" ${feed.revealed ? 'hidden' : ''}>点一下，查看${sentence ? '中文' : '例词释义'}</button>
       ${sentence ? '<div class="swipeMarks"><button id="swipeFavorite" type="button"></button><button id="swipeMastered" type="button"></button></div>' : ''}</div>
       <section id="swipeExplanation" class="swipeExplanation swipeScrollable" aria-label="当前条目详解" tabindex="0" ${feed.details ? '' : 'hidden'}>${sentence ? sentenceExplanation(item) : soundExplanation(item)}</section>`;
@@ -354,6 +360,7 @@
     feed.fullscreen = false;
     feed.locked = false;
     root.hidden = false;
+    root.append(backdrop, dictionary);
     $('#swipeDefaultDetails').checked = prefs.details;
     $('#swipeHideTranslation').checked = prefs.hideTranslation;
     $('#swipeAll').checked = false;
@@ -379,6 +386,7 @@
 
   function close() {
     if (!feed.open || feed.locked) return;
+    closeDictionary();
     feed.open = false;
     clearTimeout(feed.introTimer); feed.introTimer = null;
     $('#swipeIntro').hidden = true;
@@ -387,6 +395,9 @@
     stage.style.transform = '';
     if (document.fullscreenElement === root) document.exitFullscreen().catch(() => {});
     root.hidden = true;
+    dictionaryHome.insertBefore(backdrop, dictionaryNext);
+    dictionaryHome.insertBefore(dictionary, dictionaryNext);
+    feed.lookupFocus = null;
     feed.inert.forEach(([el, previous]) => {el.inert = previous;});
     feed.inert = [];
     document.body.classList.remove('swipe-study-open');
@@ -519,6 +530,16 @@
     if (feed.playing) startPlayback();
   };
   card.onclick = e => {
+    if (feed.locked) return;
+    const lookup = e.target.closest('.word,.swipeExampleLookup');
+    if (lookup) {
+      feed.lookupFocus = lookup;
+      pause('查词已暂停，关闭词典后点继续。');
+      showDictionary(lookup.dataset.word, feed.kind === 'sentence' ? current().id : null);
+      if (lookup.classList.contains('word')) lookup.classList.add('lookup-active');
+      $('#dictClose').focus({preventScroll: true});
+      return;
+    }
     const button = e.target.closest('button');
     if (!button) return;
     if (button.id === 'swipeReveal') {feed.revealed = true; $('#swipeTranslation').hidden = false; button.hidden = true;}
@@ -531,6 +552,11 @@
       renderProgress(); syncControls();
     }
   };
+  root.addEventListener('click', e => {
+    if (!feed.open || !dictionary.classList.contains('show') || !e.target.closest('#dictClose,#dictBackdrop')) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    closeDictionary(); restoreLookupFocus();
+  }, true);
   window.addEventListener('playbackstop', () => {clearTimeout(feed.timer); feed.timer = null; feed.playing = false; if (feed.open) syncControls();});
   document.addEventListener('visibilitychange', () => {if (feed.open && document.hidden) pause('切到后台已暂停，回到页面后点继续。');});
   document.addEventListener('fullscreenchange', () => {
@@ -545,6 +571,18 @@
       else if (!(e.target === $('#swipeLock') && ['Enter', ' '].includes(e.key))) e.preventDefault();
       return;
     }
+    if (dictionary.classList.contains('show')) {
+      e.stopImmediatePropagation();
+      if (e.key === 'Escape') {e.preventDefault(); closeDictionary(); restoreLookupFocus();}
+      else if (e.key === 'Tab') {
+        const focusable = [...dictionary.querySelectorAll('button:not(:disabled),a[href]')].filter(el => el.getClientRects().length);
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (!focusable.includes(document.activeElement)) {e.preventDefault(); (e.shiftKey ? last : first)?.focus();}
+        else if (e.shiftKey && document.activeElement === first) {e.preventDefault(); last?.focus();}
+        else if (!e.shiftKey && document.activeElement === last) {e.preventDefault(); first?.focus();}
+      }
+      return;
+    }
     if (e.key === 'Escape') {e.preventDefault(); e.stopImmediatePropagation(); close(); return;}
     // Prevent the normal sentence keyboard shortcuts from running under the overlay.
     e.stopImmediatePropagation();
@@ -557,6 +595,7 @@
       return;
     }
     if (e.target.closest('input,select,textarea') || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.target.matches('.word') && ['Enter', ' '].includes(e.key)) {e.preventDefault(); e.target.click(); return;}
     if (['ArrowDown', 'PageDown', 'ArrowUp', 'PageUp'].includes(e.key)) {
       const delta = ['ArrowDown', 'PageDown'].includes(e.key) ? 1 : -1;
       if (canScroll(e.target.closest('.swipeScrollable'), delta)) return;

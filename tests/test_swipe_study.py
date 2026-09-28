@@ -71,6 +71,21 @@ def mobile_tests(browser, base, shots):
     page.screenshot(path=str(shots / 'swipe-sentence-mobile.png'))
     print('PASS: fullscreen viewport + infinite current-sentence loop regardless of single-repeat setting', flush=True)
 
+    page.locator('.swipeSentenceText .word').first.tap()
+    assert page.locator('#dictionary').is_visible()
+    assert page.locator('#dictionary').evaluate('el=>el.parentElement.id') == 'swipeStudy'
+    assert page.locator('#dictContext').inner_text().startswith('本句 #1')
+    assert page.evaluate('state.mode === null')
+    page.locator('#dictClose').tap()
+    assert page.locator('#dictionary').is_hidden()
+    page.locator('#swipePause').tap()
+    page.wait_for_function('state.mode === "swipe"')
+    page.locator('#swipeLock').tap()
+    page.locator('.swipeSentenceText .word').first.evaluate('el=>el.click()')
+    assert page.locator('#dictionary').is_hidden()
+    page.locator('#swipeLock').tap()
+    print('PASS: mobile large-screen word lookup pauses playback; locked mode blocks lookup', flush=True)
+
     touch(page, (190, 500), (190, 250))
     assert card_id(page) == '2', card_id(page)
     touch(page, (190, 250), (190, 500))
@@ -148,6 +163,13 @@ def mobile_tests(browser, base, shots):
     page.locator('#swipeExample').click()
     page.wait_for_function('audioEvents.some(e=>e.src.includes("/phonetics/si.mp3"))', timeout=10000)
     page.wait_for_function('state.mode === "swipe" && state.audio && state.audio.src.includes("/ipa/i.mp3")')
+    page.locator('.swipeExampleLookup').tap()
+    assert page.locator('#dictionary').is_visible()
+    assert page.locator('#dictWord').inner_text() == 'si'
+    page.locator('#dictBackdrop').tap(position={'x': 4, 'y': 4})
+    assert page.locator('#dictionary').is_hidden()
+    page.locator('#swipePause').tap()
+    page.wait_for_function('state.mode === "swipe"')
     page.screenshot(path=str(shots / 'swipe-ipa-mobile.png'))
     print('PASS: three-voice cycle, fixed IPA reference loop, example preview then resume current sound', flush=True)
 
@@ -202,6 +224,12 @@ def desktop_tests(browser, base, shots):
     page.wait_for_timeout(100)
     assert card_id(page) == '3'
     page.screenshot(path=str(shots / 'swipe-desktop.png'))
+    page.locator('.swipeSentenceText .word').first.focus()
+    page.keyboard.press('Enter')
+    assert page.locator('#dictionary').is_visible()
+    page.keyboard.press('Escape')
+    assert page.locator('#dictionary').is_hidden()
+    assert page.locator('#swipeStudy').is_visible()
     for _ in range(24):
         page.keyboard.press('Tab')
         assert page.locator('#swipeStudy').evaluate('el=>el.contains(document.activeElement)')

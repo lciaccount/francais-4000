@@ -41,7 +41,7 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 #swipeLock { white-space:nowrap; padding:8px 10px; font-size:12px; }
 .swipeStudy.is-locked .swipeSettings { height:0; visibility:hidden; }
 .swipeStudy.is-locked .swipeKindLabel,.swipeStudy.is-locked #swipeExit,.swipeStudy.is-locked .swipeActions,.swipeStudy.is-locked .swipeAudioRow label { display:none; }
-.swipeStudy.is-locked .swipeCard button,.swipeStudy.is-locked .swipeCard a { pointer-events:none; }
+.swipeStudy.is-locked .swipeCard button,.swipeStudy.is-locked .swipeCard a,.swipeStudy.is-locked .swipeCard .word { pointer-events:none; }
 .swipeStudy.is-locked .swipeStage,.swipeStudy.is-locked .swipeScrollable { touch-action:none; user-select:none; }
 .swipeStudy.is-locked .swipeHint { display:block; }
 .swipeHeader { display:flex; align-items:center; gap:12px; padding:12px 0 8px; }
@@ -64,6 +64,8 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 .swipeEyebrow { font-size:12px; color:var(--muted); letter-spacing:.08em; margin-bottom:18px; flex-shrink:0; }
 .swipeMainText { margin:0; font-weight:750; text-wrap:balance; flex-shrink:0; overflow-wrap:anywhere; }
 .swipeSentenceText { font-size:calc(clamp(26px,4vw,52px) * var(--swipe-font-fr,1)); line-height:1.45; letter-spacing:-.015em; max-width:920px; }
+.swipeSentenceText .word { cursor:pointer; text-decoration:underline dotted color-mix(in srgb,var(--muted) 50%,transparent); text-underline-offset:5px; }
+.swipeSentenceText .word:focus-visible { outline:2px solid var(--text); outline-offset:3px; }
 .swipeSymbol { --swipe-symbol-scale:var(--swipe-font-fr,1); font-family:"Noto Sans",system-ui,sans-serif; font-size:calc(clamp(76px,13vh,138px) * var(--swipe-symbol-scale)); line-height:1.2; }
 .swipeCard[data-kind="sound"] .swipeSymbol { --swipe-symbol-scale:var(--swipe-font-ipa,1); }
 .swipeSymbol small { font-size:.58em; margin-left:12px; opacity:.38; }
@@ -73,6 +75,13 @@ body.swipe-study-open { position:fixed; width:100%; overflow:hidden; overscroll-
 .swipeMarks { display:flex; gap:8px; margin-top:23px; flex-shrink:0; }
 .swipeMarks button { font-size:12px; min-height:36px; }
 .swipeExample { display:flex; gap:10px; align-items:center; justify-content:center; margin-top:18px; flex-wrap:wrap; flex-shrink:0; }
+.swipeExampleRow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:18px; flex-shrink:0; }
+.swipeExampleRow .swipeExample { margin-top:0; }
+.swipeExampleLookup { font-size:12px; white-space:nowrap; }
+.swipeStudy .dictExamples { display:none; }
+.swipeStudy .dictionary .dictClose { min-height:40px; width:40px; padding:0; border:0; background:transparent; }
+.swipeStudy .dictionary .dictToolBtn { min-height:38px; padding:6px 9px; background:var(--soft); }
+.swipeStudy .dictionary .dictToolBtn.primary { background:var(--accent); color:var(--accentText); border-color:var(--accent); }
 .swipeExample strong { font-size:calc(22px * var(--swipe-font-fr,1)); overflow-wrap:anywhere; }
 .swipeExample span { font-size:calc(13px * var(--swipe-font-ipa,1)); color:var(--muted); overflow-wrap:anywhere; }
 .swipeCard.with-details .swipeHero { flex:0 1 auto; max-height:48%; padding:12px 20px; }
