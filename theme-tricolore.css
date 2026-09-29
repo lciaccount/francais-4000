@@ -1,0 +1,76 @@
+/* French tricolour theme: blue for actions, red for emphasis, white for reading. */
+html[data-theme="tricolore"] {
+  color-scheme:light;
+  --bg:#f3f6fb;
+  --panel:#fff;
+  --text:#162343;
+  --muted:#596987;
+  --line:#cbd6e8;
+  --soft:#eaf0fa;
+  --accent:#173f91;
+  --accentText:#fff;
+  --playing:#eaf1fc;
+  --shadow:0 10px 30px rgba(19,47,103,.10);
+  --noun:#1a4e9b;
+  --verb:#bd2440;
+  --adj:#6b409f;
+  --adv:#24765a;
+  --prep:#9d5b16;
+  --tricolor-blue:#173f91;
+  --tricolor-red:#bd2440;
+}
+html[data-theme="tricolore"] body {
+  background:radial-gradient(ellipse 70% 34% at 0 0,rgba(23,63,145,.065),transparent 74%),radial-gradient(ellipse 60% 32% at 100% 10%,rgba(189,36,64,.045),transparent 76%),var(--bg);
+}
+html[data-theme="tricolore"] .topbar::before {
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:0 0 5px 5px;
+  background:linear-gradient(90deg,#173f91 0 33.333%,#fff 33.333% 66.666%,#bd2440 66.666%);
+  box-shadow:0 1px 0 rgba(23,63,145,.12);pointer-events:none;
+}
+html[data-theme="tricolore"] .brand h1::after,
+html[data-theme="tricolore"] .sectionHead h2::before,
+html[data-theme="tricolore"] .phoneticsHead h2::before,
+html[data-theme="tricolore"] .swipeHeader h2::after {
+  content:"";display:inline-block;vertical-align:-.13em;width:.88em;height:1em;margin-left:.28em;
+  background:var(--tricolor-red);-webkit-mask:url("./fleur-de-lys.svg") center/contain no-repeat;mask:url("./fleur-de-lys.svg") center/contain no-repeat;
+}
+html[data-theme="tricolore"] .phoneticsHead h2::before { margin:0 .26em 0 0;background:var(--tricolor-blue); }
+html[data-theme="tricolore"] .sectionHead h2::before { margin:0 .26em 0 0;background:var(--tricolor-red); }
+html[data-theme="tricolore"] .themeBtn { border-color:var(--tricolor-blue);box-shadow:inset 0 -3px 0 var(--tricolor-red); }
+html[data-theme="tricolore"] .themeBtn:hover { background:var(--soft); }
+html[data-theme="tricolore"] .controls,
+html[data-theme="tricolore"] .progressCard,
+html[data-theme="tricolore"] .searchCard,
+html[data-theme="tricolore"] .sidebar,
+html[data-theme="tricolore"] .phoneticsLibrary,
+html[data-theme="tricolore"] .phoneticsDetail { box-shadow:0 5px 24px rgba(23,63,145,.045); }
+html[data-theme="tricolore"] .progressFill { background:linear-gradient(90deg,#173f91 0 47%,#fff 47% 53%,#bd2440 53%); }
+html[data-theme="tricolore"] .sentence { border-color:#d5deec; }
+html[data-theme="tricolore"] .sentence::after {
+  content:"";position:absolute;right:15px;top:50%;width:57px;height:63px;transform:translateY(-50%);
+  background:var(--tricolor-blue);opacity:.10;pointer-events:none;
+  -webkit-mask:url("./fleur-de-lys.svg") center/contain no-repeat;mask:url("./fleur-de-lys.svg") center/contain no-repeat;
+}
+html[data-theme="tricolore"] .sentence.playing { border-color:var(--tricolor-blue);outline-color:var(--tricolor-blue); }
+html[data-theme="tricolore"] .sentence.playing::before { background:var(--tricolor-red); }
+html[data-theme="tricolore"] .sentence.mastered { border-left-color:var(--tricolor-blue); }
+html[data-theme="tricolore"] .sentence.playing .sentencePlayBtn { background:var(--tricolor-red);border-color:var(--tricolor-red); }
+html[data-theme="tricolore"] .favBtn.active,
+html[data-theme="tricolore"] .mobileNav .mStop { background:var(--tricolor-red);border-color:var(--tricolor-red);color:#fff; }
+html[data-theme="tricolore"] .swipeStudy { background:var(--bg); }
+html[data-theme="tricolore"] .swipeStage::before {
+  content:"";position:absolute;left:50%;top:50%;width:min(44vw,320px);height:min(44vw,320px);transform:translate(-50%,-50%);
+  background:var(--tricolor-blue);opacity:.045;pointer-events:none;
+  -webkit-mask:url("./fleur-de-lys.svg") center/contain no-repeat;mask:url("./fleur-de-lys.svg") center/contain no-repeat;
+}
+html[data-theme="tricolore"] .swipeCard { position:relative; }
+html[data-theme="tricolore"] #swipeProgressFill { background:var(--tricolor-red); }
+html[data-theme="tricolore"] .swipeStudy .swipePrimary { background:var(--tricolor-blue);border-color:var(--tricolor-blue);color:#fff; }
+html[data-theme="tricolore"] .swipeStudy #swipePause { background:var(--tricolor-red);border-color:var(--tricolor-red);color:#fff; }
+@media(max-width:360px){
+  html[data-theme="tricolore"] .brand h1::after { display:none; }
+}
+@media(max-width:560px){
+  html[data-theme="tricolore"] .sentence::after { width:40px;height:45px;right:8px;opacity:.08; }
+  html[data-theme="tricolore"] .swipeStage::before { width:50vw;height:50vw; }
+}
