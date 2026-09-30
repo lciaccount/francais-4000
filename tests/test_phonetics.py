@@ -198,7 +198,7 @@ def exercise_offline(browser, base):
     page.goto(base, wait_until='networkidle')
     page.wait_for_function('navigator.serviceWorker.controller !== null', timeout=30000)
     assert page.evaluate('''async () => (await caches.keys()).includes('unrelated-app-cache')''')
-    assert page.evaluate('''async () => !!(await (await caches.open('fr4000-v16-editorial-tricolore-20260930')).match('./audio/v1/sent/0001.mp3?v=fr4000v3'))''')
+    assert page.evaluate('''async () => !!(await (await caches.open('fr4000-v17-france-scenes-20260930')).match('./audio/v1/sent/0001.mp3?v=fr4000v3'))''')
     open_lab(page)
     page.locator('#phoneticsDownload').click()
     page.wait_for_function('document.querySelector("#phoneticsOffline").textContent.includes("232 个音频已缓存")', timeout=90000)

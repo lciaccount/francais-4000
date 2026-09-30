@@ -39,7 +39,7 @@ def status(page, text):
 
 def cached(page, start, end):
     return page.evaluate('''async ([start,end]) => {
-      const cache=await caches.open('fr4000-v16-editorial-tricolore-20260930');
+      const cache=await caches.open('fr4000-v17-france-scenes-20260930');
       let count=0;
       for(let id=start;id<=end;id++) for(let v=1;v<=3;v++) {
         const r=await cache.match(`./audio/v${v}/sent/${String(id).padStart(4,'0')}.mp3?v=fr4000v3`);

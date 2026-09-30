@@ -1,5 +1,5 @@
-const CACHE='fr4000-v16-editorial-tricolore-20260930';
-const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./swipe-study.js','./swipe-study.css','./theme-tricolore.css','./fleur-de-lys.svg','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
+const CACHE='fr4000-v17-france-scenes-20260930';
+const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./swipe-study.js','./swipe-study.css','./theme-tricolore.css','./france-scenes.js','./france-scenes.css','./fleur-de-lys.svg','./backgrounds/eiffel.webp','./backgrounds/soleil.webp','./backgrounds/fleur.webp','./backgrounds/louvre.webp','./backgrounds/versailles.webp','./backgrounds/cote-azur.webp','./backgrounds/bourgogne.webp','./backgrounds/normandie.webp','./backgrounds/pantheon.webp','./backgrounds/champs-elysees.webp','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 // Retain already-downloaded sentence audio when updating the application shell.
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{
