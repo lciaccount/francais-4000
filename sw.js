@@ -1,4 +1,4 @@
-const CACHE='fr4000-v15-tricolore-20260929';
+const CACHE='fr4000-v16-editorial-tricolore-20260930';
 const ASSETS=['./','./index.html','./learning-data-4000.js','./pronunciation-data-4000.js','./phonetics-data.js','./phonetics-sources.js','./phonetics.js','./phonetics.css','./swipe-study.js','./swipe-study.css','./theme-tricolore.css','./fleur-de-lys.svg','./audio/phonetics/manifest.json','./manifest.webmanifest','./icon-192.png','./icon-512.png','./audio/voice-manifest.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 // Retain already-downloaded sentence audio when updating the application shell.
