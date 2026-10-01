@@ -1,0 +1,42 @@
+/* Keep reading space ahead of secondary controls, especially on wide screens. */
+.advancedControls {grid-column:1/-1;min-width:0;border-top:1px solid var(--line)}
+.advancedControls summary {list-style:none;cursor:pointer;color:var(--text);font-size:12px;font-weight:800;padding:6px 3px;user-select:none}
+.advancedControls summary::-webkit-details-marker {display:none}
+.advancedControls summary::before {content:'▸';display:inline-block;margin-right:7px;color:var(--muted)}
+.advancedControls[open] summary::before {content:'▾'}
+.advancedControlsBody {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:6px 0 2px}
+.advancedControlsBody .rangeBox {grid-column:1/-1;margin:0}
+.controls>#status {grid-column:1/-1;max-width:none;margin:0;text-align:right}
+.locatePlayingBtn {touch-action:none;user-select:none;-webkit-user-select:none}
+.locatePlayingBtn.inactive {opacity:.7}
+.locatePlayingBtn.custom-position {right:auto!important;bottom:auto!important}
+.locatePlayingBtn.dragging {cursor:grabbing;opacity:1;transform:none!important}
+@media(min-width:801px){
+  .topbar {position:relative;padding:6px 0 8px}
+  .brandrow {margin-bottom:5px}
+  .brand p {display:none}
+  .voiceHint {display:none}
+  .sceneBanner {min-height:72px;margin-top:7px;padding:9px 14px}
+  .sceneBanner strong {font-size:23px}
+  .studybar {margin-top:6px}
+  .advancedControlsBody .rangeBox {padding-top:7px}
+}
+@media(min-width:1180px){
+  .controls {grid-template-columns:minmax(240px,1.5fr) minmax(170px,1fr) minmax(160px,.82fr) minmax(150px,.85fr) auto;align-items:end;gap:6px 10px;padding:8px 10px}
+  .controls>.ctrl {min-width:0}
+  .controls>.stopBtn {align-self:end;white-space:nowrap}
+  .advancedControls {grid-column:1/4;align-self:center}
+  .controls>#status {grid-column:4/-1;align-self:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+}
+@media(max-width:800px){
+  .advancedControls {grid-column:1/-1}
+  .advancedControlsBody {gap:6px}
+  .advancedControlsBody .rangeBox {display:grid}
+  .controls>#status {display:none}
+}
+@media(max-width:560px){
+  .sentenceActions {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+  .sentenceActions .sentencePlayBtn,.sentenceActions .favBtn,.sentenceActions .masterBtn {grid-column:span 2;min-width:0}
+  .sentenceActions .detailsBtn,.sentenceActions [data-swipe-sentence] {grid-column:span 3;margin-left:0;min-width:0}
+  .sentenceActions .studiedBadge {display:none}
+}

@@ -13,8 +13,8 @@ SOURCE = (ROOT / 'france-scenes.js').read_text(encoding='utf-8')
 ORIGINAL = re.compile(r"\{fr:([\"'])(.*?)\1,zh:")
 ADDED = re.compile(r"^\s+\[([\"'])(.*?)\1,", re.MULTILINE)
 sentences = [match[1] for match in ORIGINAL.findall(SOURCE) + ADDED.findall(SOURCE)]
-if len(sentences) != 128 or len(set(sentences)) != 128:
-    raise SystemExit(f'Expected 128 distinct introduction sentences, got {len(sentences)}')
+if len(sentences) != 192 or len(set(sentences)) != 192:
+    raise SystemExit(f'Expected 192 distinct introduction sentences, got {len(sentences)}')
 EspeakWrapper.set_library(espeakng_loader.get_library_path())
 EspeakWrapper.set_data_path(espeakng_loader.get_data_path())
 backend = EspeakBackend('fr-fr', with_stress=False)

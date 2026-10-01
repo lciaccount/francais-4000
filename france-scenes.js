@@ -214,6 +214,89 @@
       ["Entre les deux fleuves, les quartiers racontent des époques différentes.",'两条河流之间的街区讲述着不同时代的故事。','地点 + 主语 + 动词 + 宾语','entre 引出位置；racontent 在这里是比喻用法。',{fleuves:'河流',quartiers:'街区',racontent:'讲述',époques:'时代'}]]
   };
   for (const scene of scenes) scene.lines.push(...lastDetails[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
+  const deepDive = {
+    eiffel:[
+      ["Le projet associait les ingénieurs Maurice Koechlin et Émile Nouguier à l'architecte Stephen Sauvestre.",'这一方案汇集了工程师莫里斯·凯什兰、埃米尔·努吉耶与建筑师斯蒂芬·索韦斯特尔。','主语 + associer A à B','associait 为未完成过去时；à 引出参与设计的人。',{projet:'方案',ingénieurs:'工程师',architecte:'建筑师',associait:'汇集'}],
+      ["Avant son ouverture, certains artistes jugeaient cette immense construction de fer incompatible avec le paysage parisien.",'开放之前，一些艺术家认为这座巨大的铁制建筑与巴黎风景不相称。','时间 + 主语 + 动词 + 宾语补足语','jugeaient A B 表示“认为 A 是 B”；avant 引出时间。',{ouverture:'开放',jugeaient:'认为',immense:'巨大的',incompatible:'不相容的'}],
+      ["La peinture protège la structure contre la corrosion, et les différentes campagnes ont parfois changé sa couleur.",'油漆保护结构免受腐蚀；历次涂装有时还改变了它的颜色。','两个并列分句','contre 表示“防止”；ont changé 是复合过去时。',{peinture:'油漆',protège:'保护',corrosion:'腐蚀',campagnes:'涂装工程'}],
+      ["De monument provisoire, la tour est devenue un lieu de visite, de recherche et de transmission.",'从原本的临时建筑，铁塔变成了观光、科研与通信的场所。','de A, devenir B','est devenue 与阴性 tour 一致；三个 de 引出并列用途。',{provisoire:'临时的',recherche:'研究',transmission:'传输',devenue:'成为'}]],
+    soleil:[
+      ["Louis XIV n'était encore qu'un enfant lorsqu'il est monté sur le trône de France.",'路易十四登上法国王位时还只是个孩子。','主句 + lorsque 时间从句','ne...que 表示“仅仅”；lorsque 引导时间从句。',{enfant:'孩子',monté:'登上',trône:'王位'}],
+      ["Après avoir pris personnellement le pouvoir, il a utilisé les cérémonies pour rendre son autorité visible.",'亲自掌权后，他利用典礼使自己的权威变得可见。','après avoir + 过去分词','après avoir pris 表示先发生的动作；pour 表目的。',{personnellement:'亲自',pouvoir:'权力',cérémonies:'典礼',autorité:'权威'}],
+      ["À Versailles, l'étiquette réglait les gestes quotidiens et distinguait les rangs des courtisans.",'在凡尔赛，宫廷礼仪规定日常举止，也区分朝臣等级。','地点 + 主语 + 两个并列动词','réglait 与 distinguait 均为未完成过去时，描述惯常制度。',{étiquette:'宫廷礼仪',réglait:'规范',rangs:'等级',courtisans:'朝臣'}],
+      ["Le symbole du soleil reliait l'image du souverain à la lumière, aux arts et à l'idée d'ordre.",'太阳意象把君主形象与光明、艺术和秩序观念联系起来。','relier A à B','reliait 为未完成过去时；à 后有三个并列成分。',{symbole:'象征',reliait:'联系',souverain:'君主',ordre:'秩序'}]],
+    fleur:[
+      ["La fleur de lys est un motif héraldique, et non une représentation scientifique d'une fleur précise.",'百合花饰是一种纹章图案，并非某种具体花卉的科学图解。','A, et non B 对照','et non 表示“而不是”；d’une 是 de une 的省音。',{motif:'图案',héraldique:'纹章的',représentation:'描绘',précise:'具体的'}],
+      ["Sur le manteau de cérémonie, la répétition des lys rendait l'identité royale visible de loin.",'在礼服披风上，反复出现的花饰让王室身份从远处就能辨认。','地点 + 主语 + rendre A B','rendait A B 表示“使 A 变得 B”；de loin 表示“从远处”。',{manteau:'披风',cérémonie:'典礼',répétition:'重复',identité:'身份'}],
+      ["Ce signe a circulé sur les armoiries, les tissus et les objets liés à la monarchie.",'这一标志出现在纹章、织物及与君主制相关的器物上。','主语 + 复合过去时 + 并列地点','a circulé 在这里表示图案在不同载体上传播。',{signe:'标志',circulé:'传播',armoiries:'纹章',tissus:'织物'}],
+      ["Comprendre ce motif aide à lire les portraits royaux comme des images de pouvoir, pas seulement comme des visages.",'理解这一图案，有助于把王室肖像读作权力形象，而不只是人物面容。','动词原形作主语 + aider à','comprendre 作主语；pas seulement 表示“不只是”。',{comprendre:'理解',portraits:'肖像',images:'形象',visages:'面容'}]],
+    louvre:[
+      ["Sous une partie du musée, on peut encore voir des vestiges de la forteresse bâtie au Moyen Âge.",'在博物馆的一部分地下，至今仍能看到中世纪堡垒的遗迹。','地点 + on peut + 动词原形','encore 表示“仍然”；bâtie 修饰阴性 forteresse。',{vestiges:'遗迹',forteresse:'堡垒',bâtie:'建造的',moyen:'中间的'}],
+      ["Au fil des siècles, plusieurs souverains ont transformé l'ancienne forteresse en résidence et en palais.",'几个世纪以来，多位君主把旧堡垒改造成住所和宫殿。','transformer A en B','au fil de 表示“随着”；ont transformé 是复合过去时。',{souverains:'君主',transformé:'改造',ancienne:'旧的',résidence:'住所'}],
+      ["La pyramide conçue par Ieoh Ming Pei sert d'entrée au musée et organise l'accès à ses ailes.",'贝聿铭设计的金字塔充当博物馆入口，并组织通往各翼楼的路线。','主语 + 两个并列动词','conçue 是过去分词定语；sert de 表示“充当”。',{pyramide:'金字塔',conçue:'设计的',entrée:'入口',ailes:'翼楼'}],
+      ["En visitant le Louvre, on découvre à la fois des œuvres d'art et les traces de l'histoire du bâtiment.",'参观卢浮宫时，人们既能欣赏艺术品，也能看到建筑自身的历史痕迹。','en + 现在分词 + 主句','à la fois A et B 表示“既 A 又 B”；en visitant 表示“参观时”。',{œuvres:'作品',traces:'痕迹',bâtiment:'建筑',découvre:'发现'}]],
+    versailles:[
+      ["Avant de devenir un grand palais, Versailles était un lieu de chasse apprécié par Louis XIII.",'在成为宏伟宫殿之前，凡尔赛是路易十三喜爱的狩猎地点。','avant de + 动词原形','avant de devenir 表示“在成为……之前”；apprécié 修饰 lieu。',{devenir:'成为',chasse:'狩猎',apprécié:'喜爱的',palais:'宫殿'}],
+      ["Louis XIV a agrandi le domaine afin d'y réunir le gouvernement, la famille royale et la cour.",'路易十四扩建宫苑，以便在那里聚集政府、王室与宫廷。','afin de + 动词原形','afin de 表示目的；y 代替凡尔赛。',{agrandi:'扩建',domaine:'宫苑',réunir:'聚集',gouvernement:'政府'}],
+      ["Les miroirs de la galerie renvoient la lumière des fenêtres vers les jardins situés devant le château.",'镜厅的镜子把窗外的光线反射向宫殿前方的花园。','主语 + 动词 + 宾语 + 方向','renvoient 表示“反射”；situés 修饰复数 jardins。',{miroirs:'镜子',galerie:'长廊',renvoient:'反射',fenêtres:'窗户'}],
+      ["Le parc ne se limite pas aux grandes allées : ses bosquets créent aussi des espaces plus intimes.",'园林不只有宏阔大道；林苑还营造出更私密的小空间。','ne...pas + 冒号解释','ne se limite pas à 表示“不局限于”；plus intimes 修饰 espaces。',{parc:'园林',limite:'局限',bosquets:'林苑',intimes:'私密的'}]],
+    'cote-azur':[
+      ["Entre la mer et les collines, la Côte d'Azur réunit des villes portuaires, des jardins et des villages perchés.",'在海与山丘之间，蔚蓝海岸汇集港口城市、花园和山顶村庄。','地点 + 主语 + 动词 + 并列宾语','entre A et B 表示“在两者之间”；perchés 修饰 villages。',{collines:'山丘',réunit:'汇集',portuaires:'港口的',perchés:'高踞的'}],
+      ["À Nice, la promenade du bord de mer contraste avec les ruelles étroites du vieux centre.",'在尼斯，宽阔的海滨步道与老城区狭窄街巷形成对比。','A contraste avec B','contraste avec 表示“与……形成对比”；étroites 修饰 ruelles。',{promenade:'步道',contraste:'形成对比',ruelles:'小巷',étroites:'狭窄的'}],
+      ["Dans les collines de Grasse, la culture des roses et du jasmin nourrit une longue tradition de parfumerie.",'在格拉斯山丘，玫瑰和茉莉的种植滋养了悠久的香水制作传统。','地点 + 主语 + 动词 + 宾语','nourrit 在这里引申为“支撑”；du 是 de le 的缩合。',{collines:'山丘',roses:'玫瑰',jasmin:'茉莉',parfumerie:'香水业'}],
+      ["Cette région montre ainsi un autre visage du Sud, où la vie urbaine reste proche des paysages naturels.",'因此，这片地区呈现法国南部的另一面：城市生活与自然景观彼此贴近。','主句 + où 关系从句','où 指代 Sud；ainsi 表示“因此”。',{région:'地区',visage:'面貌',urbaine:'城市的',naturels:'自然的'}]],
+    bourgogne:[
+      ["En Bourgogne, le mot climat désigne une parcelle de vigne délimitée, dont le sol et l'histoire façonnent l'identité.",'在勃艮第，“风土区”指边界明确的葡萄地块；土壤与历史共同塑造它的特色。','主句 + dont 关系从句','dont 表示“其……”，连接 parcelle 与 sol / histoire。',{climat:'风土区',parcelle:'地块',vigne:'葡萄藤',délimitée:'划定边界的'}],
+      ["Autour de Beaune, la route des vins traverse des villages et permet de comparer plusieurs paysages viticoles.",'在博讷周围，葡萄酒之路穿过多个村庄，让人比较不同的葡萄种植景观。','主语 + 两个并列动词','permet de 后接动词原形；viticoles 修饰 paysages。',{traverse:'穿过',comparer:'比较',paysages:'景观',viticoles:'葡萄种植的'}],
+      ["Les toits colorés des Hospices de Beaune rappellent que le patrimoine de la région dépasse les seuls vignobles.",'博讷慈善医院的彩色屋顶提醒人们：本地遗产不止葡萄园。','主句 + que 宾语从句','que 引出提醒的内容；dépasse 表示“超越”。',{toits:'屋顶',colorés:'彩色的',patrimoine:'遗产',dépasse:'超越'}],
+      ["Au-delà du vin, les canaux, les forêts du Morvan et les villes anciennes donnent à la Bourgogne des visages variés.",'除了葡萄酒，运河、莫尔旺森林和古城也赋予勃艮第多样的面貌。','状语 + 并列主语 + 动词','au-delà de 表示“除……之外”；donnent à A B 表示“赋予 A B”。',{canaux:'运河',forêts:'森林',anciennes:'古老的',variés:'多样的'}]],
+    normandie:[
+      ["Sur la côte normande, les falaises d'Étretat montrent des formes sculptées par la mer et le vent.",'在诺曼底海岸，埃特勒塔的海崖呈现被海浪和风雕刻出的形态。','地点 + 主语 + 动词 + 宾语','sculptées 是过去分词定语，与 formes 一致。',{côte:'海岸',falaises:'海崖',formes:'形态',sculptées:'雕刻的'}],
+      ["Les plages du Débarquement sont aujourd'hui des lieux de mémoire liés à la Seconde Guerre mondiale.",'登陆海滩如今是与第二次世界大战相关的历史纪念地。','主语 + être + 表语','liés 修饰复数 lieux；aujourd’hui 强调现在的纪念意义。',{débarquement:'登陆',mémoire:'记忆',liés:'相关的',guerre:'战争'}],
+      ["Les vergers fournissent des pommes, tandis que les prairies et les vaches sont liées à la tradition fromagère.",'果园出产苹果；草场与奶牛则和奶酪传统相连。','主句 + tandis que 对比分句','tandis que 表示“而、同时”；sont liées 与阴性复数 prairies et vaches 一致。',{vergers:'果园',fournissent:'出产',prairies:'草场',fromagère:'奶酪相关的'}],
+      ["Ainsi, une visite de la Normandie peut mêler l'histoire, la peinture impressionniste et les paysages ruraux.",'因此，一次诺曼底之行可以把历史、印象派绘画和乡村景观串在一起。','结果状语 + pouvoir + 动词原形','ainsi 表示“因此”；mêler 表示“融合”。',{visite:'游览',mêler:'融合',peinture:'绘画',ruraux:'乡村的'}]],
+    pantheon:[
+      ["Le Panthéon fut d'abord conçu comme une église consacrée à sainte Geneviève, protectrice de Paris.",'先贤祠最初被设计为献给巴黎守护圣人圣热纳维耶芙的教堂。','主语 + 简单过去时被动结构','fut conçu 是书面历史叙述；consacrée 修饰 église。',{conçu:'设计',église:'教堂',consacrée:'献给',protectrice:'守护者'}],
+      ["Au gré des changements politiques, le bâtiment a changé de fonction avant de devenir un monument national.",'随着政治变迁，这座建筑几度改变用途，最终成为国家纪念建筑。','状语 + 复合过去时 + avant de','au gré de 表示“随着”；avant de devenir 表示“成为……之前”。',{changements:'变迁',bâtiment:'建筑',fonction:'用途',national:'国家的'}],
+      ["Dans la crypte, des écrivains, des scientifiques et d'autres personnalités sont honorés pour leur contribution.",'地下墓室纪念作家、科学家及其他因贡献而受到尊崇的人物。','地点 + 并列主语 + 被动语态','sont honorés 为现在时被动；pour 引出原因。',{crypte:'地下墓室',écrivains:'作家',scientifiques:'科学家',contribution:'贡献'}],
+      ["Sous la coupole, le pendule de Foucault rappelle que ce monument raconte aussi l'histoire des sciences.",'在穹顶下，傅科摆提醒人们这座纪念建筑也承载科学史。','主句 + que 宾语从句','rappelle que 引出被提醒的内容；aussi 表示“也”。',{coupole:'穹顶',pendule:'摆',rappelle:'提醒',sciences:'科学'}]],
+    'champs-elysees':[
+      ["Des jardins proches de la place de la Concorde cèdent peu à peu la place à une avenue plus commerçante.",'靠近协和广场的是花园；往西走，街景逐渐转向商铺林立的大道。','主语 + céder la place à','cèdent la place à 表示“让位于”；peu à peu 表示“逐渐”。',{jardins:'花园',cèdent:'让出',avenue:'大道',commerçante:'商业的'}],
+      ["En regardant vers l'ouest, on voit l'Arc de Triomphe fermer la perspective de cette longue avenue.",'向西望去，凯旋门构成这条长街景观轴线的终点。','en + 现在分词 + 主句','en regardant 表示“望去时”；fermer la perspective 表示“终结视线”。',{regardant:'观看',ouest:'西方',arc:'拱门',perspective:'景观轴线'}],
+      ["Les défilés et les arrivées sportives donnent parfois à la rue une fonction de scène publique.",'游行与体育赛事的终点，有时让这条街成为公共舞台。','并列主语 + donner A à B','donnent à A B 表示“赋予 A B”；parfois 表示“有时”。',{défilés:'游行',arrivées:'终点',sportives:'体育的',publique:'公共的'}],
+      ["La même avenue sert donc à la promenade quotidienne et aux grands moments collectifs de la ville.",'因此，同一条大道既承载日常散步，也承载城市的重要集体时刻。','servir à + 并列名词','sert à 表示“用于”；donc 引出总结。',{promenade:'散步',quotidienne:'日常的',collectifs:'集体的',ville:'城市'}]],
+    'mont-saint-michel':[
+      ["L'abbaye a grandi par étapes, ce qui explique la présence de bâtiments de différentes périodes au sommet.",'修道院分阶段扩建，因此山顶能看到不同时期的建筑。','主句 + ce qui 关系从句','ce qui 指代整个前句；par étapes 表示“分阶段”。',{abbaye:'修道院',étapes:'阶段',présence:'存在',périodes:'时期'}],
+      ["Au Moyen Âge, les pèlerins venaient chercher un lieu de prière, tandis que les moines copiaient des manuscrits.",'中世纪，朝圣者来此祈祷，修士则抄写手稿。','主句 + tandis que 对比分句','venaient 与 copiaient 描述过去习惯；tandis que 表示“而”。',{pèlerins:'朝圣者',prière:'祈祷',moines:'修士',manuscrits:'手稿'}],
+      ["La baie, presque plate à l'horizon, change fortement d'apparence lorsque la marée monte ou descend.",'海湾的天际线近乎平坦，但涨潮或退潮时景观变化显著。','主句 + lorsque 时间从句','lorsque 表示“当……时”；monte ou descend 为并列动作。',{baie:'海湾',horizon:'地平线',apparence:'外观',marée:'潮汐'}],
+      ["C'est l'association de la roche, du village, de l'abbaye et de la baie qui rend ce site si singulier.",'岩石、村庄、修道院与海湾的结合，使这里如此独特。','c’est...qui 强调句','c’est...qui 强调主语；rend A B 表示“使 A 变得 B”。',{association:'结合',roche:'岩石',site:'地点',singulier:'独特的'}]],
+    provence:[
+      ["La lavande ne fleurit pas partout au même moment : l'altitude et le climat modifient le calendrier des champs.",'薰衣草并非各地同时开花；海拔与气候会改变花田的花期。','否定句 + 冒号解释','ne...pas 表示否定；au même moment 表示“同一时刻”。',{fleurit:'开花',altitude:'海拔',climat:'气候',calendrier:'时间安排'}],
+      ["Près de Gordes, l'abbaye de Sénanque associe une architecture romane aux paysages de lavande du Vaucluse.",'在戈尔德附近，塞南克修道院把罗马式建筑与沃克吕兹的薰衣草景观连在一起。','associer A à B','associe A à B 表示“将 A 与 B 结合”；romane 修饰 architecture。',{abbaye:'修道院',architecture:'建筑',romane:'罗马式的',paysages:'景观'}],
+      ["Sur les marchés provençaux, on trouve aussi des herbes, des savons et des objets fabriqués par des artisans.",'普罗旺斯集市不仅有薰衣草，还有香草、肥皂与手工艺品。','地点 + on + 动词 + 并列宾语','on 泛指人们；fabriqués 修饰复数 objets。',{marchés:'集市',herbes:'香草',savons:'肥皂',artisans:'工匠'}],
+      ["Derrière l'image des champs violets, la région réunit donc agriculture, villages anciens et savoir-faire locaux.",'在紫色花田的印象背后，这片地区还汇集农业、古村与本地工艺。','地点状语 + 主语 + 动词 + 并列宾语','derrière 表示“在……背后”；donc 表示总结。',{image:'印象',réunit:'汇集',agriculture:'农业',savoir:'技艺'}]],
+    chambord:[
+      ["François Ier a voulu faire de Chambord un château capable de montrer sa puissance aux visiteurs et aux ambassadeurs.",'弗朗索瓦一世希望让香波堡向来访者和使节展示他的权力。','vouloir faire de A B','a voulu 是复合过去时；capable de 后接动词原形。',{voulu:'想要',puissance:'权力',visiteurs:'来访者',ambassadeurs:'使节'}],
+      ["L'escalier à double révolution organise les pièces autour d'un centre commun et permet deux parcours séparés.",'双螺旋楼梯围绕共同中心组织房间动线，形成两条分离的路径。','主语 + 两个并列动词','organise 与 permet 并列；autour de 表示“围绕”。',{escalier:'楼梯',révolution:'旋转',parcours:'路径',séparés:'分离的'}],
+      ["Sur les terrasses, les nombreuses cheminées et les tours composent un paysage de pierre très reconnaissable.",'登上露台，众多烟囱和塔楼组成极易辨认的石质天际线。','地点 + 并列主语 + 动词 + 宾语','composent 表示“构成”；très 修饰 reconnaissable。',{terrasses:'露台',cheminées:'烟囱',tours:'塔楼',pierre:'石头'}],
+      ["Le château s'inscrit dans un vaste domaine où les forêts et les jardins prolongent la visite au-delà des salles.",'城堡处于广阔园区之中，森林与花园让游览延伸到室内之外。','主句 + où 关系从句','où 指代 domaine；au-delà de 表示“超出”。',{inscrit:'位于',domaine:'园区',forêts:'森林',prolongent:'延伸'}]],
+    strasbourg:[
+      ["La Petite France conserve des maisons à colombages dont les façades se reflètent dans l'eau des canaux.",'“小法兰西”保留木筋屋；它们的立面映在运河水中。','主句 + dont 关系从句','dont 表示“它们的”；se reflètent 为代词式动词。',{conserve:'保留',colombages:'木筋',façades:'立面',reflètent:'映照'}],
+      ["La cathédrale gothique et les rues du centre rappellent plusieurs siècles d'histoire urbaine.",'哥特式大教堂与老城街巷，让人感受到数个世纪的城市历史。','并列主语 + 动词 + 宾语','rappellent 表示“让人想起”；urbaine 修饰 histoire。',{cathédrale:'大教堂',gothique:'哥特式的',rues:'街道',urbaine:'城市的'}],
+      ["Dans une winstub, petit restaurant traditionnel, on peut goûter des spécialités et des vins d'Alsace.",'在阿尔萨斯传统小餐馆里，人们可以品尝当地特色菜与葡萄酒。','插入语 + on peut + 动词原形','petit restaurant traditionnel 解释 winstub；peut 后接 goûter。',{winstub:'阿尔萨斯传统小餐馆',goûter:'品尝',spécialités:'特色菜',vins:'葡萄酒'}],
+      ["La présence d'institutions européennes donne aujourd'hui à Strasbourg une dimension politique qui complète son héritage local.",'欧洲机构的进驻为斯特拉斯堡增添政治维度，也与当地传统并存。','主句 + qui 关系从句','qui 指代 dimension politique；complète 表示“补充”。',{présence:'存在',institutions:'机构',dimension:'维度',héritage:'遗产'}]],
+    bretagne:[
+      ["Sur la Côte de Granit Rose, le vent et la mer ont façonné des rochers aux formes et aux couleurs étonnantes.",'在玫瑰花岗岩海岸，风与海塑造出形状和色彩都令人惊叹的岩石。','地点 + 并列主语 + 复合过去时','ont façonné 表示长期作用形成的结果；aux 是 à les 的缩合。',{granit:'花岗岩',façonné:'塑造',rochers:'岩石',étonnantes:'惊人的'}],
+      ["Le sentier des Douaniers longe de nombreuses portions du littoral et relie des pointes, des plages et des ports.",'海关小径沿着大片海岸延伸，串起岬角、海滩与港口。','主语 + 两个并列动词','longe 与 relie 并列；des 引出三个并列地点。',{sentier:'小径',longe:'沿着',pointes:'岬角',ports:'港口'}],
+      ["Les phares rappellent que la navigation a longtemps dépendu de repères visibles depuis la mer.",'灯塔提醒人们，航海曾长期依靠从海上可见的标志。','主句 + que 宾语从句','a dépendu de 表示“依赖”；depuis 表示观看起点。',{phares:'灯塔',navigation:'航海',dépendu:'依赖',repères:'标志'}],
+      ["Des îles aux villes fortifiées, la Bretagne raconte une histoire maritime qui dépasse les seules images de plage.",'从岛屿到设防城镇，布列塔尼讲述的海洋历史远不止海滩风光。','范围状语 + 主句 + qui 关系从句','des...aux... 表示范围；qui 指代 histoire maritime。',{îles:'岛屿',fortifiées:'设防的',maritime:'海洋的',dépasse:'超越'}]],
+    lyon:[
+      ["Bien avant la Renaissance, la ville antique de Lugdunum occupait les collines proches du confluent.",'早在文艺复兴之前，古罗马城市卢格杜努姆就坐落于两河汇合处附近的山丘。','时间 + 主语 + 未完成过去时','bien avant 表示“早在……之前”；occupait 描述过去的位置。',{antique:'古代的',occupait:'坐落',collines:'山丘',confluent:'汇合处'}],
+      ["À la Croix-Rousse, les ateliers des canuts rappellent le rôle de la soie dans l'histoire économique de Lyon.",'在红十字山，丝织工坊让人想起丝绸在里昂经济史中的重要性。','地点 + 主语 + 动词 + 宾语','des canuts 修饰 ateliers；dans 引出领域。',{ateliers:'工坊',canuts:'丝织工人',soie:'丝绸',économique:'经济的'}],
+      ["Les traboules traversent des immeubles et relient discrètement des rues, parfois par des cours intérieures.",'穿楼巷穿过建筑，悄然连接街道，有时经过内院。','主语 + 两个并列动词','traversent 与 relient 并列；parfois 表示“有时”。',{traboules:'穿楼巷',traversent:'穿过',discrètement:'隐蔽地',cours:'庭院'}],
+      ["Entre héritage romain, commerce de la soie et cuisine des bouchons, chaque quartier révèle une facette différente.",'罗马遗产、丝绸贸易与传统小餐馆之间，每个街区都展现里昂的不同侧面。','列举状语 + 主语 + 动词 + 宾语','entre 引出多个文化层面；révèle 表示“展现”。',{héritage:'遗产',commerce:'贸易',bouchons:'传统小餐馆',facette:'侧面'}]]
+  };
+  for (const scene of scenes) scene.lines.push(...deepDive[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
   const extraSources = {
     eiffel:'https://www.toureiffel.paris/fr/le-monument/tour-eiffel-et-sciences',
     soleil:'https://www.chateauversailles.fr/decouvrir/les-ressources/versailles-cour',

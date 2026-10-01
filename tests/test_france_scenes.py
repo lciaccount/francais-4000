@@ -40,7 +40,7 @@ def main():
             assert page.locator('.sceneChoice').count() == 17
             page.locator('[data-scene="louvre"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
-            assert page.locator('.sceneLine').count() == 8
+            assert page.locator('.sceneLine').count() == 12
             assert page.locator('.sceneHero').bounding_box()['height'] >= 205
             assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(255, 255, 255)'
             for name in ('eiffel', 'soleil', 'fleur', 'louvre', 'versailles', 'cote-azur',
@@ -48,8 +48,8 @@ def main():
                          'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                          'bretagne', 'lyon'):
                 page.locator(f'[data-scene="{name}"]').tap()
-                assert page.locator('.sceneLine').count() == 8
-                assert page.locator('.sceneIpa').count() == 8
+                assert page.locator('.sceneLine').count() == 12
+                assert page.locator('.sceneIpa').count() == 12
                 assert all(text.startswith('/') and text.endswith('/') and len(text) > 5
                            for text in page.locator('.sceneIpa').all_inner_texts())
             page.locator('[data-scene="louvre"]').tap()
@@ -86,7 +86,7 @@ def main():
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v19-scenes-expanded-20261001');
+              const c=await caches.open('fr4000-v20-deep-scenes-layout-20261001');
               return !!(await c.match('./france-scenes.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
                 && !!(await c.match('./backgrounds/lyon.webp'))
@@ -109,7 +109,7 @@ def main():
             browser.close()
     finally:
         server.shutdown()
-    print(f'PASS {engine}: sixteen eight-line scenes, readable artwork layout, IPA, looping playback, lookup, persistence, offline assets')
+    print(f'PASS {engine}: sixteen twelve-line scenes, readable artwork layout, IPA, looping playback, lookup, persistence, offline assets')
 
 
 if __name__ == '__main__':
