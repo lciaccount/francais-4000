@@ -15,7 +15,7 @@ def main():
     for name in ('eiffel', 'soleil', 'fleur', 'louvre', 'versailles', 'cote-azur',
                  'bourgogne', 'normandie', 'pantheon', 'champs-elysees',
                  'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
-                 'bretagne', 'lyon'):
+                 'bretagne', 'lyon', 'histoire-france'):
         assert (ROOT / 'backgrounds' / f'{name}.webp').stat().st_size > 10000
     server = ThreadingHTTPServer(('127.0.0.1', 0), partial(SimpleHTTPRequestHandler, directory=str(ROOT)))
     Thread(target=server.serve_forever, daemon=True).start()
@@ -31,16 +31,17 @@ def main():
             context = browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
             page = context.new_page()
             errors = []
-            page.on('pageerror', lambda error: errors.append(str(error)))
+            page.on('pageerror', lambda error: errors.append(str(error.stack or error)))
             page.goto(f'http://127.0.0.1:{server.server_port}/', wait_until='domcontentloaded')
+            assert not errors, errors
             page.evaluate('''() => {window.__sceneSpeech=[]; window.speakOnce=(text,lang,onend)=>{window.__sceneSpeech.push({text,lang});window.__sceneSpeechDone=onend;};}''')
             page.locator('#sceneOpen').tap()
             assert page.locator('#sceneDialog').is_visible()
             assert '背景选择' in page.locator('#sceneOpen').inner_text()
-            assert page.locator('.sceneChoice').count() == 17
+            assert page.locator('.sceneChoice').count() == 18
             page.locator('[data-scene="louvre"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
-            assert page.locator('.sceneLine').count() == 12
+            assert page.locator('.sceneLine').count() == 16
             assert page.locator('.sceneHero').bounding_box()['height'] >= 205
             assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(255, 255, 255)'
             for name in ('eiffel', 'soleil', 'fleur', 'louvre', 'versailles', 'cote-azur',
@@ -48,10 +49,43 @@ def main():
                          'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                          'bretagne', 'lyon'):
                 page.locator(f'[data-scene="{name}"]').tap()
-                assert page.locator('.sceneLine').count() == 12
-                assert page.locator('.sceneIpa').count() == 12
+                assert page.locator('.sceneLine').count() == 16
+                assert page.locator('.sceneIpa').count() == 16
                 assert all(text.startswith('/') and text.endswith('/') and len(text) > 5
                            for text in page.locator('.sceneIpa').all_inner_texts())
+                page.locator('.sceneZoomBtn').tap()
+                assert page.locator('#sceneZoomImage').get_attribute('src').endswith(f'{name}.webp')
+                page.locator('#sceneZoomClose').tap()
+            page.locator('[data-scene="histoire-france"]').tap()
+            assert page.locator('.sceneChapter').count() == 16
+            assert page.locator('.sceneLine').count() == 71
+            assert '瓦卢瓦王朝与百年战争' in page.locator('.sceneChapter').all_inner_texts()[9]
+            assert page.locator('.sceneIpa').count() == 71
+            assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
+            assert page.locator('.sceneChapter a').count() == 16
+            page.locator('.sceneLine [data-word="Mérovingiens"]').first.tap()
+            assert '墨洛温王朝' in page.locator('#dictMeanings').inner_text()
+            page.locator('#dictClose').tap()
+            page.evaluate('window.__sceneSpeech=[]')
+            assert page.locator('.sceneHistoryJump option').count() == 17
+            page.locator('.sceneHistoryJump select').select_option('16')
+            page.wait_for_timeout(500)
+            chapter_y = page.locator('.sceneChapter[data-chapter="16"]').bounding_box()['y']
+            assert chapter_y < 844, f'chapter y={chapter_y}, sheet scroll={page.locator(".sceneSheet").evaluate("el=>el.scrollTop")}'
+            page.locator('.sceneZoomBtn').tap()
+            assert page.locator('#sceneZoom').is_visible()
+            assert page.locator('#sceneZoomImage').get_attribute('src').endswith('histoire-france.webp')
+            page.locator('#sceneZoomIn').tap()
+            page.locator('#sceneZoomIn').tap()
+            assert page.locator('#sceneZoomScale').inner_text() == '200%'
+            assert page.locator('.sceneZoomViewport').evaluate('el=>el.scrollWidth>el.clientWidth')
+            page.locator('#sceneZoomReset').tap()
+            assert page.locator('#sceneZoomScale').inner_text() == '100%'
+            page.keyboard.press('Escape')
+            assert page.locator('#sceneZoom').is_hidden()
+            page.locator('.sceneZoomBtn').tap()
+            page.locator('#sceneZoomClose').tap()
+            assert page.locator('#sceneZoom').is_hidden()
             page.locator('[data-scene="louvre"]').tap()
             assert '卢浮宫从前是一座王宫' in page.locator('.sceneChinese').first.inner_text()
             assert page.locator('.sceneSource a').count() == 2
@@ -86,9 +120,12 @@ def main():
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v20-deep-scenes-layout-20261001');
+              const c=await caches.open('fr4000-v21-history-zoom-20261001');
               return !!(await c.match('./france-scenes.js'))
+                && !!(await c.match('./france-scenes-more.js'))
+                && !!(await c.match('./france-history.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
+                && !!(await c.match('./backgrounds/histoire-france.webp'))
                 && !!(await c.match('./backgrounds/lyon.webp'))
                 && !!(await c.match('./backgrounds/louvre.webp'));
             }''')
@@ -109,7 +146,7 @@ def main():
             browser.close()
     finally:
         server.shutdown()
-    print(f'PASS {engine}: sixteen twelve-line scenes, readable artwork layout, IPA, looping playback, lookup, persistence, offline assets')
+    print(f'PASS {engine}: sixteen 16-line scenes plus 71-line history, zoom, IPA, looping playback, lookup, persistence, offline assets')
 
 
 if __name__ == '__main__':

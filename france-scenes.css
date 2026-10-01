@@ -75,8 +75,20 @@ body.scene-open {overflow:hidden}
 .sceneHero small {font-weight:800;letter-spacing:.12em}
 .sceneHero h3 {font:700 clamp(26px,5vw,42px)/1.1 "Iowan Old Style",Baskerville,Georgia,"Songti SC",serif;margin:4px 0}
 .sceneHero p {margin:0;font-size:13px}
+.sceneZoomBtn {position:absolute;z-index:2;top:12px;right:12px;border:1px solid #ffffffa8;border-radius:9px;padding:7px 11px;background:#172b3dbe;color:#fff;font-size:12px;font-weight:800;cursor:pointer;backdrop-filter:blur(5px)}
+.sceneZoomBtn:hover {background:#172b3de9}
 .sceneSource {font-size:11px;margin:10px 3px;color:#52616b;line-height:1.5}.sceneSource a {color:#284660;text-underline-offset:2px}
 .sceneAudioNote {font-size:11px;color:#596671;margin:0 0 6px;line-height:1.5}
+.sceneHistoryNote {margin:0 0 9px;padding:9px 11px;border-left:3px solid #9a555e;border-radius:7px;background:#fff;color:#465665;font-size:12px;line-height:1.65}
+.sceneHistoryJump {display:flex;align-items:center;gap:7px;margin-top:8px;font-weight:800}
+.sceneHistoryJump select {flex:1;min-width:0;max-width:380px;border:1px solid #cdd7dd;border-radius:8px;background:#f6f8f9;padding:6px 8px;color:#284660;font-size:12px}
+.sceneChapter {display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:18px 0 0;padding:9px 3px 5px;border-bottom:2px solid #d9e1e5;color:#284660;font-size:16px;line-height:1.4}
+.sceneChapter {scroll-margin-top:80px}
+.sceneChapter:first-child {margin-top:0}
+.sceneChapter small {display:block;color:#697783;font-size:11px;font-weight:600}
+.sceneChapter a {flex:none;color:#a2535d;font-size:11px;font-weight:800;text-decoration:none}
+.sceneChapter a:hover,.sceneChapter a:focus-visible {text-decoration:underline}
+html[data-scene="histoire-france"] .sceneLine::before {display:none}
 .sceneLines {display:grid;gap:9px}
 .sceneLine {border:1px solid #e1e3e0;border-radius:12px;padding:11px 12px;background:#fff}
 .sceneLine[data-line="0"]::before,.sceneLine[data-line="4"]::before,.sceneLine[data-line="8"]::before {display:block;margin:-2px 0 7px;color:#647383;font-size:11px;font-weight:800;letter-spacing:.08em}
@@ -99,6 +111,17 @@ body.scene-open {overflow:hidden}
 .sceneFooter {position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0 0 10px;padding:7px 0;background:#f7f6f2;color:#65717a;font-size:11px;border-bottom:1px solid #e4e5e2}
 .sceneFooter span {flex:1 1 100%}
 .sceneDialog button:focus-visible {outline:3px solid #a45b62;outline-offset:2px}
+.sceneZoom {position:fixed;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;padding:52px 14px max(16px,env(safe-area-inset-bottom));background:rgba(8,17,25,.98);color:#fff}
+.sceneZoom[hidden] {display:none}
+.sceneZoomViewport {flex:1;min-height:0;width:100%;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.sceneZoom img {display:block;max-width:none;max-height:none;object-fit:contain;margin:auto;box-shadow:0 12px 48px #0008}
+.sceneZoomToolbar {display:flex;align-items:center;gap:9px}
+.sceneZoomToolbar button {min-width:38px;border:1px solid #ffffff7a;border-radius:8px;padding:6px 10px;background:#23394d;color:#fff;font-size:17px;font-weight:800;cursor:pointer}
+.sceneZoomToolbar button:last-child {font-size:12px}
+.sceneZoomToolbar button:disabled {opacity:.42;cursor:default}
+.sceneZoomToolbar span {min-width:44px;text-align:center;font-size:12px;font-weight:800}
+.sceneZoom p {margin:0;font-size:12px;text-align:center;color:#dde3e7}
+#sceneZoomClose {position:absolute;top:max(10px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));border:1px solid #ffffff7a;border-radius:9px;padding:7px 11px;background:#23394d;color:#fff;font-size:14px;font-weight:800;cursor:pointer}
 body.scene-open .dictBackdrop {z-index:68}
 body.scene-open .dictionary {z-index:69}
 @media(max-width:800px){

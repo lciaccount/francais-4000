@@ -297,6 +297,13 @@
       ["Entre héritage romain, commerce de la soie et cuisine des bouchons, chaque quartier révèle une facette différente.",'罗马遗产、丝绸贸易与传统小餐馆之间，每个街区都展现里昂的不同侧面。','列举状语 + 主语 + 动词 + 宾语','entre 引出多个文化层面；révèle 表示“展现”。',{héritage:'遗产',commerce:'贸易',bouchons:'传统小餐馆',facette:'侧面'}]]
   };
   for (const scene of scenes) scene.lines.push(...deepDive[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
+  for (const scene of scenes) scene.lines.push(...window.FRANCE_SCENE_MORE[scene.id].map(([fr,zh,grammar]) => ({fr,zh,structure:'背景延伸',grammar,gloss:{}})));
+  const history = window.FRANCE_HISTORY_SCENE;
+  history.lines = history.chapters.flatMap((chapter,index) => chapter.lines.map(([fr,zh,grammar],lineIndex) => ({
+    fr,zh,structure:'历史脉络',grammar,gloss:{},
+    chapter:lineIndex === 0 ? {index:index+1,title:chapter.title,period:chapter.period,source:chapter.source} : null
+  })));
+  scenes.push(history);
   const extraSources = {
     eiffel:'https://www.toureiffel.paris/fr/le-monument/tour-eiffel-et-sciences',
     soleil:'https://www.chateauversailles.fr/decouvrir/les-ressources/versailles-cour',
@@ -306,7 +313,31 @@
     pantheon:'https://www.paris-pantheon.fr/decouvrir/le-pendule-de-foucault',
     'champs-elysees':'https://www.france.fr/fr/article/grands-evenements-france/'
   };
+  const historicGloss = {
+    gaule:'高卢',gaulois:'高卢人',romaine:'罗马的',romains:'罗马人',province:'行省',provinces:'行省',empire:'帝国',conquête:'征服',césar:'恺撒',
+    vercingétorix:'维钦托利',alésia:'阿莱西亚',francs:'法兰克人',franque:'法兰克的',francie:'法兰克王国',clovis:'克洛维',mérovingiens:'墨洛温王朝',
+    carolingiens:'加洛林王朝',charlemagne:'查理曼',pépin:'丕平',verdun:'凡尔登',traité:'条约',occidentale:'西部的',orientale:'东部的',médiane:'中部的',
+    capet:'卡佩',capétiens:'卡佩王朝',hugues:'于格',valois:'瓦卢瓦王朝',dynastie:'王朝',roi:'国王',royaume:'王国',sacre:'加冕礼',
+    crécy:'克雷西',poitiers:'普瓦捷',azincourt:'阿金库尔',orléans:'奥尔良',jeanne:'贞德',reconquête:'收复失地',
+    renaissance:'文艺复兴',protestants:'新教徒',catholiques:'天主教徒',bourbon:'波旁王朝',bourbons:'波旁王朝',nantes:'南特',édit:'敕令',
+    révolution:'大革命',bastille:'巴士底狱',république:'共和国',terreur:'恐怖时期',directoire:'督政府',consulat:'执政府',
+    napoléon:'拿破仑',bonaparte:'波拿巴',brumaire:'雾月',waterloo:'滑铁卢',abdication:'退位',coalitions:'反法同盟',
+    siècle:'世纪',antiquité:'古代',moyen:'中世纪的',âge:'时代',empereur:'皇帝',impérial:'帝国的'
+  };
   const dialog = document.querySelector('#sceneDialog');
+  const zoom = document.querySelector('#sceneZoom');
+  let zoomScale = 1;
+  function setZoomScale(value) {
+    zoomScale = Math.max(1,Math.min(3,value));
+    const img = document.querySelector('#sceneZoomImage');
+    img.style.width = `${zoomScale*100}%`;
+    img.style.height = zoomScale === 1 ? '100%' : 'auto';
+    document.querySelector('#sceneZoomScale').textContent = `${Math.round(zoomScale*100)}%`;
+    document.querySelector('#sceneZoomOut').disabled = zoomScale === 1;
+    document.querySelector('#sceneZoomIn').disabled = zoomScale === 3;
+    const viewport = document.querySelector('.sceneZoomViewport');
+    requestAnimationFrame(() => {viewport.scrollLeft = (viewport.scrollWidth-viewport.clientWidth)/2;viewport.scrollTop = (viewport.scrollHeight-viewport.clientHeight)/2;});
+  }
   const choices = document.querySelector('#sceneChoices');
   const content = document.querySelector('#sceneContent');
   const safeIds = new Set(scenes.map(s => s.id));
@@ -346,7 +377,15 @@
     const s = active;
     const sourceLinks = [s.source, extraSources[s.id]].filter(Boolean).map((url,i) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">资料 ${i+1} ↗</a>`).join(' · ');
     document.querySelector('#sceneTitle').textContent = s.name;
-    content.innerHTML = `<div class="sceneArtwork"><div class="sceneHero" style="background-image:url('./backgrounds/${s.id}.webp')"><div><small>${escapeHtml(s.place)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}</p></div></div><p class="sceneSource">内容参考：${sourceLinks} · 插画为 AI 创作，非实景照片。</p></div><div class="sceneReading"><p class="sceneAudioNote">介绍句使用设备的法语／中文语音朗读，不属于三种内置音色；点播放后默认无限循环，再点停止。音标由 eSpeak NG 自动生成，仅供参考。</p><div class="sceneFooter"><button class="scenePlayAll" type="button" data-action="play-all" data-play-key="all" data-label="▶ 连读介绍 · 循环" aria-pressed="false">▶ 连读介绍 · 循环</button><button class="sceneStop" type="button" data-action="stop" hidden>■ 停止播放</button><span>点击法语单词查词并循环听发音</span></div><div class="sceneLines">${s.lines.map((line,i) => `<article class="sceneLine" data-line="${i}"><div class="sceneFrench" lang="fr">${wordButtons(line.fr)}</div><div class="sceneIpa" lang="fr" aria-label="法语参考音标">/${escapeHtml(window.FRANCE_SCENE_IPA?.[line.fr] || '')}/</div><div class="sceneChinese" lang="zh-CN">${escapeHtml(line.zh)}</div><div class="sceneLineActions"><button type="button" data-action="play-fr" data-play-key="fr-${i}" data-label="▶ 法语" aria-pressed="false">▶ 法语</button><button type="button" data-action="play-zh" data-play-key="zh-${i}" data-label="▶ 中文" aria-pressed="false">▶ 中文</button><button type="button" data-action="explain" aria-expanded="false">句子讲解</button></div><div class="sceneExplanation" hidden><div><strong>句型：</strong>${escapeHtml(line.structure)}</div><div><strong>解析：</strong>${escapeHtml(line.grammar)}</div></div></article>`).join('')}</div></div></div>`;
+    content.innerHTML = `<div class="sceneArtwork">
+      <div class="sceneHero" style="background-image:url('./backgrounds/${s.id}.webp')"><div><small>${escapeHtml(s.place)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}</p></div><button class="sceneZoomBtn" type="button" data-action="zoom" aria-label="放大查看${escapeHtml(s.name)}背景图">⤢ 放大图片</button></div>
+      <p class="sceneSource">内容参考：${sourceLinks} · 插画为 AI 创作，非实景照片。</p>
+    </div><div class="sceneReading">
+      ${s.chapters ? `<div class="sceneHistoryNote">按时间顺序阅读 ${s.chapters.length} 个章节、${s.lines.length} 句法中对照。百年战争属于瓦卢瓦王朝时期；章节标题可查看史料来源。历史分期是学习线索，并不意味着现代法国从古代起就已存在。<label class="sceneHistoryJump">跳至章节 <select aria-label="跳转到法国历史章节"><option value="">选择章节</option>${s.chapters.map((chapter,index) => `<option value="${index+1}">${String(index+1).padStart(2,'0')} · ${escapeHtml(chapter.title)}</option>`).join('')}</select></label></div>` : ''}
+      <p class="sceneAudioNote">介绍句使用设备的法语／中文语音朗读，不属于三种内置音色；点播放后默认无限循环，再点停止。音标由 eSpeak NG 自动生成，仅供参考。</p>
+      <div class="sceneFooter"><button class="scenePlayAll" type="button" data-action="play-all" data-play-key="all" data-label="▶ 连读介绍 · 循环" aria-pressed="false">▶ 连读介绍 · 循环</button><button class="sceneStop" type="button" data-action="stop" hidden>■ 停止播放</button><span>点击法语单词查词并循环听发音</span></div>
+      <div class="sceneLines">${s.lines.map((line,i) => `${line.chapter ? `<h4 class="sceneChapter" data-chapter="${line.chapter.index}"><span>${String(line.chapter.index).padStart(2,'0')} · ${escapeHtml(line.chapter.title)} <small>${escapeHtml(line.chapter.period)}</small></span><a href="${escapeHtml(line.chapter.source)}" target="_blank" rel="noopener noreferrer">史料 ↗</a></h4>` : ''}<article class="sceneLine" data-line="${i}"><div class="sceneFrench" lang="fr">${wordButtons(line.fr)}</div><div class="sceneIpa" lang="fr" aria-label="法语参考音标">/${escapeHtml(window.FRANCE_SCENE_IPA?.[line.fr] || '')}/</div><div class="sceneChinese" lang="zh-CN">${escapeHtml(line.zh)}</div><div class="sceneLineActions"><button type="button" data-action="play-fr" data-play-key="fr-${i}" data-label="▶ 法语" aria-pressed="false">▶ 法语</button><button type="button" data-action="play-zh" data-play-key="zh-${i}" data-label="▶ 中文" aria-pressed="false">▶ 中文</button><button type="button" data-action="explain" aria-expanded="false">句子讲解</button></div><div class="sceneExplanation" hidden><div><strong>句型：</strong>${escapeHtml(line.structure)}</div><div><strong>解析：</strong>${escapeHtml(line.grammar)}</div></div></article>`).join('')}</div>
+    </div>`;
     syncPlayback();
   }
   function play(text,lang,key,all=false) {
@@ -368,6 +407,23 @@
     };
     next();
   }
+  function openZoom() {
+    document.querySelector('#sceneZoomImage').src = `./backgrounds/${active.id}.webp`;
+    document.querySelector('#sceneZoomImage').alt = `${active.name}的艺术化背景插画`;
+    document.querySelector('#sceneZoomCaption').textContent = `${active.name} · 插画为 AI 创作，并非历史照片或实景照片`;
+    setZoomScale(1);
+    zoom.hidden = false;
+    dialog.setAttribute('aria-modal','false');
+    document.querySelector('.sceneSheet').inert = true;
+    document.querySelector('#sceneZoomClose').focus();
+  }
+  function closeZoom() {
+    if (zoom.hidden) return;
+    zoom.hidden = true;
+    dialog.setAttribute('aria-modal','true');
+    document.querySelector('.sceneSheet').inert = false;
+    document.querySelector('.sceneZoomBtn')?.focus();
+  }
   function open() {
     returnFocus = document.activeElement;
     renderChoices();
@@ -378,6 +434,7 @@
   }
   function close() {
     if (dialog.hidden) return;
+    closeZoom();
     if (state.mode === 'scene' || state.mode === 'word' || state.mode === 'word-preview') stopAll(true);
     hideDictionaryVisual();
     dialog.hidden = true;
@@ -405,6 +462,7 @@
     const button = event.target.closest('[data-action]');
     if (!button) return;
     const action = button.dataset.action;
+    if (action === 'zoom') {openZoom(); return;}
     if (action === 'stop') {stopAll(); return;}
     if (action === 'play-all') {play('', 'fr-FR', 'all', true); return;}
     const article = button.closest('.sceneLine');
@@ -418,12 +476,32 @@
       button.textContent = box.hidden ? '句子讲解' : '收起讲解';
     }
   };
+  content.onchange = event => {
+    if (!event.target.matches('.sceneHistoryJump select') || !event.target.value) return;
+    content.querySelector(`.sceneChapter[data-chapter="${event.target.value}"]`)?.scrollIntoView({behavior:'instant',block:'start'});
+  };
+  document.querySelector('#sceneZoomClose').onclick = closeZoom;
+  document.querySelector('#sceneZoomIn').onclick = () => setZoomScale(zoomScale+.5);
+  document.querySelector('#sceneZoomOut').onclick = () => setZoomScale(zoomScale-.5);
+  document.querySelector('#sceneZoomReset').onclick = () => setZoomScale(1);
+  zoom.onclick = event => {if (event.target === zoom) closeZoom();};
   dialog.onclick = event => {if (event.target === dialog) close();};
   document.querySelector('#sceneOpen').onclick = open;
   document.querySelector('#sceneBanner').onclick = open;
   document.querySelector('#sceneClose').onclick = close;
   document.addEventListener('keydown',event => {
     if (dialog.hidden) return;
+    if (!zoom.hidden) {
+      if (event.key === 'Escape') {event.preventDefault();event.stopImmediatePropagation();closeZoom();}
+      if (event.key === '+' || event.key === '=') {event.preventDefault();setZoomScale(zoomScale+.5);}
+      if (event.key === '-') {event.preventDefault();setZoomScale(zoomScale-.5);}
+      if (event.key === 'Tab') {
+        const buttons = [...zoom.querySelectorAll('button:not(:disabled)')];
+        const next = (buttons.indexOf(document.activeElement)+(event.shiftKey?buttons.length-1:1))%buttons.length;
+        event.preventDefault();buttons[next].focus();
+      }
+      return;
+    }
     if (event.key === 'Escape' && !document.querySelector('#dictionary').classList.contains('show')) {event.preventDefault();event.stopImmediatePropagation();close();}
     if (event.key === 'Tab' && !document.querySelector('#dictionary').classList.contains('show')) {
       const focusable = [...dialog.querySelectorAll('button,a[href]')].filter(el => el.getClientRects().length);
@@ -435,6 +513,6 @@
   window.FranceScenes = {lookupContext(raw) {
     if (dialog.hidden || !lookup) return null;
     const key = String(raw).toLocaleLowerCase('fr').replace(/[’']/g,"'");
-    return {title:lookup.title,fr:lookup.fr,zh:lookup.zh,meaning:lookup.gloss[key] || ''};
+    return {title:lookup.title,fr:lookup.fr,zh:lookup.zh,meaning:lookup.gloss[key] || historicGloss[key] || ''};
   }};
 })();

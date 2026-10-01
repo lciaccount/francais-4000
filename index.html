@@ -197,7 +197,7 @@ button,select,input{-webkit-tap-highlight-color:transparent}button:focus-visible
 <button id="pageNextRail" class="pageRail pageRailRight" type="button" aria-label="下一页"><span class="railArrow" aria-hidden="true">›</span><span>下一页</span></button>
 <button id="locatePlayingBtn" class="locatePlayingBtn" type="button" aria-label="定位到正在播放的句子，可拖动调整位置" title="按住拖动可调整位置"><span class="locateIcon" aria-hidden="true">⌖</span><span class="locateText">当前句</span></button>
 <div id="installModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="installTitle"><div class="modalCard"><h3 id="installTitle">安装到手机</h3><div id="installBody"></div><button id="installClose" class="modalClose" type="button">知道了</button></div></div>
-<div id="sceneDialog" class="sceneDialog" role="dialog" aria-modal="true" aria-labelledby="sceneTitle" hidden><div class="sceneSheet"><div class="sceneTop"><div><span class="sceneEyebrow">CARNET DE FRANCE · 背景选择</span><h2 id="sceneTitle">选择一处风景</h2><p>选择背景，逐句阅读法中介绍、音标与解析；点击播放可循环听。</p></div><button id="sceneClose" type="button" aria-label="关闭背景选择">×</button></div><div id="sceneChoices" class="sceneChoices" role="group" aria-label="选择背景"></div><div id="sceneContent"></div></div></div>
+<div id="sceneDialog" class="sceneDialog" role="dialog" aria-modal="true" aria-labelledby="sceneTitle" hidden><div class="sceneSheet"><div class="sceneTop"><div><span class="sceneEyebrow">CARNET DE FRANCE · 背景选择</span><h2 id="sceneTitle">选择一处风景</h2><p>选择背景，逐句阅读法中介绍、音标与解析；点击播放可循环听。</p></div><button id="sceneClose" type="button" aria-label="关闭背景选择">×</button></div><div id="sceneChoices" class="sceneChoices" role="group" aria-label="选择背景"></div><div id="sceneContent"></div></div><div id="sceneZoom" class="sceneZoom" role="dialog" aria-modal="true" aria-label="放大查看背景插画" hidden><button id="sceneZoomClose" type="button" aria-label="关闭放大图片">× 关闭</button><div class="sceneZoomViewport"><img id="sceneZoomImage" alt=""></div><div class="sceneZoomToolbar"><button id="sceneZoomOut" type="button" aria-label="缩小图片">−</button><span id="sceneZoomScale" role="status">100%</span><button id="sceneZoomIn" type="button" aria-label="放大图片">＋</button><button id="sceneZoomReset" type="button">适配</button></div><p id="sceneZoomCaption"></p></div></div>
 <script src="learning-data-4000.js"></script>
 <script src="pronunciation-data-4000.js"></script>
 <script>
@@ -502,6 +502,8 @@ initSavedSettings();initTheme();renderProgress();setupMobileSettings();setupSear
 <script src="phonetics-sources.js"></script>
 <script src="phonetics.js"></script>
 <script src="swipe-study.js"></script>
+<script src="france-scenes-more.js"></script>
+<script src="france-history.js"></script>
 <script src="france-scenes-ipa.js"></script>
 <script src="france-scenes.js"></script>
 <script src="locate-drag.js"></script>

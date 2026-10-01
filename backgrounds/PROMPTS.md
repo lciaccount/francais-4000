@@ -1,6 +1,6 @@
 # 背景选择插画提示词
 
-本目录的 16 张 WebP 插画由内置 imagegen 工具生成，随后机械转码压缩；不是景点照片或历史文物复刻。统一提示词：16:9 法语学习网站背景，手绘 gouache 旅行海报风格、细线建筑／风景描绘、轻微纸张肌理、暖白与低饱和法国蓝、少量酒红点缀；为半透明文字卡留白；无文字、商标、旗帜和水印。
+本目录的 17 张 WebP 插画由内置 imagegen 工具生成，随后机械转码压缩；不是景点照片或历史文物复刻。统一提示词：16:9 法语学习网站背景，手绘 gouache 旅行海报风格、细线建筑／风景描绘、轻微纸张肌理、暖白与低饱和法国蓝、少量酒红点缀；为半透明文字卡留白；无文字、商标、旗帜和水印。
 
 各图主体：
 
@@ -22,6 +22,7 @@
 | `strasbourg.webp` | 斯特拉斯堡“小法兰西”的木筋屋与运河 |
 | `bretagne.webp` | 布列塔尼玫瑰花岗岩海岸、海面与灯塔 |
 | `lyon.webp` | 索恩河畔里昂老城与富维耶山 |
+| `histoire-france.webp` | 罗马石拱、中世纪建筑与古典巴黎元素的艺术化历史长卷；并非同一时空的真实场景 |
 
 生成时各图还分别指定对应主体、横向构图、真实可辨的地标／地域特征；`soleil.webp` 使用 historical-scene 用例，其他图使用 illustration-story 用例。背景是艺术化示意，不应作为实景或建筑考证材料。
 
@@ -35,3 +36,7 @@
 | `strasbourg.webp` | Strasbourg Petite France district, half-timbered Alsatian houses and narrow canals with a stone bridge, warm muted daylight. |
 | `bretagne.webp` | Brittany's Côte de Granit Rose, rose-copper granite boulders, small coastal path and turquoise sea, a distant modest lighthouse, breezy Atlantic sky. |
 | `lyon.webp` | Old Lyon on the banks of the Saône, Renaissance facades, Fourvière hill and basilica in the distance, stone bridges, gentle late-afternoon light. |
+
+`histoire-france.webp` 使用内置 imagegen 模式生成。最终提示词：
+
+> Use case: historical-scene. Asset type: wide illustrated background for an educational French-history chapter in an existing French travel notebook website. Primary request: a painterly visual evocation of the long history of France, from Roman Gaul and medieval dynasties through the Renaissance and French Revolution to the First Empire. Scene/backdrop: a warm parchment-toned panorama arranged as subtle visual layers, with a Roman stone arch at far left, medieval abbey/castle silhouettes toward the center, and a classical Paris riverside cityscape toward the right; a small distant Napoleonic-era architectural silhouette, without identifiable people or battle scenes. Style/medium: refined hand-painted watercolor and gouache with textured paper, matching a tasteful illustrated French heritage travel poster. Composition/framing: wide 16:9 landscape, cohesive single scene rather than labeled timeline panels, gentle details around edges and an open, calm center suitable for responsive cropping and overlay text. Lighting/mood: luminous late-afternoon sky, scholarly and evocative. Color palette: muted limestone, parchment, dusty blue, sage, restrained warm gold. Constraints: no text, dates, logos, flags, maps with labels, watermarks, modern vehicles or modern architecture. Historically plausible architectural styles; do not portray different eras as literally coexisting in a documentary photograph.

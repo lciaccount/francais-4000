@@ -56,7 +56,7 @@ def main():
             assert page.evaluate('document.querySelector("#swipeStudy").scrollWidth <= innerWidth')
             page.locator('#swipeExit').tap()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
-            assert page.evaluate('''async()=>{const c=await caches.open('fr4000-v20-deep-scenes-layout-20261001');return !!(await c.match('./theme-tricolore.css'))&&!!(await c.match('./fleur-de-lys.svg'));}''')
+            assert page.evaluate('''async()=>{const c=await caches.open('fr4000-v21-history-zoom-20261001');return !!(await c.match('./theme-tricolore.css'))&&!!(await c.match('./fleur-de-lys.svg'));}''')
             page.locator('#themeBtn').tap()
             assert page.evaluate('document.documentElement.dataset.theme') == 'light'
             assert not errors, errors
