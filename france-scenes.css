@@ -72,12 +72,15 @@ body.scene-open {overflow:hidden}
 .sceneLines {display:grid;gap:9px}
 .sceneLine {border:1px solid #e1e3e0;border-radius:12px;padding:11px 12px;background:#fff}
 .sceneFrench {font-size:18px;font-weight:700;line-height:1.65}
+.sceneIpa {color:#64788a;font:14px/1.5 "Iowan Old Style",Georgia,serif;overflow-wrap:anywhere;margin:2px 0 4px}
 .sceneWord {padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer;border-radius:4px}
 .sceneWord:hover,.sceneWord:focus-visible {background:#e7eff3;outline:2px solid #9cb1c0}
 .sceneChinese {font-size:13px;margin:3px 0 8px;color:#52616b}
 .sceneLineActions {display:flex;gap:7px;flex-wrap:wrap}
-.sceneLineActions button,.scenePlayAll {border:1px solid #cbd5dc;border-radius:8px;background:#eef2f4;color:#284660;padding:5px 9px;font-size:12px;font-weight:800;cursor:pointer}
+.sceneLineActions button,.scenePlayAll,.sceneStop {border:1px solid #cbd5dc;border-radius:8px;background:#eef2f4;color:#284660;padding:5px 9px;font-size:12px;font-weight:800;cursor:pointer}
 .sceneLineActions button:first-child,.scenePlayAll {background:#284660;color:#fff;border-color:#284660}
+.sceneLineActions button[aria-pressed="true"],.scenePlayAll[aria-pressed="true"] {background:#9a555e;border-color:#9a555e;color:white}
+.sceneStop[hidden] {display:none}
 .sceneExplanation {margin-top:9px;padding:9px 10px;border-left:3px solid #a45b62;border-radius:7px;background:#f8f6f2;font-size:12px;line-height:1.65}
 .sceneExplanation[hidden] {display:none}
 .sceneExplanation strong {color:#284660}

@@ -1,6 +1,6 @@
-# 法国漫游插画提示词
+# 背景选择插画提示词
 
-本目录的 10 张 WebP 插画由内置 imagegen 工具生成，随后机械转码压缩；不是景点照片或历史文物复刻。统一提示词：16:9 法语学习网站背景，手绘 gouache 旅行海报风格、细线建筑／风景描绘、轻微纸张肌理、暖白与低饱和法国蓝、少量酒红点缀；为半透明文字卡留白；无文字、商标、旗帜和水印。
+本目录的 16 张 WebP 插画由内置 imagegen 工具生成，随后机械转码压缩；不是景点照片或历史文物复刻。统一提示词：16:9 法语学习网站背景，手绘 gouache 旅行海报风格、细线建筑／风景描绘、轻微纸张肌理、暖白与低饱和法国蓝、少量酒红点缀；为半透明文字卡留白；无文字、商标、旗帜和水印。
 
 各图主体：
 
@@ -16,5 +16,22 @@
 | `normandie.webp` | 诺曼底海崖、草地与半木构村庄 |
 | `pantheon.webp` | 巴黎先贤祠的柱廊与穹顶 |
 | `champs-elysees.webp` | 香榭丽舍大街与凯旋门方向 |
+| `mont-saint-michel.webp` | 潮汐海湾中的圣米歇尔山及修道院 |
+| `provence.webp` | 普罗旺斯薰衣草田、石砌山村与柏树 |
+| `chambord.webp` | 卢瓦尔河谷香波堡的文艺复兴式屋顶 |
+| `strasbourg.webp` | 斯特拉斯堡“小法兰西”的木筋屋与运河 |
+| `bretagne.webp` | 布列塔尼玫瑰花岗岩海岸、海面与灯塔 |
+| `lyon.webp` | 索恩河畔里昂老城与富维耶山 |
 
 生成时各图还分别指定对应主体、横向构图、真实可辨的地标／地域特征；`soleil.webp` 使用 historical-scene 用例，其他图使用 illustration-story 用例。背景是艺术化示意，不应作为实景或建筑考证材料。
+
+新增六图的最终提示词采用内置 imagegen 模式。公共部分为：`16:9 wide illustrated background for an elegant French language learning website. Hand-painted gouache travel poster, delicate architectural and landscape linework, subtle paper grain, warm ivory, muted French blue, restrained burgundy accents. Clear focal point in center with calm peripheral areas for translucent interface cards. No text, logos, flags, watermarks, borders. Distinct recognizable real French landscape, artistic illustration not an exact documentary photo.` 各图分别追加下列主体描述：
+
+| 文件 | 追加提示词 |
+| --- | --- |
+| `mont-saint-michel.webp` | Mont Saint-Michel rising from its tidal bay in Normandy, medieval abbey on the granite island, shallow reflective water and broad sky, view from across the bay. |
+| `provence.webp` | Provence lavender fields in bloom near a pale stone hill village, rows of lavender, cypress trees, warm southern sunlight, subtle farmhouse. |
+| `chambord.webp` | Château de Chambord in the Loire Valley, accurate silhouette with many Renaissance roof towers and chimneys, formal lawns and soft morning light. |
+| `strasbourg.webp` | Strasbourg Petite France district, half-timbered Alsatian houses and narrow canals with a stone bridge, warm muted daylight. |
+| `bretagne.webp` | Brittany's Côte de Granit Rose, rose-copper granite boulders, small coastal path and turquoise sea, a distant modest lighthouse, breezy Atlantic sky. |
+| `lyon.webp` | Old Lyon on the banks of the Saône, Renaissance facades, Fourvière hill and basilica in the distance, stone bridges, gentle late-afternoon light. |
