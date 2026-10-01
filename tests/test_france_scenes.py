@@ -40,18 +40,21 @@ def main():
             assert page.locator('.sceneChoice').count() == 17
             page.locator('[data-scene="louvre"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
-            assert page.locator('.sceneLine').count() == 4
+            assert page.locator('.sceneLine').count() == 8
+            assert page.locator('.sceneHero').bounding_box()['height'] >= 205
+            assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(255, 255, 255)'
             for name in ('eiffel', 'soleil', 'fleur', 'louvre', 'versailles', 'cote-azur',
                          'bourgogne', 'normandie', 'pantheon', 'champs-elysees',
                          'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                          'bretagne', 'lyon'):
                 page.locator(f'[data-scene="{name}"]').tap()
-                assert page.locator('.sceneLine').count() == 4
-                assert page.locator('.sceneIpa').count() == 4
+                assert page.locator('.sceneLine').count() == 8
+                assert page.locator('.sceneIpa').count() == 8
                 assert all(text.startswith('/') and text.endswith('/') and len(text) > 5
                            for text in page.locator('.sceneIpa').all_inner_texts())
             page.locator('[data-scene="louvre"]').tap()
             assert '卢浮宫从前是一座王宫' in page.locator('.sceneChinese').first.inner_text()
+            assert page.locator('.sceneSource a').count() == 2
             page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
             assert page.locator('.sceneLine').first.locator('[data-action="play-fr"]').get_attribute('aria-pressed') == 'true'
             assert '循环朗读中' in page.locator('#status').inner_text()
@@ -83,17 +86,30 @@ def main():
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v18-scene-ipa-loop-20261001');
+              const c=await caches.open('fr4000-v19-scenes-expanded-20261001');
               return !!(await c.match('./france-scenes.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
                 && !!(await c.match('./backgrounds/lyon.webp'))
                 && !!(await c.match('./backgrounds/louvre.webp'));
             }''')
+            desktop = browser.new_context(viewport={'width': 1365, 'height': 900})
+            desk = desktop.new_page()
+            desk.goto(f'http://127.0.0.1:{server.server_port}/', wait_until='domcontentloaded')
+            desk.locator('#sceneOpen').click()
+            desk.locator('[data-scene="chambord"]').click()
+            art = desk.locator('.sceneArtwork').bounding_box()
+            reading = desk.locator('.sceneReading').bounding_box()
+            assert art['x'] + art['width'] < reading['x']
+            assert desk.locator('.sceneHero').bounding_box()['height'] >= 300
+            desk.locator('.sceneSheet').evaluate('(el) => {el.scrollTop = 600}')
+            assert desk.locator('.sceneArtwork').bounding_box()['y'] >= 0
+            assert desk.locator('.sceneFooter').bounding_box()['y'] >= 0
             assert not errors, errors
+            desktop.close()
             browser.close()
     finally:
         server.shutdown()
-    print(f'PASS {engine}: sixteen scenes, IPA, looping playback, lookup, explanation, persistence, offline assets')
+    print(f'PASS {engine}: sixteen eight-line scenes, readable artwork layout, IPA, looping playback, lookup, persistence, offline assets')
 
 
 if __name__ == '__main__':

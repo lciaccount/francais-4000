@@ -1,19 +1,24 @@
 /* French travel notebook: an optional, subdued backdrop and readable cards. */
 html[data-scene]:not([data-scene="none"]) body {
-  background-image:linear-gradient(rgba(247,246,242,.84),rgba(247,246,242,.90)),var(--scene-image);
+  background-image:linear-gradient(rgba(247,246,242,.69),rgba(247,246,242,.78)),var(--scene-image);
   background-position:center top,center center;
   background-size:cover;
   background-attachment:scroll,fixed;
 }
 html[data-theme="dark"][data-scene]:not([data-scene="none"]) body {
-  background-image:linear-gradient(rgba(17,17,17,.87),rgba(17,17,17,.93)),var(--scene-image);
+  background-image:linear-gradient(rgba(17,17,17,.78),rgba(17,17,17,.86)),var(--scene-image);
 }
 html[data-scene]:not([data-scene="none"]) .swipeStudy {
-  background-image:linear-gradient(rgba(247,246,242,.90),rgba(247,246,242,.94)),var(--scene-image);
+  background-image:linear-gradient(rgba(247,246,242,.83),rgba(247,246,242,.90)),var(--scene-image);
   background-position:center;background-size:cover;
 }
 html[data-theme="dark"][data-scene]:not([data-scene="none"]) .swipeStudy {
-  background-image:linear-gradient(rgba(17,17,17,.91),rgba(17,17,17,.95)),var(--scene-image);
+  background-image:linear-gradient(rgba(17,17,17,.84),rgba(17,17,17,.91)),var(--scene-image);
+}
+html[data-scene]:not([data-scene="none"]) .sectionHead,
+html[data-scene]:not([data-scene="none"]) .phoneticsHead {
+  padding:8px 10px;border:1px solid var(--line);border-radius:12px;
+  background:color-mix(in srgb,var(--panel) 94%,transparent);
 }
 html[data-theme="tricolore"] .brand h1,
 html[data-theme="tricolore"] .sectionHead h2,
@@ -39,7 +44,7 @@ html[data-theme="tricolore"] .brand p {letter-spacing:.025em}
 html[data-theme="tricolore"] .learningNav {background:rgba(240,242,242,.75)}
 html[data-theme="tricolore"] .learningNav button[aria-pressed="true"] {color:var(--french-blue)}
 html[data-theme="tricolore"] .headerProgress {border-left:3px solid var(--french-red)}
-.sceneBanner {display:flex;align-items:end;gap:10px;width:100%;min-height:108px;margin:10px 0 0;padding:13px 17px;text-align:left;border:1px solid color-mix(in srgb,var(--line) 65%,transparent);border-radius:15px;color:white;background-image:linear-gradient(90deg,rgba(19,38,54,.76),rgba(19,38,54,.08)),var(--scene-image);background-position:center;background-size:cover;box-shadow:0 8px 25px rgba(24,36,44,.10);cursor:pointer}
+.sceneBanner {display:flex;align-items:end;gap:10px;width:100%;min-height:142px;margin:10px 0 0;padding:13px 17px;text-align:left;border:1px solid color-mix(in srgb,var(--line) 65%,transparent);border-radius:15px;color:white;background-image:linear-gradient(0deg,rgba(19,38,54,.70),rgba(19,38,54,.02) 72%),var(--scene-image);background-position:center;background-size:cover;box-shadow:0 8px 25px rgba(24,36,44,.10);cursor:pointer}
 .sceneBanner[hidden] {display:none}
 .sceneBannerEyebrow {font-size:9px;font-weight:900;letter-spacing:.13em;align-self:center}
 .sceneBanner strong {font:700 clamp(20px,3vw,30px)/1.1 "Iowan Old Style",Baskerville,Georgia,"Songti SC",serif;margin-right:auto;text-shadow:0 1px 8px #14253288}
@@ -48,27 +53,30 @@ html[data-theme="tricolore"] .headerProgress {border-left:3px solid var(--french
 body.scene-open {overflow:hidden}
 .sceneDialog {position:fixed;inset:0;z-index:45;display:grid;place-items:center;padding:12px;background:rgba(19,32,43,.56);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .sceneDialog[hidden] {display:none}
-.sceneSheet {width:min(1000px,100%);max-height:min(92dvh,900px);overflow:auto;overscroll-behavior:contain;background:#fcfbf7;color:#27313b;border:1px solid #dddcd5;border-radius:20px;box-shadow:0 24px 80px rgba(12,24,32,.30);padding:18px}
+.sceneSheet {width:min(1100px,100%);max-height:min(94dvh,940px);overflow:auto;overscroll-behavior:contain;background:#fcfbf7;color:#27313b;border:1px solid #dddcd5;border-radius:20px;box-shadow:0 24px 80px rgba(12,24,32,.30);padding:18px}
 .sceneTop {display:flex;align-items:start;justify-content:space-between;gap:16px}
 .sceneEyebrow {color:#9a555e;font-size:10px;font-weight:900;letter-spacing:.18em}
 .sceneTop h2 {font:700 clamp(25px,4vw,36px)/1.1 "Iowan Old Style",Baskerville,Georgia,"Songti SC",serif;margin:5px 0}
 .sceneTop p {margin:0;color:#69727a;font-size:12px}
 #sceneClose {flex:none;width:38px;height:38px;border:1px solid #d8dcdb;border-radius:10px;background:#fff;color:#27313b;font-size:25px;line-height:1;cursor:pointer}
 .sceneChoices {display:flex;gap:8px;overflow:auto;scrollbar-width:thin;padding:14px 1px 11px;scroll-snap-type:x proximity}
-.sceneChoice {position:relative;flex:0 0 116px;min-height:87px;overflow:hidden;border:2px solid transparent;border-radius:12px;background:#f0f0ed;color:#27313b;text-align:left;cursor:pointer;scroll-snap-align:start;padding:0}
-.sceneChoice img {display:block;width:100%;height:57px;object-fit:cover}
+.sceneChoice {position:relative;flex:0 0 132px;min-height:105px;overflow:hidden;border:2px solid transparent;border-radius:12px;background:#f0f0ed;color:#27313b;text-align:left;cursor:pointer;scroll-snap-align:start;padding:0}
+.sceneChoice img {display:block;width:100%;height:76px;object-fit:cover}
 .sceneChoice span {display:block;padding:4px 6px;font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sceneChoice[aria-pressed="true"] {border-color:#284660;box-shadow:0 0 0 2px #d1dce2}
 .sceneChoice.none {display:grid;place-content:center;text-align:center;background:#fff}
 .sceneChoice.none span {white-space:normal}
-.sceneHero {min-height:160px;display:flex;align-items:end;padding:18px;border-radius:15px;color:white;background-position:center;background-size:cover;position:relative;overflow:hidden}
-.sceneHero::before {content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,32,45,.72),rgba(16,32,45,.12))}
+#sceneContent {display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);align-items:start;gap:16px}
+.sceneArtwork {position:sticky;top:0;min-width:0}
+.sceneReading {min-width:0;padding:11px;background:#f7f6f2;border:1px solid #e8e7e1;border-radius:15px}
+.sceneHero {min-height:300px;aspect-ratio:16/11;display:flex;align-items:end;padding:20px;border-radius:15px;color:white;background-position:center;background-size:cover;position:relative;overflow:hidden}
+.sceneHero::before {content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(16,32,45,.77),rgba(16,32,45,.08) 55%,transparent 72%)}
 .sceneHero>div {position:relative;z-index:1;text-shadow:0 1px 8px rgba(0,0,0,.3)}
 .sceneHero small {font-weight:800;letter-spacing:.12em}
 .sceneHero h3 {font:700 clamp(26px,5vw,42px)/1.1 "Iowan Old Style",Baskerville,Georgia,"Songti SC",serif;margin:4px 0}
 .sceneHero p {margin:0;font-size:13px}
-.sceneSource {font-size:11px;margin:10px 0;color:#69727a}.sceneSource a {color:#284660;text-underline-offset:2px}
-.sceneAudioNote {font-size:11px;color:#69727a;margin:0 0 10px}
+.sceneSource {font-size:11px;margin:10px 3px;color:#52616b;line-height:1.5}.sceneSource a {color:#284660;text-underline-offset:2px}
+.sceneAudioNote {font-size:11px;color:#596671;margin:0 0 6px;line-height:1.5}
 .sceneLines {display:grid;gap:9px}
 .sceneLine {border:1px solid #e1e3e0;border-radius:12px;padding:11px 12px;background:#fff}
 .sceneFrench {font-size:18px;font-weight:700;line-height:1.65}
@@ -84,7 +92,8 @@ body.scene-open {overflow:hidden}
 .sceneExplanation {margin-top:9px;padding:9px 10px;border-left:3px solid #a45b62;border-radius:7px;background:#f8f6f2;font-size:12px;line-height:1.65}
 .sceneExplanation[hidden] {display:none}
 .sceneExplanation strong {color:#284660}
-.sceneFooter {display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;color:#69727a;font-size:11px}
+.sceneFooter {position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0 0 10px;padding:7px 0;background:#f7f6f2;color:#65717a;font-size:11px;border-bottom:1px solid #e4e5e2}
+.sceneFooter span {flex:1 1 100%}
 .sceneDialog button:focus-visible {outline:3px solid #a45b62;outline-offset:2px}
 body.scene-open .dictBackdrop {z-index:68}
 body.scene-open .dictionary {z-index:69}
@@ -93,10 +102,14 @@ body.scene-open .dictionary {z-index:69}
   .learningNav button {flex:1 0 auto!important;min-width:max-content;padding:7px 10px!important}
   .sceneDialog {padding:0;align-items:end}
   .sceneSheet {width:100%;max-height:92dvh;border-radius:20px 20px 0 0;padding:14px 12px calc(18px + env(safe-area-inset-bottom))}
-  .sceneChoice {flex-basis:105px}
-  .sceneBanner {min-height:78px;margin-top:7px;padding:9px 12px;gap:5px}
+  #sceneContent {display:block}
+  .sceneArtwork {position:static}
+  .sceneReading {margin-top:10px;padding:8px}
+  .sceneChoice {flex-basis:112px;min-height:96px}
+  .sceneChoice img {height:67px}
+  .sceneBanner {min-height:99px;margin-top:7px;padding:9px 12px;gap:5px}
   .sceneBannerEyebrow {display:none}
   .sceneBanner strong {font-size:20px}
-  .sceneHero {min-height:135px}
+  .sceneHero {min-height:205px;aspect-ratio:16/10}
   .sceneFrench {font-size:17px}
 }

@@ -112,6 +112,117 @@
     scene.lines = scene.lines.map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss}));
     scenes.push(scene);
   }
+  const deeper = {
+    eiffel:[
+      ["Sa structure de fer était une prouesse technique à la fin du dix-neuvième siècle.",'它的铁结构在十九世纪末是一项技术壮举。','主语 + 未完成过去时 + 表语','était 描述过去的评价；à la fin de 表示“在……末期”。',{structure:'结构',fer:'铁',prouesse:'壮举',siècle:'世纪'}],
+      ["Aujourd'hui, les visiteurs peuvent observer la ville sous plusieurs angles.",'如今，游客可以从多个角度俯瞰这座城市。','主语 + pouvoir + 动词原形','peuvent 后接动词原形 observer；sous plusieurs angles 表示“从多个角度”。',{visiteurs:'游客',observer:'观察',plusieurs:'多个',angles:'角度'}]],
+    soleil:[
+      ["Le roi utilisait les arts pour mettre en scène son pouvoir.",'国王借助艺术展示自己的权力。','主语 + 未完成过去时 + 目的状语','utilisait 描述过去的惯常做法；pour 后接动词原形表目的。',{utilisait:'使用',arts:'艺术',scène:'舞台',pouvoir:'权力'}],
+      ["À la cour, les nobles devaient respecter des règles précises.",'在宫廷里，贵族必须遵守明确的礼仪规则。','地点 + 主语 + devoir + 动词原形','devaient 表示过去的义务；respecter 意为“遵守”。',{nobles:'贵族',devaient:'必须',respecter:'遵守',règles:'规则'}]],
+    fleur:[
+      ["On retrouve ce signe sur des portraits et des objets royaux.",'在王室肖像和器物上都能找到这一标志。','on + 动词 + 宾语 + 地点','retrouve 表示“再次看到、找到”；sur 引出图案所在位置。',{retrouve:'找到',signe:'标志',portraits:'肖像',objets:'器物'}],
+      ["Dans ce contexte, la fleur de lys représente surtout la royauté.",'在这一语境里，百合花纹章主要代表王权。','地点状语 + 主语 + 动词 + 宾语','dans ce contexte 限定含义；surtout 表示“主要”。',{contexte:'语境',représente:'代表',surtout:'主要',royauté:'王权'}]],
+    louvre:[
+      ["Le palais est devenu un musée ouvert au public après la Révolution française.",'法国大革命后，这座宫殿成为向公众开放的博物馆。','主语 + devenir 的复合过去时 + 表语','est devenu 表示“成为”；ouvert au public 修饰 musée。',{devenu:'成为',ouvert:'开放的',public:'公众',révolution:'革命'}],
+      ["La pyramide associe le verre moderne aux façades anciennes du palais.",'玻璃金字塔把现代材料与宫殿古老的立面连接在一起。','主语 + associer A à B','associe A à B 表示“将 A 与 B 结合”；anciennes 修饰 façades。',{pyramide:'金字塔',associe:'结合',verre:'玻璃',façades:'建筑立面'}]],
+    versailles:[
+      ["Les jardins ont été dessinés avec de longues perspectives et des bassins.",'花园以绵长的景观轴线和水池布局。','主语 + 复合过去时被动语态','ont été dessinés 表示“被设计”；avec 引出设计元素。',{jardins:'花园',dessinés:'设计',perspectives:'景观轴线',bassins:'水池'}],
+      ["La galerie des Glaces relie le salon de la Guerre au salon de la Paix.",'镜厅连接战争厅与和平厅。','relier A à B','relie 表示“连接”；au 是 à le 的缩合。',{galerie:'长廊',glaces:'镜子',relie:'连接',guerre:'战争',paix:'和平'}]],
+    'cote-azur':[
+      ["À Nice, la promenade des Anglais longe la baie et ses plages.",'在尼斯，英国人散步大道沿着海湾与海滩延伸。','地点 + 主语 + 动词 + 宾语','longe 表示“沿着……延伸”；ses 指海湾的。',{promenade:'步道',anglais:'英国人',longe:'沿着',baie:'海湾'}],
+      ["Dans l'arrière-pays, des villages perchés dominent la Méditerranée.",'在内陆腹地，山顶村庄俯瞰地中海。','地点 + 主语 + 动词 + 宾语','perchés 表示“高踞的”；dominent 表示“俯瞰”。',{arrière:'后方',villages:'村庄',perchés:'高踞的',dominent:'俯瞰'}]],
+    bourgogne:[
+      ["Dijon fut autrefois la capitale des ducs de Bourgogne.",'第戎从前曾是勃艮第公爵的都城。','主语 + 简单过去时 + 表语','fut 是 être 的简单过去时，常用于历史叙述；des 是 de les 的缩合。',{autrefois:'从前',capitale:'都城',ducs:'公爵'}],
+      ["Dans les vignobles, chaque parcelle peut posséder un sol différent.",'在葡萄园中，每块地可以拥有不同的土壤。','地点 + 主语 + pouvoir + 动词原形','peut 后接 posséder；chaque 后用单数名词。',{vignobles:'葡萄园',parcelle:'地块',posséder:'拥有',sol:'土壤'}]],
+    normandie:[
+      ["Les plages du Débarquement rappellent les événements de 1944.",'登陆海滩令人想起 1944 年的历史事件。','主语 + 动词 + 宾语','rappellent 表示“使想起”；du 是 de le 的缩合。',{plages:'海滩',débarquement:'登陆',rappellent:'使想起',événements:'事件'}],
+      ["Le lait des vaches normandes sert à fabriquer plusieurs fromages célèbres.",'诺曼底奶牛的乳汁被用于制作多种著名奶酪。','主语 + servir à + 动词原形','sert à fabriquer 表示“用于制作”；des 引出所属关系。',{lait:'牛奶',vaches:'奶牛',fabriquer:'制作',fromages:'奶酪'}]],
+    pantheon:[
+      ["Dans la crypte reposent des personnalités honorées par la nation.",'地下墓室安葬着受到国家敬重的人物。','地点状语前置 + 倒装主谓','地点置于句首后，动词 reposent 位于复数主语之前。',{crypte:'地下墓室',reposent:'安息',personnalités:'人物',honorées:'受表彰的'}],
+      ["Le pendule de Foucault y illustre la rotation de la Terre.",'傅科摆在那里展示地球的自转。','主语 + y + 动词 + 宾语','y 代替先贤祠；illustre 意为“形象地展示”。',{pendule:'摆',illustre:'展示',rotation:'旋转',terre:'地球'}]],
+    'champs-elysees':[
+      ["Cette perspective fait partie d'un grand axe historique de Paris.",'这条景观大道属于巴黎宏大的历史轴线。','faire partie de + 名词','fait partie de 表示“属于……的一部分”；d’un 是 de un 的省音。',{perspective:'景观大道',partie:'部分',axe:'轴线',historique:'历史的'}],
+      ["L'avenue accueille aussi des célébrations et de grands rassemblements.",'这条大街也承载庆典与大型集会。','主语 + 动词 + 并列宾语','accueille 表示“迎接、举办”；des 引出复数宾语。',{avenue:'大街',accueille:'举办',célébrations:'庆典',rassemblements:'集会'}]],
+    'mont-saint-michel':[
+      ["Au Moyen Âge, l'abbaye attirait des pèlerins venus de loin.",'中世纪时，修道院吸引远道而来的朝圣者。','时间 + 主语 + 未完成过去时','attirait 描述过去持续的现象；venus de loin 修饰 pèlerins。',{abbaye:'修道院',attirait:'吸引',pèlerins:'朝圣者',loin:'远方'}],
+      ["Les moines y conservaient et étudiaient des manuscrits.",'修士们在那里保存并研究手稿。','主语 + y + 两个并列动词','y 代替修道院；conservaient 与 étudiaient 均为未完成过去时。',{moines:'修士',conservaient:'保存',étudiaient:'研究',manuscrits:'手稿'}]],
+    provence:[
+      ["La floraison de la lavande attire des visiteurs pendant l'été.",'夏季薰衣草开花吸引游客前来。','主语 + 动词 + 宾语 + 时间','pendant 表示“在……期间”；de la lavande 修饰 floraison。',{floraison:'开花',lavande:'薰衣草',attire:'吸引',visiteurs:'游客'}],
+      ["Près de Gordes, l'abbaye de Sénanque se trouve au milieu des champs.",'在戈尔德附近，塞南克修道院坐落在田野之间。','地点 + 主语 + se trouver + 地点','près de 表示“靠近”；au milieu de 表示“在……中间”。',{près:'附近',abbaye:'修道院',milieu:'中间',champs:'田野'}]],
+    chambord:[
+      ["Sur son escalier à double révolution, deux personnes peuvent monter sans se croiser.",'在双螺旋楼梯上，两个人可以同时上行而不相遇。','地点 + 主语 + pouvoir + 动词原形','sans 后接动词原形；se croiser 表示“相遇、交错”。',{escalier:'楼梯',double:'双重的',monter:'上楼',croiser:'相遇'}],
+      ["Le château est entouré d'un vaste domaine de forêts et de jardins.",'城堡周围是一片广阔的森林与花园园区。','être entouré de + 名词','entouré 与阳性 château 一致；de 引出环绕之物。',{entouré:'被环绕',vaste:'广阔的',domaine:'园区',forêts:'森林'}]],
+    strasbourg:[
+      ["Le centre historique de Strasbourg figure au patrimoine mondial.",'斯特拉斯堡历史城区列入世界遗产。','主语 + figurer à + 名词','figure au 表示“列于”；au 是 à le 的缩合。',{centre:'中心',historique:'历史的',figure:'列入',patrimoine:'遗产'}],
+      ["La ville accueille aussi plusieurs institutions européennes.",'这座城市也设有多个欧洲机构。','主语 + 动词 + 宾语','accueille 在这里表示“容纳、设有”；plusieurs 修饰复数。',{accueille:'设有',plusieurs:'多个',institutions:'机构',européennes:'欧洲的'}]],
+    bretagne:[
+      ["Le sentier des Douaniers suit une grande partie du littoral breton.",'海关小径沿着布列塔尼海岸线的很大一部分延伸。','主语 + 动词 + 宾语','suit 表示“沿着”；du 是 de le 的缩合。',{sentier:'小径',douaniers:'海关人员',suit:'沿着',littoral:'海岸线'}],
+      ["Ses ports et ses îles rappellent l'importance de la mer dans la région.",'港口与岛屿体现了海洋在当地的重要性。','主语 + 动词 + 宾语','rappellent 在这里表示“使人意识到”；de la mer 修饰 importance。',{ports:'港口',îles:'岛屿',rappellent:'提醒',importance:'重要性'}]],
+    lyon:[
+      ["Dans les bouchons lyonnais, on découvre une cuisine locale généreuse.",'在里昂小餐馆里，人们可以品尝丰盛的本地菜。','地点 + on + 动词 + 宾语','on 泛指“人们”；généreuse 在这里形容菜肴丰盛。',{bouchons:'里昂传统小餐馆',découvre:'发现；品尝',cuisine:'菜肴',généreuse:'丰盛的'}],
+      ["Depuis la colline de Fourvière, on voit la ville et ses deux fleuves.",'从富维耶山上可以看到城市与两条河流。','地点 + on + 动词 + 宾语','depuis 表示视线起点；ses 指里昂的。',{colline:'山丘',voit:'看见',ville:'城市',fleuves:'河流'}]]
+  };
+  for (const scene of scenes) scene.lines.push(...deeper[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
+  const lastDetails = {
+    eiffel:[
+      ["Des expériences scientifiques et des transmissions radio ont prolongé sa vie.",'科学实验和无线电传输延续了铁塔的生命。','并列主语 + 复合过去时 + 宾语','ont prolongé 是复合过去时；sa 指铁塔的。',{expériences:'实验',scientifiques:'科学的',transmissions:'传输',prolongé:'延长'}],
+      ["Le soir, son éclairage donne un autre visage au paysage parisien.",'夜晚，灯光让巴黎的景致呈现另一番面貌。','时间 + 主语 + 动词 + 宾语','donne un autre visage à 表示“赋予另一种面貌”；au 是 à le 的缩合。',{soir:'夜晚',éclairage:'灯光',visage:'面貌',parisien:'巴黎的'}]],
+    soleil:[
+      ["Dans les décors de Versailles, le soleil évoquait la puissance du roi.",'在凡尔赛的装饰中，太阳象征国王的权力。','地点 + 主语 + 未完成过去时 + 宾语','évoquait 描述过去持续的象征意义；du 是 de le 的缩合。',{décors:'装饰',évoquait:'使人想到',puissance:'权力',roi:'国王'}],
+      ["Les fêtes de la cour mêlaient musique, théâtre et danse.",'宫廷庆典融合了音乐、戏剧与舞蹈。','主语 + 动词 + 并列宾语','mêlaient 是未完成过去时，表示惯常的宫廷活动。',{fêtes:'庆典',cour:'宫廷',mêlaient:'融合',théâtre:'戏剧'}]],
+    fleur:[
+      ["Le dessin stylisé apparaît sur des tissus, des armes et des armoiries.",'这种风格化纹样出现在织物、武器与纹章上。','主语 + 动词 + 并列地点','stylisé 表示“风格化的”；三个 des 引出并列名词。',{dessin:'图案',stylisé:'风格化的',tissus:'织物',armoiries:'纹章'}],
+      ["Sa répétition sur un manteau rendait le pouvoir royal immédiatement visible.",'披风上反复出现的图案让王权一眼可辨。','主语 + 动词 + 宾语 + 补语','rendait A B 表示“使 A 变得 B”；immédiatement 修饰 visible。',{répétition:'重复',manteau:'披风',rendait:'使变得',visible:'可见的'}]],
+    louvre:[
+      ["L'histoire du Louvre commence avec une forteresse médiévale.",'卢浮宫的历史始于一座中世纪堡垒。','主语 + 动词 + avec + 名词','commence avec 表示“始于”；médiévale 修饰阴性 forteresse。',{commence:'开始',forteresse:'堡垒',médiévale:'中世纪的'}],
+      ["En parcourant ses salles, on traverse aussi plusieurs siècles d'architecture.",'穿行于各个展厅时，人们也能看到跨越多个世纪的建筑变迁。','现在分词短语 + 主句','en parcourant 表示“在游览时”；plusieurs 修饰复数 siècles。',{parcourant:'游览',salles:'展厅',traverse:'穿越',siècles:'世纪'}]],
+    versailles:[
+      ["André Le Nôtre a organisé les jardins autour de grandes allées symétriques.",'安德烈·勒诺特尔围绕对称大道规划了花园。','主语 + 复合过去时 + 宾语','a organisé 是复合过去时；autour de 表示“围绕”。',{organisé:'规划',jardins:'花园',allées:'林荫道',symétriques:'对称的'}],
+      ["Les bosquets formaient de petits espaces pour la promenade et les fêtes.",'林苑形成供散步与举行庆典的小型空间。','主语 + 未完成过去时 + 宾语','formaient 描述过去园林布局；pour 引出用途。',{bosquets:'林苑',formaient:'形成',espaces:'空间',promenade:'散步'}]],
+    'cote-azur':[
+      ["Le village d'Èze offre un panorama sur la mer depuis les hauteurs.",'埃兹村从高处提供眺望大海的全景。','主语 + 动词 + 宾语 + 地点','depuis 表示观看起点；les hauteurs 指高处。',{village:'村庄',offre:'提供',panorama:'全景',hauteurs:'高处'}],
+      ["À Grasse, la tradition des parfums relie les fleurs aux savoir-faire locaux.",'在格拉斯，香水传统把花卉与当地工艺联系起来。','地点 + 主语 + relier A à B','relie A à B 表示“连接 A 和 B”；locaux 与复数 savoir-faire 一致。',{parfums:'香水',relie:'连接',fleurs:'花卉',savoir:'技艺'}]],
+    bourgogne:[
+      ["Les climats du vignoble désignent des parcelles aux caractères particuliers.",'勃艮第葡萄园的“风土区”指各有特色的地块。','主语 + 动词 + 宾语','désignent 表示“指称”；aux 是 à les 的缩合。',{climats:'风土区',vignoble:'葡萄园',désignent:'指称',parcelles:'地块'}],
+      ["À Beaune, les anciens hospices témoignent aussi de l'histoire locale.",'在博讷，古老的慈善医院也见证了当地历史。','地点 + 主语 + 动词 + 补语','témoignent de 表示“见证”；anciens 修饰 hospices。',{anciens:'古老的',hospices:'慈善医院',témoignent:'见证',locale:'当地的'}]],
+    normandie:[
+      ["Les ports et les stations balnéaires montrent d'autres visages de la côte.",'港口与海滨度假地展现了海岸的不同面貌。','并列主语 + 动词 + 宾语','montrent 表示“展示”；d’autres 表示“其他的”。',{ports:'港口',stations:'度假地',balnéaires:'海滨的',côte:'海岸'}],
+      ["Entre mémoire et nature, la région réunit plusieurs histoires de France.",'在历史记忆与自然风景之间，这片地区汇聚了法国的多种故事。','状语 + 主语 + 动词 + 宾语','entre A et B 表示“在 A 与 B 之间”；réunit 意为“汇集”。',{mémoire:'记忆',nature:'自然',région:'地区',réunit:'汇集'}]],
+    pantheon:[
+      ["Le bâtiment était d'abord destiné à devenir une église dédiée à sainte Geneviève.",'这座建筑最初计划成为献给圣热纳维耶芙的教堂。','主语 + 过去被动结构 + 不定式','était destiné à 表示“原本计划”；dédiée 与阴性 église 一致。',{bâtiment:'建筑',destiné:'计划用于',église:'教堂',dédiée:'献给'}],
+      ["Son histoire reflète les changements politiques de la France.",'它的历史折射出法国的政治变迁。','主语 + 动词 + 宾语','reflète 表示“反映”；politiques 修饰复数 changements。',{histoire:'历史',reflète:'反映',changements:'变化',politiques:'政治的'}]],
+    'champs-elysees':[
+      ["En marchant vers l'ouest, on voit l'Arc de Triomphe grandir peu à peu.",'向西行走时，凯旋门会逐渐映入眼帘并显得越来越近。','现在分词短语 + 主句','en marchant 表示“在行走时”；peu à peu 表示“逐渐”。',{marchant:'行走',ouest:'西方',grandir:'变大',peu:'一点'}],
+      ["La largeur de l'avenue laisse de la place aux promeneurs et aux événements.",'大道的宽度为行人和活动留出了空间。','主语 + laisser + 宾语 + 补语','laisse de la place à 表示“给……留出空间”。',{largeur:'宽度',laisse:'留下',promeneurs:'散步者',événements:'活动'}]],
+    'mont-saint-michel':[
+      ["La baie change d'aspect selon la lumière, le temps et le niveau de l'eau.",'海湾会随着光线、天气与水位呈现不同面貌。','主语 + 动词 + selon + 并列名词','selon 表示“根据、随着”；d’aspect 表示“外观”。',{baie:'海湾',aspect:'面貌',lumière:'光线',niveau:'水位'}],
+      ["Du village jusqu'au sommet, les bâtiments racontent plusieurs siècles d'histoire.",'从村庄到山顶，建筑诉说着数个世纪的历史。','范围状语 + 主语 + 动词 + 宾语','du...jusqu’au... 表示“从……直到……”；racontent 为比喻用法。',{village:'村庄',sommet:'山顶',bâtiments:'建筑',racontent:'讲述'}]],
+    provence:[
+      ["La couleur des champs varie avec les saisons et la lumière du jour.",'田野的颜色随季节与日光变化。','主语 + 动词 + avec + 并列名词','varie 表示“变化”；avec 引出变化所依的条件。',{couleur:'颜色',champs:'田野',varie:'变化',saisons:'季节'}],
+      ["Entre villages, marchés et abbayes, la région possède un patrimoine varié.",'从村庄、集市到修道院，这一地区拥有多样的文化遗产。','列举状语 + 主语 + 动词 + 宾语','entre 在这里引出范围；varié 修饰 patrimoine。',{villages:'村庄',marchés:'集市',abbayes:'修道院',patrimoine:'遗产'}]],
+    chambord:[
+      ["Les nombreuses cheminées donnent au toit une silhouette reconnaissable.",'众多烟囱让屋顶形成容易辨认的轮廓。','主语 + donner A à B','donnent A à B 表示“赋予 B 一种 A”；reconnaissable 修饰 silhouette。',{cheminées:'烟囱',toit:'屋顶',silhouette:'轮廓',reconnaissable:'可辨认的'}],
+      ["Ce domaine rappelle les ambitions du roi François Ier à la Renaissance.",'这片园区令人想起文艺复兴时期弗朗索瓦一世的雄心。','主语 + 动词 + 宾语 + 时间','rappelle 表示“使人想起”；à la Renaissance 限定时代。',{domaine:'园区',rappelle:'使人想起',ambitions:'雄心',renaissance:'文艺复兴'}]],
+    strasbourg:[
+      ["La cathédrale gothique domine les toits du vieux centre.",'哥特式大教堂高耸于老城区屋顶之上。','主语 + 动词 + 宾语','domine 表示“高耸于……之上”；du 是 de le 的缩合。',{cathédrale:'大教堂',gothique:'哥特式的',domine:'高耸',toits:'屋顶'}],
+      ["La ville associe aujourd'hui son héritage alsacien à une vie européenne.",'如今，这座城市融合了阿尔萨斯传统与欧洲城市生活。','主语 + associer A à B','associe A à B 表示“将 A 与 B 结合”；aujourd’hui 表示“如今”。',{associe:'结合',héritage:'遗产',alsacien:'阿尔萨斯的',européenne:'欧洲的'}]],
+    bretagne:[
+      ["La lumière changeante révèle des couleurs différentes sur les rochers.",'变幻的光线让岩石呈现不同色彩。','主语 + 动词 + 宾语 + 地点','changeante 修饰 lumière；sur 引出颜色显现的位置。',{lumière:'光线',changeante:'变化的',révèle:'显现',rochers:'岩石'}],
+      ["Sur cette côte, les phares rappellent les liens anciens entre les habitants et la mer.",'在这片海岸，灯塔提醒人们居民与大海长久的联系。','地点 + 主语 + 动词 + 宾语','rappellent 表示“使想起”；entre A et B 表示“两者之间”。',{phares:'灯塔',liens:'联系',anciens:'久远的',habitants:'居民'}]],
+    lyon:[
+      ["Sur les pentes de la Croix-Rousse, l'histoire des ouvriers de la soie reste présente.",'在红十字山坡上，丝绸工人的历史仍随处可见。','地点 + 主语 + rester + 表语','reste présente 表示“仍然存在”；des 是 de les 的缩合。',{pentes:'山坡',ouvriers:'工人',soie:'丝绸',présente:'存在的'}],
+      ["Entre les deux fleuves, les quartiers racontent des époques différentes.",'两条河流之间的街区讲述着不同时代的故事。','地点 + 主语 + 动词 + 宾语','entre 引出位置；racontent 在这里是比喻用法。',{fleuves:'河流',quartiers:'街区',racontent:'讲述',époques:'时代'}]]
+  };
+  for (const scene of scenes) scene.lines.push(...lastDetails[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
+  const extraSources = {
+    eiffel:'https://www.toureiffel.paris/fr/le-monument/tour-eiffel-et-sciences',
+    soleil:'https://www.chateauversailles.fr/decouvrir/les-ressources/versailles-cour',
+    fleur:'https://www.chateauversailles.fr/resources/pdf/fr/presse/dp_louisxiv.pdf',
+    louvre:'https://musee.louvre.fr/decouvrir/le-palais',
+    versailles:'https://www.chateauversailles.fr/decouvrir/domaine/jardins/bosquets',
+    pantheon:'https://www.paris-pantheon.fr/decouvrir/le-pendule-de-foucault',
+    'champs-elysees':'https://www.france.fr/fr/article/grands-evenements-france/'
+  };
   const dialog = document.querySelector('#sceneDialog');
   const choices = document.querySelector('#sceneChoices');
   const content = document.querySelector('#sceneContent');
@@ -150,8 +261,9 @@
   }
   function renderContent() {
     const s = active;
+    const sourceLinks = [s.source, extraSources[s.id]].filter(Boolean).map((url,i) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">资料 ${i+1} ↗</a>`).join(' · ');
     document.querySelector('#sceneTitle').textContent = s.name;
-    content.innerHTML = `<div class="sceneHero" style="background-image:url('./backgrounds/${s.id}.webp')"><div><small>${escapeHtml(s.place)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}</p></div></div><p class="sceneSource">内容参考：<a href="${s.source}" target="_blank" rel="noopener noreferrer">查看原始资料 ↗</a> · 插画为 AI 创作，非实景照片。</p><p class="sceneAudioNote">介绍句使用设备的法语／中文语音朗读，不属于三种内置音色；点播放后默认无限循环，再点停止。音标由 eSpeak NG 自动生成，仅供参考。</p><div class="sceneLines">${s.lines.map((line,i) => `<article class="sceneLine" data-line="${i}"><div class="sceneFrench" lang="fr">${wordButtons(line.fr)}</div><div class="sceneIpa" lang="fr" aria-label="法语参考音标">/${escapeHtml(window.FRANCE_SCENE_IPA?.[line.fr] || '')}/</div><div class="sceneChinese" lang="zh-CN">${escapeHtml(line.zh)}</div><div class="sceneLineActions"><button type="button" data-action="play-fr" data-play-key="fr-${i}" data-label="▶ 法语" aria-pressed="false">▶ 法语</button><button type="button" data-action="play-zh" data-play-key="zh-${i}" data-label="▶ 中文" aria-pressed="false">▶ 中文</button><button type="button" data-action="explain" aria-expanded="false">句子讲解</button></div><div class="sceneExplanation" hidden><div><strong>句型：</strong>${escapeHtml(line.structure)}</div><div><strong>解析：</strong>${escapeHtml(line.grammar)}</div></div></article>`).join('')}</div><div class="sceneFooter"><button class="scenePlayAll" type="button" data-action="play-all" data-play-key="all" data-label="▶ 连读介绍 · 循环" aria-pressed="false">▶ 连读介绍 · 循环</button><button class="sceneStop" type="button" data-action="stop" hidden>■ 停止播放</button><span>点击法语单词查词并循环听发音</span></div>`;
+    content.innerHTML = `<div class="sceneArtwork"><div class="sceneHero" style="background-image:url('./backgrounds/${s.id}.webp')"><div><small>${escapeHtml(s.place)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}</p></div></div><p class="sceneSource">内容参考：${sourceLinks} · 插画为 AI 创作，非实景照片。</p></div><div class="sceneReading"><p class="sceneAudioNote">介绍句使用设备的法语／中文语音朗读，不属于三种内置音色；点播放后默认无限循环，再点停止。音标由 eSpeak NG 自动生成，仅供参考。</p><div class="sceneFooter"><button class="scenePlayAll" type="button" data-action="play-all" data-play-key="all" data-label="▶ 连读介绍 · 循环" aria-pressed="false">▶ 连读介绍 · 循环</button><button class="sceneStop" type="button" data-action="stop" hidden>■ 停止播放</button><span>点击法语单词查词并循环听发音</span></div><div class="sceneLines">${s.lines.map((line,i) => `<article class="sceneLine" data-line="${i}"><div class="sceneFrench" lang="fr">${wordButtons(line.fr)}</div><div class="sceneIpa" lang="fr" aria-label="法语参考音标">/${escapeHtml(window.FRANCE_SCENE_IPA?.[line.fr] || '')}/</div><div class="sceneChinese" lang="zh-CN">${escapeHtml(line.zh)}</div><div class="sceneLineActions"><button type="button" data-action="play-fr" data-play-key="fr-${i}" data-label="▶ 法语" aria-pressed="false">▶ 法语</button><button type="button" data-action="play-zh" data-play-key="zh-${i}" data-label="▶ 中文" aria-pressed="false">▶ 中文</button><button type="button" data-action="explain" aria-expanded="false">句子讲解</button></div><div class="sceneExplanation" hidden><div><strong>句型：</strong>${escapeHtml(line.structure)}</div><div><strong>解析：</strong>${escapeHtml(line.grammar)}</div></div></article>`).join('')}</div></div></div>`;
     syncPlayback();
   }
   function play(text,lang,key,all=false) {
@@ -193,7 +305,7 @@
   choices.onclick = event => {
     const button = event.target.closest('[data-scene]');
     if (!button) return;
-    if (state.mode === 'scene') stopAll(true);
+    if (state.mode === 'scene' || state.mode === 'word' || state.mode === 'word-preview') stopAll(true);
     selected = button.dataset.scene;
     if (selected !== 'none') active = scenes.find(s => s.id === selected);
     applyBackground();
