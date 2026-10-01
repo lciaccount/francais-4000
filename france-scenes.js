@@ -298,12 +298,13 @@
   };
   for (const scene of scenes) scene.lines.push(...deepDive[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
   for (const scene of scenes) scene.lines.push(...window.FRANCE_SCENE_MORE[scene.id].map(([fr,zh,grammar]) => ({fr,zh,structure:'背景延伸',grammar,gloss:{}})));
+  for (const scene of scenes) scene.lines.push(...window.FRANCE_SCENE_DEEPER[scene.id].map(([fr,zh,grammar]) => ({fr,zh,structure:'延伸阅读',grammar,gloss:{}})));
   const history = window.FRANCE_HISTORY_SCENE;
   history.lines = history.chapters.flatMap((chapter,index) => chapter.lines.map(([fr,zh,grammar],lineIndex) => ({
     fr,zh,structure:'历史脉络',grammar,gloss:{},
     chapter:lineIndex === 0 ? {index:index+1,title:chapter.title,period:chapter.period,source:chapter.source} : null
   })));
-  scenes.push(history);
+  const people = window.FRANCE_HISTORICAL_PEOPLE.map(person => ({...person,imageId:'histoire-france',lines:person.lines.map(([fr,zh,grammar]) => ({fr,zh,structure:'人物生平',grammar,gloss:{}}))}));
   const extraSources = {
     eiffel:'https://www.toureiffel.paris/fr/le-monument/tour-eiffel-et-sciences',
     soleil:'https://www.chateauversailles.fr/decouvrir/les-ressources/versailles-cour',
@@ -344,6 +345,7 @@
   let selected = localStorage.getItem('fr4000-scene') || 'none';
   if (!safeIds.has(selected)) selected = 'none';
   let active = scenes.find(s => s.id === selected) || scenes[0];
+  let view = 'background';
   let lookup = null;
   let returnFocus = null;
   let playingKey = null;
@@ -368,6 +370,12 @@
     if (!dialog.hidden) renderChoices();
   }
   function renderChoices() {
+    choices.hidden = view === 'history';
+    if (view === 'history') {choices.innerHTML = '';return;}
+    if (view === 'people') {
+      choices.innerHTML = people.map(person => `<button class="scenePersonChoice" type="button" data-person="${person.id}" aria-pressed="${active.id === person.id}"><strong>${escapeHtml(person.name)}</strong><small>${escapeHtml(person.period)} · ${escapeHtml(person.role)}</small></button>`).join('');
+      return;
+    }
     choices.innerHTML = `<button class="sceneChoice none" type="button" data-scene="none" aria-pressed="${selected === 'none'}"><span>纯色背景<br>关闭插画</span></button>` + scenes.map(s => `<button class="sceneChoice" type="button" data-scene="${s.id}" aria-pressed="${selected === s.id}" title="${escapeHtml(s.name)}"><img src="./backgrounds/${s.id}.webp" alt="" loading="lazy"><span>${escapeHtml(s.name)}</span></button>`).join('');
   }
   function wordButtons(fr) {
@@ -375,13 +383,16 @@
   }
   function renderContent() {
     const s = active;
+    content.dataset.view = view;
+    const imageId = s.imageId || s.id;
     const sourceLinks = [s.source, extraSources[s.id]].filter(Boolean).map((url,i) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">资料 ${i+1} ↗</a>`).join(' · ');
     document.querySelector('#sceneTitle').textContent = s.name;
     content.innerHTML = `<div class="sceneArtwork">
-      <div class="sceneHero" style="background-image:url('./backgrounds/${s.id}.webp')"><div><small>${escapeHtml(s.place)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}</p></div><button class="sceneZoomBtn" type="button" data-action="zoom" aria-label="放大查看${escapeHtml(s.name)}背景图">⤢ 放大图片</button></div>
+      <div class="sceneHero" style="background-image:url('./backgrounds/${imageId}.webp')"><div><small>${escapeHtml(s.place || s.period)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}${s.role ? ` · ${escapeHtml(s.role)}` : ''}</p></div><button class="sceneZoomBtn" type="button" data-action="zoom" aria-label="放大查看${escapeHtml(s.name)}主题插画">⤢ 放大图片</button></div>
       <p class="sceneSource">内容参考：${sourceLinks} · 插画为 AI 创作，非实景照片。</p>
     </div><div class="sceneReading">
       ${s.chapters ? `<div class="sceneHistoryNote">按时间顺序阅读 ${s.chapters.length} 个章节、${s.lines.length} 句法中对照。百年战争属于瓦卢瓦王朝时期；章节标题可查看史料来源。历史分期是学习线索，并不意味着现代法国从古代起就已存在。<label class="sceneHistoryJump">跳至章节 <select aria-label="跳转到法国历史章节"><option value="">选择章节</option>${s.chapters.map((chapter,index) => `<option value="${index+1}">${String(index+1).padStart(2,'0')} · ${escapeHtml(chapter.title)}</option>`).join('')}</select></label></div>` : ''}
+      ${s.role ? `<p class="scenePersonNote">${escapeHtml(s.name)} · ${escapeHtml(s.period)} · ${escapeHtml(s.role)}。以下介绍将生平、作用与历史争议放在一起阅读；上方图片是法国历史意象插画，并非此人的肖像。</p>` : ''}
       <p class="sceneAudioNote">介绍句使用设备的法语／中文语音朗读，不属于三种内置音色；点播放后默认无限循环，再点停止。音标由 eSpeak NG 自动生成，仅供参考。</p>
       <div class="sceneFooter"><button class="scenePlayAll" type="button" data-action="play-all" data-play-key="all" data-label="▶ 连读介绍 · 循环" aria-pressed="false">▶ 连读介绍 · 循环</button><button class="sceneStop" type="button" data-action="stop" hidden>■ 停止播放</button><span>点击法语单词查词并循环听发音</span></div>
       <div class="sceneLines">${s.lines.map((line,i) => `${line.chapter ? `<h4 class="sceneChapter" data-chapter="${line.chapter.index}"><span>${String(line.chapter.index).padStart(2,'0')} · ${escapeHtml(line.chapter.title)} <small>${escapeHtml(line.chapter.period)}</small></span><a href="${escapeHtml(line.chapter.source)}" target="_blank" rel="noopener noreferrer">史料 ↗</a></h4>` : ''}<article class="sceneLine" data-line="${i}"><div class="sceneFrench" lang="fr">${wordButtons(line.fr)}</div><div class="sceneIpa" lang="fr" aria-label="法语参考音标">/${escapeHtml(window.FRANCE_SCENE_IPA?.[line.fr] || '')}/</div><div class="sceneChinese" lang="zh-CN">${escapeHtml(line.zh)}</div><div class="sceneLineActions"><button type="button" data-action="play-fr" data-play-key="fr-${i}" data-label="▶ 法语" aria-pressed="false">▶ 法语</button><button type="button" data-action="play-zh" data-play-key="zh-${i}" data-label="▶ 中文" aria-pressed="false">▶ 中文</button><button type="button" data-action="explain" aria-expanded="false">句子讲解</button></div><div class="sceneExplanation" hidden><div><strong>句型：</strong>${escapeHtml(line.structure)}</div><div><strong>解析：</strong>${escapeHtml(line.grammar)}</div></div></article>`).join('')}</div>
@@ -398,7 +409,7 @@
     let i = 0;
     playingKey = key;
     syncPlayback();
-    setStatus(`背景选择 · ${active.name} · 循环朗读中`);
+    setStatus(`${view === 'background' ? '背景选择' : view === 'history' ? '法国历史' : '历史人物'} · ${active.name} · 循环朗读中`);
     const next = () => {
       if (state.mode !== 'scene' || state.token !== token) return;
       speakOnce(lines[i++ % lines.length],lang,() => {
@@ -408,9 +419,9 @@
     next();
   }
   function openZoom() {
-    document.querySelector('#sceneZoomImage').src = `./backgrounds/${active.id}.webp`;
-    document.querySelector('#sceneZoomImage').alt = `${active.name}的艺术化背景插画`;
-    document.querySelector('#sceneZoomCaption').textContent = `${active.name} · 插画为 AI 创作，并非历史照片或实景照片`;
+    document.querySelector('#sceneZoomImage').src = `./backgrounds/${active.imageId || active.id}.webp`;
+    document.querySelector('#sceneZoomImage').alt = `${active.name}的艺术化主题插画`;
+    document.querySelector('#sceneZoomCaption').textContent = `${active.name} · 插画为 AI 创作，并非人物肖像、历史照片或实景照片`;
     setZoomScale(1);
     zoom.hidden = false;
     dialog.setAttribute('aria-modal','false');
@@ -424,11 +435,16 @@
     document.querySelector('.sceneSheet').inert = false;
     document.querySelector('.sceneZoomBtn')?.focus();
   }
-  function open() {
+  function open(section='background') {
     returnFocus = document.activeElement;
+    view = section;
+    active = section === 'history' ? history : section === 'people' ? people[0] : (scenes.find(s => s.id === selected) || scenes[0]);
+    document.querySelector('#sceneSectionName').textContent = `CARNET DE FRANCE · ${section === 'history' ? '法国历史' : section === 'people' ? '历史人物' : '背景选择'}`;
+    document.querySelector('#sceneSectionHelp').textContent = section === 'history' ? '独立时间线：按章节阅读法国历史，不改变当前背景。' : section === 'people' ? '选择人物，逐句了解其生平、影响与历史争议；不会改变当前背景。' : '选择背景，逐句阅读法中介绍、音标与解析；点击播放可循环听。';
     renderChoices();
     renderContent();
     dialog.hidden = false;
+    document.querySelector('.sceneSheet').scrollTop = 0;
     document.body.classList.add('scene-open');
     document.querySelector('#sceneClose').focus();
   }
@@ -443,8 +459,16 @@
     returnFocus?.focus();
   }
   choices.onclick = event => {
+    const personButton = event.target.closest('[data-person]');
+    if (personButton && view === 'people') {
+      if (state.mode === 'scene' || state.mode === 'word' || state.mode === 'word-preview') stopAll(true);
+      active = people.find(person => person.id === personButton.dataset.person) || people[0];
+      renderChoices();renderContent();
+      document.querySelector('.sceneSheet').scrollTop = 0;
+      return;
+    }
     const button = event.target.closest('[data-scene]');
-    if (!button) return;
+    if (!button || view !== 'background') return;
     if (state.mode === 'scene' || state.mode === 'word' || state.mode === 'word-preview') stopAll(true);
     selected = button.dataset.scene;
     if (selected !== 'none') active = scenes.find(s => s.id === selected);
@@ -486,8 +510,10 @@
   document.querySelector('#sceneZoomReset').onclick = () => setZoomScale(1);
   zoom.onclick = event => {if (event.target === zoom) closeZoom();};
   dialog.onclick = event => {if (event.target === dialog) close();};
-  document.querySelector('#sceneOpen').onclick = open;
-  document.querySelector('#sceneBanner').onclick = open;
+  document.querySelector('#sceneOpen').onclick = () => open('background');
+  document.querySelector('#historyOpen').onclick = () => open('history');
+  document.querySelector('#peopleOpen').onclick = () => open('people');
+  document.querySelector('#sceneBanner').onclick = () => open('background');
   document.querySelector('#sceneClose').onclick = close;
   document.addEventListener('keydown',event => {
     if (dialog.hidden) return;

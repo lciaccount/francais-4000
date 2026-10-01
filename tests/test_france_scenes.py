@@ -38,10 +38,10 @@ def main():
             page.locator('#sceneOpen').tap()
             assert page.locator('#sceneDialog').is_visible()
             assert '背景选择' in page.locator('#sceneOpen').inner_text()
-            assert page.locator('.sceneChoice').count() == 18
+            assert page.locator('.sceneChoice').count() == 17
             page.locator('[data-scene="louvre"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
-            assert page.locator('.sceneLine').count() == 16
+            assert page.locator('.sceneLine').count() == 20
             assert page.locator('.sceneHero').bounding_box()['height'] >= 205
             assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(255, 255, 255)'
             for name in ('eiffel', 'soleil', 'fleur', 'louvre', 'versailles', 'cote-azur',
@@ -49,14 +49,18 @@ def main():
                          'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                          'bretagne', 'lyon'):
                 page.locator(f'[data-scene="{name}"]').tap()
-                assert page.locator('.sceneLine').count() == 16
-                assert page.locator('.sceneIpa').count() == 16
+                assert page.locator('.sceneLine').count() == 20
+                assert page.locator('.sceneIpa').count() == 20
                 assert all(text.startswith('/') and text.endswith('/') and len(text) > 5
                            for text in page.locator('.sceneIpa').all_inner_texts())
                 page.locator('.sceneZoomBtn').tap()
                 assert page.locator('#sceneZoomImage').get_attribute('src').endswith(f'{name}.webp')
                 page.locator('#sceneZoomClose').tap()
-            page.locator('[data-scene="histoire-france"]').tap()
+            page.locator('[data-scene="louvre"]').tap()
+            page.locator('#sceneClose').tap()
+            page.locator('#historyOpen').tap()
+            assert page.locator('#sceneChoices').is_hidden()
+            assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             assert page.locator('.sceneChapter').count() == 16
             assert page.locator('.sceneLine').count() == 71
             assert '瓦卢瓦王朝与百年战争' in page.locator('.sceneChapter').all_inner_texts()[9]
@@ -86,7 +90,34 @@ def main():
             page.locator('.sceneZoomBtn').tap()
             page.locator('#sceneZoomClose').tap()
             assert page.locator('#sceneZoom').is_hidden()
-            page.locator('[data-scene="louvre"]').tap()
+            page.locator('#sceneClose').tap()
+            page.locator('#peopleOpen').tap()
+            assert page.locator('.scenePersonChoice').count() == 17
+            assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
+            for person in page.locator('.scenePersonChoice').all():
+                person.tap()
+                expected = 6 if person.get_attribute('data-person') == 'napoleon' else 5
+                assert page.locator('.sceneLine').count() == expected
+                assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
+            page.locator('[data-person="olympe-gouges"]').tap()
+            assert page.locator('.sceneLine').count() == 5
+            assert page.locator('.sceneIpa').count() == 5
+            assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
+            assert '1791' in page.locator('.sceneChinese').nth(1).inner_text()
+            page.locator('.sceneLine [data-word="Déclaration"]').first.tap()
+            assert page.locator('#dictionary').is_visible()
+            page.locator('#dictClose').tap()
+            page.locator('[data-person="napoleon"]').tap()
+            assert page.locator('.sceneLine').count() == 6
+            page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
+            assert page.locator('.sceneLine').first.locator('[data-action="play-fr"]').get_attribute('aria-pressed') == 'true'
+            page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
+            page.locator('.sceneZoomBtn').tap()
+            assert page.locator('#sceneZoomImage').get_attribute('src').endswith('histoire-france.webp')
+            page.locator('#sceneZoomClose').tap()
+            page.locator('#sceneClose').tap()
+            page.locator('#sceneOpen').tap()
+            page.evaluate('window.__sceneSpeech=[]')
             assert '卢浮宫从前是一座王宫' in page.locator('.sceneChinese').first.inner_text()
             assert page.locator('.sceneSource a').count() == 2
             page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
@@ -120,10 +151,12 @@ def main():
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v21-history-zoom-20261001');
+              const c=await caches.open('fr4000-v22-separate-history-people-20261001');
               return !!(await c.match('./france-scenes.js'))
                 && !!(await c.match('./france-scenes-more.js'))
+                && !!(await c.match('./france-scenes-deeper.js'))
                 && !!(await c.match('./france-history.js'))
+                && !!(await c.match('./france-people.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
                 && !!(await c.match('./backgrounds/histoire-france.webp'))
                 && !!(await c.match('./backgrounds/lyon.webp'))
@@ -146,7 +179,7 @@ def main():
             browser.close()
     finally:
         server.shutdown()
-    print(f'PASS {engine}: sixteen 16-line scenes plus 71-line history, zoom, IPA, looping playback, lookup, persistence, offline assets')
+    print(f'PASS {engine}: sixteen 20-line scenes, independent 71-line history and 17 people, zoom, IPA, playback, lookup, persistence, offline assets')
 
 
 if __name__ == '__main__':
