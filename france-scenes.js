@@ -344,6 +344,7 @@
   const safeIds = new Set(scenes.map(s => s.id));
   let selected = localStorage.getItem('fr4000-scene') || 'none';
   if (!safeIds.has(selected)) selected = 'none';
+  let previewId = selected === 'none' ? scenes[0].id : selected;
   let active = scenes.find(s => s.id === selected) || scenes[0];
   let view = 'background';
   let lookup = null;
@@ -376,7 +377,7 @@
       choices.innerHTML = people.map(person => `<button class="scenePersonChoice" type="button" data-person="${person.id}" aria-pressed="${active.id === person.id}"><strong>${escapeHtml(person.name)}</strong><small>${escapeHtml(person.period)} · ${escapeHtml(person.role)}</small></button>`).join('');
       return;
     }
-    choices.innerHTML = `<button class="sceneChoice none" type="button" data-scene="none" aria-pressed="${selected === 'none'}"><span>纯色背景<br>关闭插画</span></button>` + scenes.map(s => `<button class="sceneChoice" type="button" data-scene="${s.id}" aria-pressed="${selected === s.id}" title="${escapeHtml(s.name)}"><img src="./backgrounds/${s.id}.webp" alt="" loading="lazy"><span>${escapeHtml(s.name)}</span></button>`).join('');
+    choices.innerHTML = `<button class="sceneChoice none" type="button" data-scene="none" aria-pressed="${previewId === 'none'}" aria-current="${selected === 'none'}" title="关闭背景插画（立即生效）"><span>纯色背景<br>${selected === 'none' ? '当前使用' : '关闭插画'}</span></button>` + scenes.map(s => `<button class="sceneChoice" type="button" data-scene="${s.id}" aria-pressed="${previewId === s.id}" aria-current="${selected === s.id}" title="${escapeHtml(s.name)}"><img src="./backgrounds/${s.id}.webp" alt="" loading="lazy"><span>${escapeHtml(s.name)}${selected === s.id ? ' · 已应用' : ''}</span></button>`).join('');
   }
   function wordButtons(fr) {
     return fr.split(/([A-Za-zÀ-ÖØ-öø-ÿŒœ]+(?:[’'-][A-Za-zÀ-ÖØ-öø-ÿŒœ]+)*)/u).map(part => /^[A-Za-zÀ-ÖØ-öø-ÿŒœ]/u.test(part) ? `<button class="sceneWord" type="button" data-word="${escapeHtml(part)}" aria-label="查询并点读 ${escapeHtml(part)}">${escapeHtml(part)}</button>` : escapeHtml(part)).join('');
@@ -389,6 +390,7 @@
     document.querySelector('#sceneTitle').textContent = s.name;
     content.innerHTML = `<div class="sceneArtwork">
       <div class="sceneHero" style="background-image:url('./backgrounds/${imageId}.webp')"><div><small>${escapeHtml(s.place || s.period)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}${s.role ? ` · ${escapeHtml(s.role)}` : ''}</p></div><button class="sceneZoomBtn" type="button" data-action="zoom" aria-label="放大查看${escapeHtml(s.name)}主题插画">⤢ 放大图片</button></div>
+      ${view === 'background' ? `<div class="sceneApplyBar"><div class="sceneApplyState" role="status">${selected === s.id ? '✓ 当前正在使用此背景' : previewId === 'none' ? '当前为纯色背景 · 可选择插画预览' : '正在预览 · 尚未应用到首页'}</div><button class="sceneApplyBtn" type="button" data-action="apply-background">${selected === s.id ? '✓ 已选定该背景' : '选定该背景'}</button></div>` : ''}
       <p class="sceneSource">内容参考：${sourceLinks} · 插画为 AI 创作，非实景照片。</p>
     </div><div class="sceneReading">
       ${s.chapters ? `<div class="sceneHistoryNote">按时间顺序阅读 ${s.chapters.length} 个章节、${s.lines.length} 句法中对照。百年战争属于瓦卢瓦王朝时期；章节标题可查看史料来源。历史分期是学习线索，并不意味着现代法国从古代起就已存在。<label class="sceneHistoryJump">跳至章节 <select aria-label="跳转到法国历史章节"><option value="">选择章节</option>${s.chapters.map((chapter,index) => `<option value="${index+1}">${String(index+1).padStart(2,'0')} · ${escapeHtml(chapter.title)}</option>`).join('')}</select></label></div>` : ''}
@@ -438,6 +440,7 @@
   function open(section='background') {
     returnFocus = document.activeElement;
     view = section;
+    if (section === 'background') previewId = selected === 'none' ? scenes[0].id : selected;
     active = section === 'history' ? history : section === 'people' ? people[0] : (scenes.find(s => s.id === selected) || scenes[0]);
     document.querySelector('#sceneSectionName').textContent = `CARNET DE FRANCE · ${section === 'history' ? '法国历史' : section === 'people' ? '历史人物' : '背景选择'}`;
     document.querySelector('#sceneSectionHelp').textContent = section === 'history' ? '独立时间线：按章节阅读法国历史，不改变当前背景。' : section === 'people' ? '选择人物，逐句了解其生平、影响与历史争议；不会改变当前背景。' : '选择背景，逐句阅读法中介绍、音标与解析；点击播放可循环听。';
@@ -470,9 +473,17 @@
     const button = event.target.closest('[data-scene]');
     if (!button || view !== 'background') return;
     if (state.mode === 'scene' || state.mode === 'word' || state.mode === 'word-preview') stopAll(true);
-    selected = button.dataset.scene;
-    if (selected !== 'none') active = scenes.find(s => s.id === selected);
-    applyBackground();
+    if (button.dataset.scene === 'none') {
+      selected = 'none';
+      previewId = 'none';
+      applyBackground();
+      document.querySelector('#sceneSectionHelp').textContent = '已关闭背景插画；可继续选一张图片预览并按“选定该背景”应用。';
+      renderContent();
+      return;
+    }
+    previewId = button.dataset.scene;
+    active = scenes.find(s => s.id === previewId);
+    renderChoices();
     renderContent();
   };
   content.onclick = event => {
@@ -487,6 +498,14 @@
     if (!button) return;
     const action = button.dataset.action;
     if (action === 'zoom') {openZoom(); return;}
+    if (action === 'apply-background' && view === 'background') {
+      selected = active.id;
+      previewId = selected;
+      applyBackground();
+      renderContent();
+      document.querySelector('#sceneSectionHelp').textContent = `已选定「${active.name}」作为背景；正文保持清晰，图片可在横幅及空白区域查看。`;
+      return;
+    }
     if (action === 'stop') {stopAll(); return;}
     if (action === 'play-all') {play('', 'fr-FR', 'all', true); return;}
     const article = button.closest('.sceneLine');

@@ -29,7 +29,8 @@ def main():
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.goto(f'http://127.0.0.1:{server.server_port}/', wait_until='domcontentloaded')
             page.locator('#sceneOpen').click()
-            page.locator('[data-scene="eiffel"]').click()
+            page.locator('.sceneChoice[data-scene="eiffel"]').click()
+            page.locator('.sceneApplyBtn').click()
             page.locator('#sceneClose').click()
             assert page.locator('#advancedControls').get_attribute('open') is None
             assert page.locator('#sceneBanner').bounding_box()['height'] <= 90

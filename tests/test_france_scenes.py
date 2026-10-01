@@ -39,7 +39,10 @@ def main():
             assert page.locator('#sceneDialog').is_visible()
             assert '背景选择' in page.locator('#sceneOpen').inner_text()
             assert page.locator('.sceneChoice').count() == 17
-            page.locator('[data-scene="louvre"]').tap()
+            page.locator('.sceneChoice[data-scene="louvre"]').tap()
+            assert page.evaluate('document.documentElement.dataset.scene') == 'none'
+            assert page.locator('.sceneApplyBtn').inner_text() == '选定该背景'
+            page.locator('.sceneApplyBtn').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             assert page.locator('.sceneLine').count() == 20
             assert page.locator('.sceneHero').bounding_box()['height'] >= 205
@@ -48,7 +51,8 @@ def main():
                          'bourgogne', 'normandie', 'pantheon', 'champs-elysees',
                          'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                          'bretagne', 'lyon'):
-                page.locator(f'[data-scene="{name}"]').tap()
+                page.locator(f'.sceneChoice[data-scene="{name}"]').tap()
+                assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
                 assert page.locator('.sceneLine').count() == 20
                 assert page.locator('.sceneIpa').count() == 20
                 assert all(text.startswith('/') and text.endswith('/') and len(text) > 5
@@ -56,7 +60,7 @@ def main():
                 page.locator('.sceneZoomBtn').tap()
                 assert page.locator('#sceneZoomImage').get_attribute('src').endswith(f'{name}.webp')
                 page.locator('#sceneZoomClose').tap()
-            page.locator('[data-scene="louvre"]').tap()
+            page.locator('.sceneChoice[data-scene="louvre"]').tap()
             page.locator('#sceneClose').tap()
             page.locator('#historyOpen').tap()
             assert page.locator('#sceneChoices').is_hidden()
@@ -145,16 +149,18 @@ def main():
             page.reload(wait_until='domcontentloaded')
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             page.locator('#sceneOpen').tap()
-            page.locator('[data-scene="none"]').tap()
+            page.locator('.sceneChoice[data-scene="none"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'none'
             page.locator('#sceneClose').tap()
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v22-separate-history-people-20261001');
+              const c=await caches.open('fr4000-v23-monochrome-background-20261001');
               return !!(await c.match('./france-scenes.js'))
                 && !!(await c.match('./france-scenes-more.js'))
                 && !!(await c.match('./france-scenes-deeper.js'))
+                && !!(await c.match('./theme-monochrome.css'))
+                && !!(await c.match('./eiffel-mark.svg'))
                 && !!(await c.match('./france-history.js'))
                 && !!(await c.match('./france-people.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
@@ -166,7 +172,9 @@ def main():
             desk = desktop.new_page()
             desk.goto(f'http://127.0.0.1:{server.server_port}/', wait_until='domcontentloaded')
             desk.locator('#sceneOpen').click()
-            desk.locator('[data-scene="chambord"]').click()
+            desk.locator('.sceneChoice[data-scene="chambord"]').click()
+            assert desk.evaluate('document.documentElement.dataset.scene') == 'none'
+            desk.locator('.sceneApplyBtn').click()
             art = desk.locator('.sceneArtwork').bounding_box()
             reading = desk.locator('.sceneReading').bounding_box()
             assert art['x'] + art['width'] < reading['x']
