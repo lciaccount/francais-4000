@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build reference sentence IPA for the background introductions (eSpeak NG)."""
+"""Build reference IPA for background, history, and figure readings (eSpeak NG)."""
 import json
 import re
 from pathlib import Path
@@ -11,12 +11,13 @@ from phonemizer.backend.espeak.wrapper import EspeakWrapper
 ROOT = Path(__file__).resolve().parent
 SOURCE = (ROOT / 'france-scenes.js').read_text(encoding='utf-8')
 ADDITIONAL = ''.join((ROOT / name).read_text(encoding='utf-8') for name in (
-    'france-scenes-more.js', 'france-scenes-deeper.js', 'france-history.js', 'france-people.js'))
+    'france-scenes-more.js', 'france-scenes-deeper.js', 'france-history.js', 'france-people.js',
+    'france-history-expanded.js', 'france-people-expanded.js'))
 ORIGINAL = re.compile(r"\{fr:([\"'])(.*?)\1,zh:")
 ADDED = re.compile(r"^\s+\[([\"'])(.*?)\1,", re.MULTILINE)
 sentences = [match[1] for match in ORIGINAL.findall(SOURCE) + ADDED.findall(SOURCE + ADDITIONAL)]
-if len(sentences) != 477 or len(set(sentences)) != 477:
-    raise SystemExit(f'Expected 477 distinct introduction sentences, got {len(sentences)} ({len(set(sentences))} unique)')
+if len(sentences) != 712 or len(set(sentences)) != 712:
+    raise SystemExit(f'Expected 712 distinct introduction sentences, got {len(sentences)} ({len(set(sentences))} unique)')
 EspeakWrapper.set_library(espeakng_loader.get_library_path())
 EspeakWrapper.set_data_path(espeakng_loader.get_data_path())
 backend = EspeakBackend('fr-fr', with_stress=False)

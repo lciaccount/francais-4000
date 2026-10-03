@@ -299,12 +299,19 @@
   for (const scene of scenes) scene.lines.push(...deepDive[scene.id].map(([fr,zh,structure,grammar,gloss]) => ({fr,zh,structure,grammar,gloss})));
   for (const scene of scenes) scene.lines.push(...window.FRANCE_SCENE_MORE[scene.id].map(([fr,zh,grammar]) => ({fr,zh,structure:'背景延伸',grammar,gloss:{}})));
   for (const scene of scenes) scene.lines.push(...window.FRANCE_SCENE_DEEPER[scene.id].map(([fr,zh,grammar]) => ({fr,zh,structure:'延伸阅读',grammar,gloss:{}})));
+  const sunSceneIndex = scenes.findIndex(scene => scene.id === 'soleil');
+  if (sunSceneIndex >= 0) scenes.splice(sunSceneIndex,1);
+  for (const photo of window.FRANCE_PHOTOS) {
+    const base = scenes.find(scene => scene.id === photo.base);
+    scenes.push({...base,id:photo.id,name:`${base.name} · 实拍`,imagePath:`./backgrounds/photos/${photo.file}`,photo});
+  }
   const history = window.FRANCE_HISTORY_SCENE;
+  history.chapters.forEach((chapter,index) => chapter.lines.push(...window.FRANCE_HISTORY_EXTENSIONS[index]));
   history.lines = history.chapters.flatMap((chapter,index) => chapter.lines.map(([fr,zh,grammar],lineIndex) => ({
     fr,zh,structure:'历史脉络',grammar,gloss:{},
     chapter:lineIndex === 0 ? {index:index+1,title:chapter.title,period:chapter.period,source:chapter.source} : null
   })));
-  const people = window.FRANCE_HISTORICAL_PEOPLE.map(person => ({...person,imageId:'histoire-france',lines:person.lines.map(([fr,zh,grammar]) => ({fr,zh,structure:'人物生平',grammar,gloss:{}}))}));
+  const people = window.FRANCE_HISTORICAL_PEOPLE.map(person => ({...person,imageId:person.id === 'louis-xiv' ? 'soleil' : 'histoire-france',lines:[...person.lines,...window.FRANCE_PERSON_EXTENSIONS[person.id]].map(([fr,zh,grammar]) => ({fr,zh,structure:'人物生平',grammar,gloss:{}}))}));
   const extraSources = {
     eiffel:'https://www.toureiffel.paris/fr/le-monument/tour-eiffel-et-sciences',
     soleil:'https://www.chateauversailles.fr/decouvrir/les-ressources/versailles-cour',
@@ -346,6 +353,27 @@
   if (!safeIds.has(selected)) selected = 'none';
   let previewId = selected === 'none' ? scenes[0].id : selected;
   let active = scenes.find(s => s.id === selected) || scenes[0];
+  const sceneImage = scene => scene.imagePath || `./backgrounds/${scene.imageId || scene.id}.webp`;
+  const visibilityInput = document.querySelector('#sceneVisibility');
+  const autoOpacityInput = document.querySelector('#sceneAutoOpacity');
+  let opacityMode = localStorage.getItem('fr4000-scene-opacity-mode') === 'manual' ? 'manual' : 'auto';
+  let visibility = Number(localStorage.getItem('fr4000-scene-visibility') || 65);
+  if (!Number.isFinite(visibility)) visibility = 65;
+  visibility = Math.max(20,Math.min(90,Math.round(visibility/5)*5));
+  function syncOpacity() {
+    const automatic = opacityMode === 'auto';
+    document.documentElement.dataset.sceneOpacity = opacityMode;
+    if (automatic) document.documentElement.style.removeProperty('--scene-veil');
+    else document.documentElement.style.setProperty('--scene-veil',String((100-visibility)/100));
+    autoOpacityInput.checked = automatic;
+    visibilityInput.disabled = automatic;
+    visibilityInput.value = String(visibility);
+    document.querySelector('#sceneVisibilityValue').textContent = automatic ? '自动' : `${visibility}%`;
+    localStorage.setItem('fr4000-scene-opacity-mode',opacityMode);
+    localStorage.setItem('fr4000-scene-visibility',String(visibility));
+  }
+  autoOpacityInput.onchange = () => {opacityMode = autoOpacityInput.checked ? 'auto' : 'manual';syncOpacity();};
+  visibilityInput.oninput = () => {visibility = Number(visibilityInput.value);syncOpacity();};
   let view = 'background';
   let lookup = null;
   let returnFocus = null;
@@ -363,10 +391,11 @@
 
   function applyBackground() {
     document.documentElement.dataset.scene = selected;
-    document.documentElement.style.setProperty('--scene-image',selected === 'none' ? 'none' : `url("./backgrounds/${selected}.webp")`);
+    const applied = scenes.find(s => s.id === selected);
+    document.documentElement.style.setProperty('--scene-image',applied ? `url("${sceneImage(applied)}")` : 'none');
     const banner = document.querySelector('#sceneBanner');
     banner.hidden = selected === 'none';
-    if (selected !== 'none') document.querySelector('#sceneBannerName').textContent = (scenes.find(s => s.id === selected) || active).name;
+    if (applied) document.querySelector('#sceneBannerName').textContent = applied.name;
     localStorage.setItem('fr4000-scene',selected);
     if (!dialog.hidden) renderChoices();
   }
@@ -377,7 +406,7 @@
       choices.innerHTML = people.map(person => `<button class="scenePersonChoice" type="button" data-person="${person.id}" aria-pressed="${active.id === person.id}"><strong>${escapeHtml(person.name)}</strong><small>${escapeHtml(person.period)} · ${escapeHtml(person.role)}</small></button>`).join('');
       return;
     }
-    choices.innerHTML = `<button class="sceneChoice none" type="button" data-scene="none" aria-pressed="${previewId === 'none'}" aria-current="${selected === 'none'}" title="关闭背景插画（立即生效）"><span>纯色背景<br>${selected === 'none' ? '当前使用' : '关闭插画'}</span></button>` + scenes.map(s => `<button class="sceneChoice" type="button" data-scene="${s.id}" aria-pressed="${previewId === s.id}" aria-current="${selected === s.id}" title="${escapeHtml(s.name)}"><img src="./backgrounds/${s.id}.webp" alt="" loading="lazy"><span>${escapeHtml(s.name)}${selected === s.id ? ' · 已应用' : ''}</span></button>`).join('');
+    choices.innerHTML = `<button class="sceneChoice none" type="button" data-scene="none" aria-pressed="${previewId === 'none'}" aria-current="${selected === 'none'}" title="关闭背景图片（立即生效）"><span>纯色背景<br>${selected === 'none' ? '当前使用' : '关闭图片'}</span></button>` + scenes.map((s,i) => `${i === 15 ? '<span class="sceneChoiceDivider" aria-hidden="true">真实照片</span>' : ''}<button class="sceneChoice" type="button" data-scene="${s.id}" aria-pressed="${previewId === s.id}" aria-current="${selected === s.id}" title="${escapeHtml(s.name)}"><img src="${sceneImage(s)}" alt="" loading="lazy">${s.photo ? '<em class="scenePhotoBadge">实拍</em>' : ''}<span>${escapeHtml(s.name)}${selected === s.id ? ' · 已应用' : ''}</span></button>`).join('');
   }
   function wordButtons(fr) {
     return fr.split(/([A-Za-zÀ-ÖØ-öø-ÿŒœ]+(?:[’'-][A-Za-zÀ-ÖØ-öø-ÿŒœ]+)*)/u).map(part => /^[A-Za-zÀ-ÖØ-öø-ÿŒœ]/u.test(part) ? `<button class="sceneWord" type="button" data-word="${escapeHtml(part)}" aria-label="查询并点读 ${escapeHtml(part)}">${escapeHtml(part)}</button>` : escapeHtml(part)).join('');
@@ -385,13 +414,13 @@
   function renderContent() {
     const s = active;
     content.dataset.view = view;
-    const imageId = s.imageId || s.id;
+    const imagePath = sceneImage(s);
     const sourceLinks = [s.source, extraSources[s.id]].filter(Boolean).map((url,i) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">资料 ${i+1} ↗</a>`).join(' · ');
     document.querySelector('#sceneTitle').textContent = s.name;
     content.innerHTML = `<div class="sceneArtwork">
-      <div class="sceneHero" style="background-image:url('./backgrounds/${imageId}.webp')"><div><small>${escapeHtml(s.place || s.period)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}${s.role ? ` · ${escapeHtml(s.role)}` : ''}</p></div><button class="sceneZoomBtn" type="button" data-action="zoom" aria-label="放大查看${escapeHtml(s.name)}主题插画">⤢ 放大图片</button></div>
+      <div class="sceneHero" style="background-image:url('${imagePath}')"><div><small>${escapeHtml(s.place || s.period)}</small><h3>${escapeHtml(s.fr)}</h3><p>${escapeHtml(s.name)}${s.role ? ` · ${escapeHtml(s.role)}` : ''}</p></div><button class="sceneZoomBtn" type="button" data-action="zoom" aria-label="放大查看${escapeHtml(s.name)}主题图片">⤢ 放大图片</button></div>
       ${view === 'background' ? `<div class="sceneApplyBar"><div class="sceneApplyState" role="status">${selected === s.id ? '✓ 当前正在使用此背景' : previewId === 'none' ? '当前为纯色背景 · 可选择插画预览' : '正在预览 · 尚未应用到首页'}</div><button class="sceneApplyBtn" type="button" data-action="apply-background">${selected === s.id ? '✓ 已选定该背景' : '选定该背景'}</button></div>` : ''}
-      <p class="sceneSource">内容参考：${sourceLinks} · 插画为 AI 创作，非实景照片。</p>
+      <p class="sceneSource">内容参考：${sourceLinks} · ${s.photo ? `实拍摄影：${escapeHtml(s.photo.artist)} · <a href="${escapeHtml(s.photo.source)}" target="_blank" rel="noopener noreferrer">原图与署名 ↗</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">${escapeHtml(s.photo.license)}</a>；本站仅压缩格式。` : '插画为 AI 创作，非实景照片。'}</p>
     </div><div class="sceneReading">
       ${s.chapters ? `<div class="sceneHistoryNote">按时间顺序阅读 ${s.chapters.length} 个章节、${s.lines.length} 句法中对照。百年战争属于瓦卢瓦王朝时期；章节标题可查看史料来源。历史分期是学习线索，并不意味着现代法国从古代起就已存在。<label class="sceneHistoryJump">跳至章节 <select aria-label="跳转到法国历史章节"><option value="">选择章节</option>${s.chapters.map((chapter,index) => `<option value="${index+1}">${String(index+1).padStart(2,'0')} · ${escapeHtml(chapter.title)}</option>`).join('')}</select></label></div>` : ''}
       ${s.role ? `<p class="scenePersonNote">${escapeHtml(s.name)} · ${escapeHtml(s.period)} · ${escapeHtml(s.role)}。以下介绍将生平、作用与历史争议放在一起阅读；上方图片是法国历史意象插画，并非此人的肖像。</p>` : ''}
@@ -421,9 +450,9 @@
     next();
   }
   function openZoom() {
-    document.querySelector('#sceneZoomImage').src = `./backgrounds/${active.imageId || active.id}.webp`;
-    document.querySelector('#sceneZoomImage').alt = `${active.name}的艺术化主题插画`;
-    document.querySelector('#sceneZoomCaption').textContent = `${active.name} · 插画为 AI 创作，并非人物肖像、历史照片或实景照片`;
+    document.querySelector('#sceneZoomImage').src = sceneImage(active);
+    document.querySelector('#sceneZoomImage').alt = `${active.name}的${active.photo ? '真实摄影图片' : '艺术化主题插画'}`;
+    document.querySelector('#sceneZoomCaption').textContent = active.photo ? `${active.name} · ${active.photo.artist} · ${active.photo.license}` : `${active.name} · 插画为 AI 创作，并非人物肖像、历史照片或实景照片`;
     setZoomScale(1);
     zoom.hidden = false;
     dialog.setAttribute('aria-modal','false');
@@ -440,10 +469,11 @@
   function open(section='background') {
     returnFocus = document.activeElement;
     view = section;
+    document.querySelector('#sceneOpacityControls').hidden = section !== 'background';
     if (section === 'background') previewId = selected === 'none' ? scenes[0].id : selected;
     active = section === 'history' ? history : section === 'people' ? people[0] : (scenes.find(s => s.id === selected) || scenes[0]);
     document.querySelector('#sceneSectionName').textContent = `CARNET DE FRANCE · ${section === 'history' ? '法国历史' : section === 'people' ? '历史人物' : '背景选择'}`;
-    document.querySelector('#sceneSectionHelp').textContent = section === 'history' ? '独立时间线：按章节阅读法国历史，不改变当前背景。' : section === 'people' ? '选择人物，逐句了解其生平、影响与历史争议；不会改变当前背景。' : '选择背景，逐句阅读法中介绍、音标与解析；点击播放可循环听。';
+    document.querySelector('#sceneSectionHelp').textContent = section === 'history' ? '独立时间线：按章节阅读法国历史，不改变当前背景。' : section === 'people' ? '选择人物，逐句了解其生平、影响与历史争议；不会改变当前背景。' : '插画与实拍均可预览；选定后应用到首页，自动透明度保障正文清晰。';
     renderChoices();
     renderContent();
     dialog.hidden = false;
@@ -555,6 +585,7 @@
     }
   },true);
   applyBackground();
+  syncOpacity();
   window.FranceScenes = {lookupContext(raw) {
     if (dialog.hidden || !lookup) return null;
     const key = String(raw).toLocaleLowerCase('fr').replace(/[’']/g,"'");

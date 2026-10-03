@@ -17,6 +17,8 @@ def main():
                  'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                  'bretagne', 'lyon', 'histoire-france'):
         assert (ROOT / 'backgrounds' / f'{name}.webp').stat().st_size > 10000
+    for name in ('eiffel', 'louvre', 'versailles', 'mont-saint-michel'):
+        assert (ROOT / 'backgrounds' / 'photos' / f'{name}.webp').stat().st_size > 10000
     server = ThreadingHTTPServer(('127.0.0.1', 0), partial(SimpleHTTPRequestHandler, directory=str(ROOT)))
     Thread(target=server.serve_forever, daemon=True).start()
     engine = os.environ.get('FR_TEST_ENGINE', 'chromium')
@@ -38,7 +40,17 @@ def main():
             page.locator('#sceneOpen').tap()
             assert page.locator('#sceneDialog').is_visible()
             assert '背景选择' in page.locator('#sceneOpen').inner_text()
-            assert page.locator('.sceneChoice').count() == 17
+            assert page.locator('.sceneChoice').count() == 20
+            assert page.locator('.sceneChoice[data-scene="soleil"]').count() == 0
+            assert page.locator('#sceneOpacityControls').is_visible()
+            assert page.locator('#sceneAutoOpacity').is_checked()
+            assert page.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--scene-veil").trim()') == '.42'
+            page.locator('#sceneAutoOpacity').uncheck()
+            page.locator('#sceneVisibility').fill('80')
+            assert page.locator('#sceneVisibilityValue').inner_text() == '80%'
+            assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == '0.2'
+            page.locator('#sceneAutoOpacity').check()
+            assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == ''
             page.locator('.sceneChoice[data-scene="louvre"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'none'
             assert page.locator('.sceneApplyBtn').inner_text() == '选定该背景'
@@ -47,7 +59,7 @@ def main():
             assert page.locator('.sceneLine').count() == 20
             assert page.locator('.sceneHero').bounding_box()['height'] >= 205
             assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(255, 255, 255)'
-            for name in ('eiffel', 'soleil', 'fleur', 'louvre', 'versailles', 'cote-azur',
+            for name in ('eiffel', 'fleur', 'louvre', 'versailles', 'cote-azur',
                          'bourgogne', 'normandie', 'pantheon', 'champs-elysees',
                          'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                          'bretagne', 'lyon'):
@@ -64,11 +76,12 @@ def main():
             page.locator('#sceneClose').tap()
             page.locator('#historyOpen').tap()
             assert page.locator('#sceneChoices').is_hidden()
+            assert page.locator('#sceneOpacityControls').is_hidden()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             assert page.locator('.sceneChapter').count() == 16
-            assert page.locator('.sceneLine').count() == 71
+            assert page.locator('.sceneLine').count() == 183
             assert '瓦卢瓦王朝与百年战争' in page.locator('.sceneChapter').all_inner_texts()[9]
-            assert page.locator('.sceneIpa').count() == 71
+            assert page.locator('.sceneIpa').count() == 183
             assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
             assert page.locator('.sceneChapter a').count() == 16
             page.locator('.sceneLine [data-word="Mérovingiens"]').first.tap()
@@ -97,22 +110,28 @@ def main():
             page.locator('#sceneClose').tap()
             page.locator('#peopleOpen').tap()
             assert page.locator('.scenePersonChoice').count() == 17
+            assert page.locator('#sceneOpacityControls').is_hidden()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             for person in page.locator('.scenePersonChoice').all():
                 person.tap()
-                expected = 6 if person.get_attribute('data-person') == 'napoleon' else 5
+                person_id = person.get_attribute('data-person')
+                expected = 16 if person_id == 'louis-xiv' else 13 if person_id == 'napoleon' else 12
                 assert page.locator('.sceneLine').count() == expected
                 assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
+            page.locator('[data-person="louis-xiv"]').tap()
+            page.locator('.sceneZoomBtn').tap()
+            assert page.locator('#sceneZoomImage').get_attribute('src').endswith('soleil.webp')
+            page.locator('#sceneZoomClose').tap()
             page.locator('[data-person="olympe-gouges"]').tap()
-            assert page.locator('.sceneLine').count() == 5
-            assert page.locator('.sceneIpa').count() == 5
+            assert page.locator('.sceneLine').count() == 12
+            assert page.locator('.sceneIpa').count() == 12
             assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
             assert '1791' in page.locator('.sceneChinese').nth(1).inner_text()
             page.locator('.sceneLine [data-word="Déclaration"]').first.tap()
             assert page.locator('#dictionary').is_visible()
             page.locator('#dictClose').tap()
             page.locator('[data-person="napoleon"]').tap()
-            assert page.locator('.sceneLine').count() == 6
+            assert page.locator('.sceneLine').count() == 13
             page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
             assert page.locator('.sceneLine').first.locator('[data-action="play-fr"]').get_attribute('aria-pressed') == 'true'
             page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
@@ -149,24 +168,51 @@ def main():
             page.reload(wait_until='domcontentloaded')
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             page.locator('#sceneOpen').tap()
+            for name in ('eiffel', 'louvre', 'versailles', 'mont-saint-michel'):
+                page.locator(f'.sceneChoice[data-scene="photo-{name}"]').tap()
+                assert page.locator('.sceneLine').count() == 20
+                assert '实拍摄影' in page.locator('.sceneSource').inner_text()
+                assert page.locator('.sceneSource a').count() >= 3
+                page.locator('.sceneZoomBtn').tap()
+                assert page.locator('#sceneZoomImage').get_attribute('src').endswith(f'photos/{name}.webp')
+                page.locator('#sceneZoomClose').tap()
+            page.locator('.sceneChoice[data-scene="photo-louvre"]').tap()
+            page.locator('.sceneApplyBtn').tap()
+            assert page.evaluate('document.documentElement.dataset.scene') == 'photo-louvre'
+            page.locator('#sceneAutoOpacity').uncheck()
+            page.locator('#sceneVisibility').fill('75')
+            page.reload(wait_until='domcontentloaded')
+            assert page.evaluate('document.documentElement.dataset.scene') == 'photo-louvre'
+            assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == '0.25'
+            page.locator('#sceneOpen').tap()
+            assert not page.locator('#sceneAutoOpacity').is_checked()
+            assert page.locator('#sceneVisibilityValue').inner_text() == '75%'
+            page.locator('#sceneAutoOpacity').check()
             page.locator('.sceneChoice[data-scene="none"]').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'none'
             page.locator('#sceneClose').tap()
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v23-monochrome-background-20261001');
+              const c=await caches.open('fr4000-v24-history-photos-20261002');
               return !!(await c.match('./france-scenes.js'))
                 && !!(await c.match('./france-scenes-more.js'))
                 && !!(await c.match('./france-scenes-deeper.js'))
                 && !!(await c.match('./theme-monochrome.css'))
                 && !!(await c.match('./eiffel-mark.svg'))
                 && !!(await c.match('./france-history.js'))
+                && !!(await c.match('./france-history-expanded.js'))
                 && !!(await c.match('./france-people.js'))
+                && !!(await c.match('./france-people-expanded.js'))
+                && !!(await c.match('./france-photos.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
                 && !!(await c.match('./backgrounds/histoire-france.webp'))
                 && !!(await c.match('./backgrounds/lyon.webp'))
-                && !!(await c.match('./backgrounds/louvre.webp'));
+                && !!(await c.match('./backgrounds/louvre.webp'))
+                && !!(await c.match('./backgrounds/photos/eiffel.webp'))
+                && !!(await c.match('./backgrounds/photos/louvre.webp'))
+                && !!(await c.match('./backgrounds/photos/versailles.webp'))
+                && !!(await c.match('./backgrounds/photos/mont-saint-michel.webp'));
             }''')
             desktop = browser.new_context(viewport={'width': 1365, 'height': 900})
             desk = desktop.new_page()
@@ -187,7 +233,7 @@ def main():
             browser.close()
     finally:
         server.shutdown()
-    print(f'PASS {engine}: sixteen 20-line scenes, independent 71-line history and 17 people, zoom, IPA, playback, lookup, persistence, offline assets')
+    print(f'PASS {engine}: 15 illustrated and 4 photographic backgrounds, 183-line history and 17 people, zoom, IPA, playback, lookup, opacity, persistence, offline assets')
 
 
 if __name__ == '__main__':

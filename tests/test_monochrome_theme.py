@@ -68,7 +68,7 @@ def main():
             page.reload(wait_until='networkidle')
             assert page.evaluate('document.documentElement.dataset.theme') == 'light'
             page.wait_for_function('navigator.serviceWorker.controller !== null')
-            assert page.evaluate('''async()=>{const c=await caches.open('fr4000-v23-monochrome-background-20261001');return !!(await c.match('./theme-monochrome.css'))&&!!(await c.match('./eiffel-mark.svg'))&&!!(await c.match('./fleur-de-lys.svg'));}''')
+            assert page.evaluate('''async()=>{const c=await caches.open('fr4000-v24-history-photos-20261002');return !!(await c.match('./theme-monochrome.css'))&&!!(await c.match('./eiffel-mark.svg'))&&!!(await c.match('./fleur-de-lys.svg'));}''')
             assert not errors, errors
             browser.close()
     finally:
