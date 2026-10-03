@@ -46,6 +46,19 @@ body.scene-open {overflow:hidden}
 .sceneVisibilityLabel input {flex:1;min-width:70px;max-width:230px;accent-color:var(--text)}
 .sceneOpacityControls output {min-width:34px;font-weight:800;text-align:right}
 .sceneOpacityControls small {flex:1 1 100%;color:var(--muted);line-height:1.4}
+.homeOpacity,.swipeOpacity {border:1px solid var(--line);border-radius:11px;background:color-mix(in srgb,var(--panel) 94%,transparent);color:var(--text)}
+.homeOpacity {margin:7px 0 0}
+@media(min-width:801px){html[data-scene]:not([data-scene="none"]) .homeOpacity {position:relative;z-index:2;width:205px;margin:-64px 10px 0 auto;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}html[data-scene]:not([data-scene="none"]) .homeOpacity[open] {width:min(490px,calc(100% - 20px))}}
+.homeOpacity summary,.swipeOpacity summary {min-height:34px;display:flex;align-items:center;gap:8px;padding:5px 11px;cursor:pointer;font-size:12px;font-weight:800;list-style:none}
+.homeOpacity summary::-webkit-details-marker,.swipeOpacity summary::-webkit-details-marker {display:none}
+.homeOpacity summary::after,.swipeOpacity summary::after {content:'⌄';margin-left:auto;color:var(--muted)}
+.homeOpacity[open] summary::after,.swipeOpacity[open] summary::after {transform:rotate(180deg)}
+.homeOpacity summary output,.swipeOpacity summary output {color:var(--muted);font-weight:600}
+.homeOpacity .sceneOpacityControls,.swipeOpacity .sceneOpacityControls {margin:0 7px 7px}
+.swipeOpacity {position:relative;z-index:7;order:5;flex:none;margin:0;background:rgb(var(--scene-card-rgb) / .92)}
+.swipeOpacity summary {min-height:24px;padding:2px 6px;font-size:10px;white-space:nowrap}
+.swipeOpacity .sceneOpacityControls {position:absolute;right:0;top:100%;width:min(310px,calc(100vw - 24px));margin:4px 0 0;box-shadow:var(--shadow)}
+.swipeStudy.is-locked .swipeOpacity {display:none}
 .scenePersonChoice {flex:0 0 166px;min-height:80px;padding:10px;text-align:left;border:1px solid #d8e0e3;border-radius:12px;background:#f5f7f7;color:#27313b;cursor:pointer;scroll-snap-align:start}
 .scenePersonChoice strong,.scenePersonChoice small {display:block}
 .scenePersonChoice strong {font-size:14px;line-height:1.35}

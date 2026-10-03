@@ -5,7 +5,7 @@ html[data-theme="light"] {
   --line:#d9d9d6;--soft:#efefed;--accent:#171717;--accentText:#fff;
   --playing:#f1f1ef;--shadow:0 8px 24px rgba(0,0,0,.07);
   --noun:#222;--verb:#454545;--adj:#606060;--adv:#3b3b3b;--prep:#555;
-  --scene-veil:.30;
+  --scene-veil:.26;--scene-swipe-veil:.70;--scene-surface:91%;--scene-card-rgb:255 255 255;
 }
 html[data-theme="dark"] {
   color-scheme:dark;
@@ -13,7 +13,7 @@ html[data-theme="dark"] {
   --line:#3a3a39;--soft:#292929;--accent:#f5f5f3;--accentText:#151515;
   --playing:#2a2a2a;--shadow:0 10px 26px rgba(0,0,0,.3);
   --noun:#f4f4f4;--verb:#d9d9d9;--adj:#bcbcbc;--adv:#e5e5e5;--prep:#c8c8c8;
-  --scene-veil:.53;
+  --scene-veil:.48;--scene-swipe-veil:.78;--scene-surface:91%;--scene-card-rgb:29 29 29;
 }
 html[data-theme] .topbar {background:var(--bg);border-bottom:1px solid var(--line)}
 html[data-theme] .topbar::before {content:"";position:absolute;left:0;top:0;width:84px;height:2px;background:var(--text);opacity:.62}
@@ -44,7 +44,7 @@ html[data-theme] body.pos-on .word.pos-adv {text-decoration-style:dashed}
 html[data-theme] body.pos-on .word.pos-prep {text-decoration-style:wavy}
 html[data-theme] .swipeStudy {background:var(--bg)}
 
-/* Let the chosen picture be visible in exposed space; text sits on solid paper. */
+/* Let the chosen picture show through while translucent reading cards retain contrast. */
 html[data-theme="light"][data-scene]:not([data-scene="none"]) body {
   background-image:linear-gradient(rgb(247 247 245 / var(--scene-veil)),rgb(247 247 245 / var(--scene-veil))),var(--scene-image);
   background-position:center top,center center;background-size:cover;background-attachment:scroll,fixed;
@@ -62,9 +62,11 @@ html[data-scene]:not([data-scene="none"]) .sentence,
 html[data-scene]:not([data-scene="none"]) .phoneticsLibrary,
 html[data-scene]:not([data-scene="none"]) .phoneticsDetail,
 html[data-scene]:not([data-scene="none"]) .sectionHead,
-html[data-scene]:not([data-scene="none"]) .phoneticsHead {background:var(--panel);backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-scene]:not([data-scene="none"]) .phoneticsHead {background:rgb(var(--scene-card-rgb) / var(--scene-surface));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 html[data-scene]:not([data-scene="none"]) .sentence.playing {background:var(--playing)}
-html[data-scene]:not([data-scene="none"]) .swipeStudy {background-image:linear-gradient(color-mix(in srgb,var(--bg) 96%,transparent),color-mix(in srgb,var(--bg) 98%,transparent)),var(--scene-image)}
+html[data-theme="light"][data-scene]:not([data-scene="none"]) .swipeStudy {background-image:linear-gradient(rgb(247 247 245 / var(--scene-swipe-veil)),rgb(247 247 245 / var(--scene-swipe-veil))),var(--scene-image);background-position:center;background-size:cover}
+html[data-theme="dark"][data-scene]:not([data-scene="none"]) .swipeStudy {background-image:linear-gradient(rgb(12 12 12 / var(--scene-swipe-veil)),rgb(12 12 12 / var(--scene-swipe-veil))),var(--scene-image);background-position:center;background-size:cover}
+html[data-scene]:not([data-scene="none"]) .swipeCard {background:rgb(var(--scene-card-rgb) / var(--scene-surface));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 html[data-theme] .sceneBanner {min-height:86px;border:1px solid var(--line);background-image:linear-gradient(0deg,rgba(0,0,0,.68),rgba(0,0,0,.05) 75%),var(--scene-image);box-shadow:var(--shadow)}
 html[data-theme] .sceneBanner strong {text-shadow:0 2px 8px #000a}
 
@@ -84,8 +86,8 @@ html[data-theme] .sceneChapter {border-bottom-color:var(--line)}
 html[data-theme] .sceneWord:hover,html[data-theme] .sceneWord:focus-visible {background:var(--soft);outline-color:var(--muted)}
 html[data-theme] .sceneDialog button:focus-visible,html[data-theme] .sceneBanner:focus-visible {outline-color:var(--text)}
 @media(max-width:800px){
-  html[data-theme="light"] {--scene-veil:.42}
-  html[data-theme="dark"] {--scene-veil:.64}
+  html[data-theme="light"] {--scene-veil:.34;--scene-swipe-veil:.76;--scene-surface:94%}
+  html[data-theme="dark"] {--scene-veil:.56;--scene-swipe-veil:.83;--scene-surface:94%}
   html[data-theme] .sceneBanner {min-height:100px}
   html[data-theme] .brand h1::before {width:.42em;margin-right:.23em}
   html[data-scene]:not([data-scene="none"]) body {background-attachment:scroll,scroll}

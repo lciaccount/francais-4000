@@ -43,7 +43,7 @@ def main():
             assert page.evaluate('document.documentElement.dataset.scene') == 'eiffel'
             assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(29, 29, 29)'
             page.locator('#sceneClose').tap()
-            assert page.evaluate('getComputedStyle(document.querySelector(".sentence")).backgroundColor') == 'rgb(29, 29, 29)'
+            page.wait_for_function('getComputedStyle(document.querySelector(".sentence")).backgroundColor.includes("0.94")')
             assert page.evaluate('getComputedStyle(document.body).backgroundImage.includes("eiffel.webp")')
             for width, height in [(320, 568), (390, 844), (844, 390), (1280, 900)]:
                 page.set_viewport_size({'width': width, 'height': height})
@@ -55,7 +55,7 @@ def main():
             page.locator('#themeBtn').tap()
             assert page.evaluate('document.documentElement.dataset.theme') == 'light'
             assert page.locator('#themeColorMeta').get_attribute('content') == '#f7f7f5'
-            page.wait_for_function('getComputedStyle(document.querySelector(".sentence")).backgroundColor === "rgb(255, 255, 255)"')
+            page.wait_for_function('getComputedStyle(document.querySelector(".sentence")).backgroundColor.includes("0.94")')
             page.locator('[data-study-view="phonetics"]').tap()
             assert page.locator('.phonTile').count() == 26
             assert page.evaluate('getComputedStyle(document.querySelector(".phoneticsHead h2"),"::before").maskImage.includes("fleur-de-lys.svg")')
@@ -68,7 +68,7 @@ def main():
             page.reload(wait_until='networkidle')
             assert page.evaluate('document.documentElement.dataset.theme') == 'light'
             page.wait_for_function('navigator.serviceWorker.controller !== null')
-            assert page.evaluate('''async()=>{const c=await caches.open('fr4000-v24-history-photos-20261002');return !!(await c.match('./theme-monochrome.css'))&&!!(await c.match('./eiffel-mark.svg'))&&!!(await c.match('./fleur-de-lys.svg'));}''')
+            assert page.evaluate('''async()=>{const c=await caches.open('fr4000-v25-history32-photos15-20261003');return !!(await c.match('./theme-monochrome.css'))&&!!(await c.match('./eiffel-mark.svg'))&&!!(await c.match('./fleur-de-lys.svg'));}''')
             assert not errors, errors
             browser.close()
     finally:

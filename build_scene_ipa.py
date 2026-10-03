@@ -13,11 +13,15 @@ SOURCE = (ROOT / 'france-scenes.js').read_text(encoding='utf-8')
 ADDITIONAL = ''.join((ROOT / name).read_text(encoding='utf-8') for name in (
     'france-scenes-more.js', 'france-scenes-deeper.js', 'france-history.js', 'france-people.js',
     'france-history-expanded.js', 'france-people-expanded.js'))
+PIPED = ''.join((ROOT / name).read_text(encoding='utf-8') for name in (
+    'france-history-deep.js', 'france-people-additional.js', 'france-people-deep.js'))
 ORIGINAL = re.compile(r"\{fr:([\"'])(.*?)\1,zh:")
 ADDED = re.compile(r"^\s+\[([\"'])(.*?)\1,", re.MULTILINE)
+PIPED_FRENCH = re.compile(r"(?:^|`)([A-ZÀ-ÖØ-Þ][^|\n`]+)\|", re.MULTILINE)
 sentences = [match[1] for match in ORIGINAL.findall(SOURCE) + ADDED.findall(SOURCE + ADDITIONAL)]
-if len(sentences) != 712 or len(set(sentences)) != 712:
-    raise SystemExit(f'Expected 712 distinct introduction sentences, got {len(sentences)} ({len(set(sentences))} unique)')
+sentences.extend(PIPED_FRENCH.findall(PIPED))
+if len(sentences) != 1308 or len(set(sentences)) != 1308:
+    raise SystemExit(f'Expected 1308 distinct introduction sentences, got {len(sentences)} ({len(set(sentences))} unique)')
 EspeakWrapper.set_library(espeakng_loader.get_library_path())
 EspeakWrapper.set_data_path(espeakng_loader.get_data_path())
 backend = EspeakBackend('fr-fr', with_stress=False)

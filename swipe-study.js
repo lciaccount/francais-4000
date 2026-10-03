@@ -53,7 +53,7 @@
           </div>
         </details>
       </div>
-      <div class="swipeProgress"><span id="swipeCounter" aria-live="polite"></span><div role="progressbar" id="swipeProgressBar" aria-label="当前列表位置"><i id="swipeProgressFill"></i></div><span>↑ 下一条 · ↓ 上一条</span></div>
+      <div class="swipeProgress"><span id="swipeCounter" aria-live="polite"></span><div role="progressbar" id="swipeProgressBar" aria-label="当前列表位置"><i id="swipeProgressFill"></i></div><details id="swipeOpacity" class="swipeOpacity"><summary>◐ 背景 <output data-opacity-summary>自动</output></summary><div class="sceneOpacityControls"><label class="sceneAutoOpacity"><input data-opacity-auto type="checkbox" checked> 自动调节</label><label class="sceneVisibilityLabel">手动显现度 <input data-opacity-visibility type="range" min="20" max="90" step="5" value="65" disabled></label><output data-opacity-value>自动</output><small>与首页共用设置；锁定时不可调节。</small></div></details><span>↑ 下一条 · ↓ 上一条</span></div>
       <div id="swipeStage" class="swipeStage"><article id="swipeCard" class="swipeCard" tabindex="-1"></article></div>
       <footer class="swipeFooter"><div class="swipeAudioRow"><span id="swipePlayState" role="status" aria-live="polite"></span><div class="swipeAudioControls"><label class="swipeSpeedLabel"><span class="swipeSrOnly">播放倍速（0.50 至 2.00，步长 0.05）</span><select id="swipeSpeed">${Array.from({length:31}, (_,i) => {const rate=((50+i*5)/100).toFixed(2); return `<option value="${rate}">${rate}×</option>`;}).join('')}</select></label><label class="swipeVoiceLabel"><span class="swipeSrOnly">播放音色（音标参考音固定）</span><select id="swipeVoice"></select></label></div></div>
         <div class="swipeActions"><button id="swipePause" type="button" class="swipePrimary">暂停</button><button id="swipeDetails" type="button" aria-expanded="false" aria-controls="swipeExplanation">详解</button></div>
@@ -61,6 +61,10 @@
       <div id="swipeIntro" class="swipeIntro" role="status" hidden><span aria-hidden="true">↕</span> 上下滑动切换条目</div>
     </section>`);
   const root = $('#swipeStudy'), stage = $('#swipeStage'), card = $('#swipeCard');
+  $('#swipeOpacity summary').addEventListener('click', e => {
+    e.preventDefault();
+    $('#swipeOpacity').open = !$('#swipeOpacity').open;
+  });
   const dictionary = $('#dictionary'), backdrop = $('#dictBackdrop');
   const dictionaryHome = dictionary.parentNode, dictionaryNext = dictionary.nextSibling;
   const restoreLookupFocus = () => {if (feed.lookupFocus?.isConnected) feed.lookupFocus.focus({preventScroll: true}); feed.lookupFocus = null;};

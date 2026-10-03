@@ -17,7 +17,10 @@ def main():
                  'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
                  'bretagne', 'lyon', 'histoire-france'):
         assert (ROOT / 'backgrounds' / f'{name}.webp').stat().st_size > 10000
-    for name in ('eiffel', 'louvre', 'versailles', 'mont-saint-michel'):
+    for name in ('eiffel', 'fleur', 'louvre', 'versailles', 'cote-azur',
+                 'bourgogne', 'normandie', 'pantheon', 'champs-elysees',
+                 'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
+                 'bretagne', 'lyon'):
         assert (ROOT / 'backgrounds' / 'photos' / f'{name}.webp').stat().st_size > 10000
     server = ThreadingHTTPServer(('127.0.0.1', 0), partial(SimpleHTTPRequestHandler, directory=str(ROOT)))
     Thread(target=server.serve_forever, daemon=True).start()
@@ -40,15 +43,19 @@ def main():
             page.locator('#sceneOpen').tap()
             assert page.locator('#sceneDialog').is_visible()
             assert '背景选择' in page.locator('#sceneOpen').inner_text()
-            assert page.locator('.sceneChoice').count() == 20
+            assert page.locator('.sceneChoice').count() == 31
             assert page.locator('.sceneChoice[data-scene="soleil"]').count() == 0
             assert page.locator('#sceneOpacityControls').is_visible()
             assert page.locator('#sceneAutoOpacity').is_checked()
-            assert page.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--scene-veil").trim()') == '.42'
+            assert page.locator('#homeOpacity').is_visible()
+            assert page.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--scene-veil").trim()') == '.34'
             page.locator('#sceneAutoOpacity').uncheck()
             page.locator('#sceneVisibility').fill('80')
             assert page.locator('#sceneVisibilityValue').inner_text() == '80%'
             assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == '0.2'
+            assert abs(float(page.evaluate('document.documentElement.style.getPropertyValue("--scene-swipe-veil")')) - .56) < .001
+            assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-surface")') == '89%'
+            assert page.locator('#homeOpacity [data-opacity-summary]').inner_text() == '80%'
             page.locator('#sceneAutoOpacity').check()
             assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == ''
             page.locator('.sceneChoice[data-scene="louvre"]').tap()
@@ -56,6 +63,10 @@ def main():
             assert page.locator('.sceneApplyBtn').inner_text() == '选定该背景'
             page.locator('.sceneApplyBtn').tap()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
+            assert 'louvre.webp' in page.evaluate('getComputedStyle(document.body).backgroundImage')
+            page.wait_for_timeout(250)  # Card background has a short CSS transition.
+            assert page.evaluate('''() => [...document.querySelectorAll('.sentence')].some(el =>
+              getComputedStyle(el).backgroundColor.includes('0.94'))''')
             assert page.locator('.sceneLine').count() == 20
             assert page.locator('.sceneHero').bounding_box()['height'] >= 205
             assert page.evaluate('getComputedStyle(document.querySelector(".sceneLine")).backgroundColor') == 'rgb(255, 255, 255)'
@@ -74,25 +85,52 @@ def main():
                 page.locator('#sceneZoomClose').tap()
             page.locator('.sceneChoice[data-scene="louvre"]').tap()
             page.locator('#sceneClose').tap()
+            page.locator('#homeOpacity summary').tap()
+            page.locator('#homeOpacity [data-opacity-auto]').uncheck()
+            page.locator('#homeOpacity [data-opacity-visibility]').fill('70')
+            assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == '0.3'
+            assert page.locator('#homeOpacity [data-opacity-summary]').inner_text() == '70%'
+            page.locator('#swipeEnter').tap()
+            assert page.locator('#swipeStudy').is_visible()
+            assert page.locator('#swipeOpacity').is_visible()
+            assert 'louvre.webp' in page.evaluate('getComputedStyle(document.querySelector("#swipeStudy")).backgroundImage')
+            page.locator('#swipeOpacity summary').tap()
+            assert page.locator('#swipeOpacity').evaluate('el=>el.open')
+            panel = page.locator('#swipeOpacity .sceneOpacityControls').bounding_box()
+            assert panel['x'] >= 10 and panel['x'] + panel['width'] <= 390, panel
+            assert not page.locator('#swipeOpacity [data-opacity-auto]').is_checked()
+            assert page.locator('#swipeOpacity [data-opacity-value]').inner_text() == '70%', page.locator('#swipeOpacity').inner_text()
+            page.locator('#swipeOpacity [data-opacity-visibility]').fill('55')
+            assert page.locator('#homeOpacity [data-opacity-summary]').inner_text() == '55%'
+            page.locator('#swipeLock').tap()
+            assert page.locator('#swipeOpacity').is_hidden()
+            page.locator('#swipeLock').tap()
+            page.locator('#swipeExit').tap()
+            page.locator('#homeOpacity [data-opacity-auto]').check()
             page.locator('#historyOpen').tap()
-            assert page.locator('#sceneChoices').is_hidden()
+            assert page.locator('.sceneHistoryChoice').count() == 16
             assert page.locator('#sceneOpacityControls').is_hidden()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
-            assert page.locator('.sceneChapter').count() == 16
-            assert page.locator('.sceneLine').count() == 183
-            assert '瓦卢瓦王朝与百年战争' in page.locator('.sceneChapter').all_inner_texts()[9]
-            assert page.locator('.sceneIpa').count() == 183
+            assert page.locator('.sceneLine').count() >= 20
+            assert '瓦卢瓦王朝与百年战争' in page.locator('.sceneHistoryChoice').all_inner_texts()[9]
+            assert page.locator('.sceneIpa').count() == page.locator('.sceneLine').count()
             assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
-            assert page.locator('.sceneChapter a').count() == 16
+            assert page.locator('.sceneSource a').count() >= 1
+            page.locator('[data-history="4"]').tap()
             page.locator('.sceneLine [data-word="Mérovingiens"]').first.tap()
             assert '墨洛温王朝' in page.locator('#dictMeanings').inner_text()
             page.locator('#dictClose').tap()
             page.evaluate('window.__sceneSpeech=[]')
-            assert page.locator('.sceneHistoryJump option').count() == 17
-            page.locator('.sceneHistoryJump select').select_option('16')
-            page.wait_for_timeout(500)
-            chapter_y = page.locator('.sceneChapter[data-chapter="16"]').bounding_box()['y']
-            assert chapter_y < 844, f'chapter y={chapter_y}, sheet scroll={page.locator(".sceneSheet").evaluate("el=>el.scrollTop")}'
+            history_total = 0
+            for stage in range(1, 17):
+                page.locator(f'[data-history="{stage}"]').tap()
+                count = page.locator('.sceneLine').count()
+                assert count >= 20
+                assert page.locator('.sceneIpa').count() == count
+                history_total += count
+            assert history_total == 343
+            assert '第 16 / 16 阶段' in page.locator('.sceneHistoryNote').inner_text()
+            assert page.locator('.sceneLine').count() >= 20
             page.locator('.sceneZoomBtn').tap()
             assert page.locator('#sceneZoom').is_visible()
             assert page.locator('#sceneZoomImage').get_attribute('src').endswith('histoire-france.webp')
@@ -109,13 +147,13 @@ def main():
             assert page.locator('#sceneZoom').is_hidden()
             page.locator('#sceneClose').tap()
             page.locator('#peopleOpen').tap()
-            assert page.locator('.scenePersonChoice').count() == 17
+            assert page.locator('.scenePersonChoice').count() == 32
             assert page.locator('#sceneOpacityControls').is_hidden()
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             for person in page.locator('.scenePersonChoice').all():
                 person.tap()
                 person_id = person.get_attribute('data-person')
-                expected = 16 if person_id == 'louis-xiv' else 13 if person_id == 'napoleon' else 12
+                expected = 24 if person_id == 'louis-xiv' else 21 if person_id == 'napoleon' else 20
                 assert page.locator('.sceneLine').count() == expected
                 assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
             page.locator('[data-person="louis-xiv"]').tap()
@@ -123,15 +161,15 @@ def main():
             assert page.locator('#sceneZoomImage').get_attribute('src').endswith('soleil.webp')
             page.locator('#sceneZoomClose').tap()
             page.locator('[data-person="olympe-gouges"]').tap()
-            assert page.locator('.sceneLine').count() == 12
-            assert page.locator('.sceneIpa').count() == 12
+            assert page.locator('.sceneLine').count() == 20
+            assert page.locator('.sceneIpa').count() == 20
             assert all(len(text) > 5 for text in page.locator('.sceneIpa').all_inner_texts())
             assert '1791' in page.locator('.sceneChinese').nth(1).inner_text()
             page.locator('.sceneLine [data-word="Déclaration"]').first.tap()
             assert page.locator('#dictionary').is_visible()
             page.locator('#dictClose').tap()
             page.locator('[data-person="napoleon"]').tap()
-            assert page.locator('.sceneLine').count() == 13
+            assert page.locator('.sceneLine').count() == 21
             page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
             assert page.locator('.sceneLine').first.locator('[data-action="play-fr"]').get_attribute('aria-pressed') == 'true'
             page.locator('.sceneLine').first.locator('[data-action="play-fr"]').tap()
@@ -168,7 +206,10 @@ def main():
             page.reload(wait_until='domcontentloaded')
             assert page.evaluate('document.documentElement.dataset.scene') == 'louvre'
             page.locator('#sceneOpen').tap()
-            for name in ('eiffel', 'louvre', 'versailles', 'mont-saint-michel'):
+            for name in ('eiffel', 'fleur', 'louvre', 'versailles', 'cote-azur',
+                         'bourgogne', 'normandie', 'pantheon', 'champs-elysees',
+                         'mont-saint-michel', 'provence', 'chambord', 'strasbourg',
+                         'bretagne', 'lyon'):
                 page.locator(f'.sceneChoice[data-scene="photo-{name}"]').tap()
                 assert page.locator('.sceneLine').count() == 20
                 assert '实拍摄影' in page.locator('.sceneSource').inner_text()
@@ -184,6 +225,7 @@ def main():
             page.reload(wait_until='domcontentloaded')
             assert page.evaluate('document.documentElement.dataset.scene') == 'photo-louvre'
             assert page.evaluate('document.documentElement.style.getPropertyValue("--scene-veil")') == '0.25'
+            assert page.locator('#homeOpacity [data-opacity-summary]').inner_text() == '75%'
             page.locator('#sceneOpen').tap()
             assert not page.locator('#sceneAutoOpacity').is_checked()
             assert page.locator('#sceneVisibilityValue').inner_text() == '75%'
@@ -194,7 +236,7 @@ def main():
             assert page.locator('#sceneBanner').is_hidden()
             page.wait_for_function('navigator.serviceWorker.controller !== null')
             assert page.evaluate('''async()=>{
-              const c=await caches.open('fr4000-v24-history-photos-20261002');
+              const c=await caches.open('fr4000-v25-history32-photos15-20261003');
               return !!(await c.match('./france-scenes.js'))
                 && !!(await c.match('./france-scenes-more.js'))
                 && !!(await c.match('./france-scenes-deeper.js'))
@@ -202,8 +244,11 @@ def main():
                 && !!(await c.match('./eiffel-mark.svg'))
                 && !!(await c.match('./france-history.js'))
                 && !!(await c.match('./france-history-expanded.js'))
+                && !!(await c.match('./france-history-deep.js'))
                 && !!(await c.match('./france-people.js'))
                 && !!(await c.match('./france-people-expanded.js'))
+                && !!(await c.match('./france-people-additional.js'))
+                && !!(await c.match('./france-people-deep.js'))
                 && !!(await c.match('./france-photos.js'))
                 && !!(await c.match('./france-scenes-ipa.js'))
                 && !!(await c.match('./backgrounds/histoire-france.webp'))
@@ -212,7 +257,9 @@ def main():
                 && !!(await c.match('./backgrounds/photos/eiffel.webp'))
                 && !!(await c.match('./backgrounds/photos/louvre.webp'))
                 && !!(await c.match('./backgrounds/photos/versailles.webp'))
-                && !!(await c.match('./backgrounds/photos/mont-saint-michel.webp'));
+                && !!(await c.match('./backgrounds/photos/mont-saint-michel.webp'))
+                && !!(await c.match('./backgrounds/photos/fleur.webp'))
+                && !!(await c.match('./backgrounds/photos/lyon.webp'));
             }''')
             desktop = browser.new_context(viewport={'width': 1365, 'height': 900})
             desk = desktop.new_page()
@@ -233,7 +280,7 @@ def main():
             browser.close()
     finally:
         server.shutdown()
-    print(f'PASS {engine}: 15 illustrated and 4 photographic backgrounds, 183-line history and 17 people, zoom, IPA, playback, lookup, opacity, persistence, offline assets')
+    print(f'PASS {engine}: 15 illustrated and 15 photographic backgrounds, 16 deep history stages and 32 people, zoom, IPA, playback, lookup, opacity, persistence, offline assets')
 
 
 if __name__ == '__main__':
